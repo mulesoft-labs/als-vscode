@@ -2,6 +2,7 @@
     "name": "aml-vscode",
     "displayName": "AML support",
     "description": "",
+    "publisher": "MuleSoft",
     "version": "0.0.1",
     "engines": {
         "vscode": "^1.33.0"
@@ -9,17 +10,57 @@
     "categories": [
         "Programming Languages"
     ],
+    "main": "./out/extension",
+    "activationEvents": [
+        "onLanguage:raml"
+    ],
     "contributes": {
-        "languages": [{
-            "id": "raml",
-            "aliases": ["RAML", "raml"],
-            "extensions": [".raml"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "raml",
-            "scopeName": "source.raml",
-            "path": "./syntaxes/raml.tmLanguage.json"
-        }]
+        "languages": [
+            {
+                "id": "raml",
+                "aliases": [
+                    "RAML",
+                    "raml"
+                ],
+                "extensions": [
+                    ".raml"
+                ],
+                "configuration": "./raml-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "raml",
+                "scopeName": "source.raml",
+                "path": "./syntaxes/raml.tmLanguage.json"
+            }
+        ],
+        "configuration": {
+            "title": "AML Language Server configurations",
+            "properties": {
+                "amlLanguageServer.trace.server": {
+                    "scope": "window",
+                    "type": "string",
+                    "enum": [
+                        "off",
+                        "messages",
+                        "verbose"
+                    ],
+                    "default": "off",
+                    "description": "Traces the communication between VS Code and the language server."
+                }
+            }
+        }
+    },
+    "dependencies": {
+        "vscode-languageclient": "^5.2.1"
+    },
+    "devDependencies": {
+        "@types/node": "^11.13.6",
+        "typescript": "^3.4.4",
+        "vscode": "^1.1.33"
+    },
+    "scripts": {
+        "compile": "tsc"
     }
 }
