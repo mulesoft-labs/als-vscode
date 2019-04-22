@@ -1,0 +1,25 @@
+{
+    "name": "aml-vscode",
+    "displayName": "AML support",
+    "description": "",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.33.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "raml",
+            "aliases": ["RAML", "raml"],
+            "extensions": [".raml"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "raml",
+            "scopeName": "source.raml",
+            "path": "./syntaxes/raml.tmLanguage.json"
+        }]
+    }
+}
