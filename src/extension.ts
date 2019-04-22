@@ -67,7 +67,11 @@ export function activate(context: ExtensionContext) {
 
 	const clientOptions: LanguageClientOptions = {
 		documentSelector: [
-			{ language: 'raml', scheme: 'file' }
+			{ language: 'raml' },
+			{ language: 'oas-yaml' },
+			{ language: 'oas-json' },
+			{ language: 'async-api' },
+			{ language: 'customer-dialect' }
 		],
 		synchronize: {
 			configurationSection: 'amlLanguageServer',
