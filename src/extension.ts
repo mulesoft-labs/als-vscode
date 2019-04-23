@@ -34,11 +34,14 @@ export function activate(context: ExtensionContext) {
 				const address = server.address()
 				const port = typeof address === 'object' ? address.port : 0
 
+				const dialectPath = `${extensionPath}/resources/dialect.yaml`
+
 				console.log("[ALS] Extension path: " + extensionPath)
 				console.log("[ALS] Storage path: " + storagePath)
 				console.log("[ALS] jar path: " + jarPath)
 				console.log("[ALS] Log path: " + logFile)
 				console.log("[ALS] Server port: " + port)
+				console.log("[ALS] java eexeec filee: " + javaExecutablePath)
 
 				const options = { 
 					cwd: workspace.rootPath,
@@ -50,6 +53,10 @@ export function activate(context: ExtensionContext) {
 					jarPath,
 					'--port',
 					port.toString(),
+					'--dialect',
+					dialectPath,
+					'--dialectProfile',
+					'Mark Visit 1.0'
 				]
 
 				const process = child_process.spawn(javaExecutablePath, args, options)
@@ -71,7 +78,7 @@ export function activate(context: ExtensionContext) {
 			{ language: 'oas-yaml' },
 			{ language: 'oas-json' },
 			{ language: 'async-api' },
-			{ language: 'customer-dialect' }
+			{ language: 'mark-visit' }
 		],
 		synchronize: {
 			configurationSection: 'amlLanguageServer',

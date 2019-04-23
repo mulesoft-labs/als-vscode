@@ -16,7 +16,7 @@
         "onLanguage:oas-json",
         "onLanguage:oas-yaml",
         "onLanguage:async-api",
-        "onLanguage:customer-dialect"
+        "onLanguage:mark-visit"
     ],
     "contributes": {
         "languages": [
@@ -65,13 +65,12 @@
                 "configuration": "./raml-configuration.json"
             },
             {
-                "id": "customer-dialect",
+                "id": "mark-visit",
                 "aliases": [
-                    "Async API"
+                    "Mark Visit"
                 ],
-                "firstLine": "^#%Customer 0\\.1$",
+                "firstLine": "^#%Mark Visit 1.0$",
                 "extensions": [
-                    ".json",
                     ".yaml"
                 ],
                 "configuration": "./raml-configuration.json"
@@ -99,7 +98,7 @@
                 "path": "./syntaxes/yaml.tmLanguage.json"
             },
             {
-                "language": "customer-dialect",
+                "language": "mark-visit",
                 "scopeName": "source.yaml",
                 "path": "./syntaxes/yaml.tmLanguage.json"
             }
