@@ -3,14 +3,26 @@ title: Mobile Order API
 version: 1.0
 baseUri: http://localhost:8081/api
 
-uses:
-  assets:  assets.lib.raml
+types:
+  ProductItem:
+    type: object
+    properties:
+      product_id: string
+      quantity: integer
+  Order:
+    type: object
+    properties:
+      order_id: string
+      creation_date: string
+      items: ProductItem[]
+  Orders:
+    type: object
+    properties:
+      orders: Order[]
 
 /orders:
-  displayName: Orders
   description: Orders collection resource used to create new orders.
   get:
-    is: [ assets.paging ]
     description: lists all orders of a specific user
     queryParameters:
       userId:
@@ -22,7 +34,7 @@ uses:
       200:
         body:
           application/json:
-            type: assets.Orders
+            type: Orders
             examples:
               single-order:
                 orders:
