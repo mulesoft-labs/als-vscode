@@ -15,4 +15,11 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 
+topics:
+  PersonAdded:
+    description: Persona added
 
+schemas:
+  Person:
+    properties:
+      name: string

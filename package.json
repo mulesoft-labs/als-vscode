@@ -96,8 +96,8 @@
             },
             {
                 "language": "async-api",
-                "scopeName": "source.yaml",
-                "path": "./syntaxes/yaml.tmLanguage.json"
+                "scopeName": "source.asyncapi",
+                "path": "./syntaxes/asyncapi.tmLanguage.json"
             },
             {
                 "language": "mark-visit",
