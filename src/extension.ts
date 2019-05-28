@@ -5,8 +5,8 @@ import * as path from 'path'
 import * as net from 'net'
 import * as child_process from "child_process"
 
-import { workspace, ExtensionContext } from 'vscode'
-import { LanguageClient, LanguageClientOptions, StreamInfo } from 'vscode-languageclient'
+import { window, workspace, ExtensionContext } from 'vscode'
+import { LanguageClient, LanguageClientOptions, StreamInfo, NotificationType0, Event } from 'vscode-languageclient'
 
 export function activate(context: ExtensionContext) {
 
@@ -94,6 +94,16 @@ export function activate(context: ExtensionContext) {
 
 	const disposable = languageClient.start()
 
+	window.onDidChangeActiveTextEditor(() => {
+		//TODO: request DocumentSymbol
+		if (window.activeTextEditor) {
+			languageClient.sendNotification("didFocus", {
+				"uri":window.activeTextEditor.document.uri.toString(),
+				"version": window.activeTextEditor.document.version
+			})
+		}
+	})
+	
 	context.subscriptions.push(disposable)
 }
 
