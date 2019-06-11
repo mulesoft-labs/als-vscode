@@ -6,7 +6,9 @@ import * as net from 'net'
 import * as child_process from "child_process"
 
 import { window, workspace, ExtensionContext } from 'vscode'
-import { LanguageClient, LanguageClientOptions, StreamInfo, NotificationType0, Event } from 'vscode-languageclient'
+import { LanguageClient, LanguageClientOptions, StreamInfo } from 'vscode-languageclient'
+
+var upath = require("upath")
 
 export function activate(context: ExtensionContext) {
 
@@ -34,9 +36,10 @@ export function activate(context: ExtensionContext) {
 				const address = server.address()
 				const port = typeof address === 'object' ? address.port : 0
 
-				const dialectPath = `${extensionPath}/resources/dialect.yaml`
+				const dialectPath = `${withRootSlash(upath.toUnix(extensionPath))}/resources/dialect.yaml`
 
 				console.log("[ALS] Extension path: " + extensionPath)
+				console.log("[ALS] Dialect path: " + dialectPath)
 				console.log("[ALS] Storage path: " + storagePath)
 				console.log("[ALS] jar path: " + jarPath)
 				console.log("[ALS] Log path: " + logFile)
@@ -142,4 +145,8 @@ function correctBinname(binname: string) {
 		return binname + '.exe';
 	else
 		return binname;
+}
+
+function withRootSlash(path: String) {
+	return path.startsWith("/") ? path : "/" + path
 }

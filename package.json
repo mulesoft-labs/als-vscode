@@ -123,9 +123,11 @@
         }
     },
     "dependencies": {
-        "vscode-languageclient": "^5.2.1"
+        "vscode-languageclient": "^5.2.1",
+        "upath": "^1.1.2"
     },
     "devDependencies": {
+        
         "@types/node": "^11.13.6",
         "typescript": "^3.4.4",
         "vscode": "^1.1.33"
