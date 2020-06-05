@@ -3,7 +3,7 @@
     "displayName": "AML support",
     "description": "",
     "publisher": "MuleSoft",
-    "version": "0.0.1",
+    "version": "0.3.0",
     "engines": {
         "vscode": "^1.33.0"
     },
@@ -66,6 +66,10 @@
         "vscode": "^1.1.33"
     },
     "scripts": {
-        "compile": "tsc"
+        "compile": "tsc",
+        "vscode:prepublish": "webpack --mode production",
+        "webpack": "webpack --mode development",
+        "webpack-dev": "webpack --mode development --watch",
+        "test-compile": "tsc -p ./"
     }
 }

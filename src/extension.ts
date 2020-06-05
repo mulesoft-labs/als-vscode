@@ -55,11 +55,7 @@ export function activate(context: ExtensionContext) {
 					'-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005',
 					jarPath,
 					'--port',
-					port.toString(),
-					'--dialect',
-					dialectPath,
-					'--dialectProfile',
-					'Mark Visit 1.0'
+					port.toString()
 				]
 
 				const process = child_process.spawn(javaExecutablePath, args, options)
