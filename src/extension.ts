@@ -6,13 +6,22 @@ import * as net from 'net'
 import * as child_process from "child_process"
 
 import { window, workspace, ExtensionContext } from 'vscode'
-import { LanguageClient, LanguageClientOptions, StreamInfo } from 'vscode-languageclient'
+import { LanguageClient, LanguageClientOptions, StreamInfo, SelectionRangeRequest, CancellationToken } from 'vscode-languageclient'
 
 var upath = require("upath")
 
 export function activate(context: ExtensionContext) {
+	const documentSelector = [
+		{ language: 'raml' },
+		{ language: 'oas-yaml' },
+		{ language: 'oas-json' },
+		{ language: 'async-api' },
+		{ language: 'mark-visit' }
+	]
 
 	function createServer(): Promise<StreamInfo> {
+
+
 		return new Promise((resolve, reject) => {
 			const server = net.createServer(socket => {
 				console.log("[ALS] Socket created")
@@ -57,7 +66,7 @@ export function activate(context: ExtensionContext) {
 					'--port',
 					port.toString()
 				]
-
+				console.log("[ALS] Spawning at port: " + port);
 				const process = child_process.spawn(javaExecutablePath, args, options)
 
 				if (!fs.existsSync(storagePath))
@@ -72,13 +81,7 @@ export function activate(context: ExtensionContext) {
 	};
 
 	const clientOptions: LanguageClientOptions = {
-		documentSelector: [
-			{ language: 'raml' },
-			{ language: 'oas-yaml' },
-			{ language: 'oas-json' },
-			{ language: 'async-api' },
-			{ language: 'mark-visit' }
-		],
+		documentSelector: documentSelector,
 		synchronize: {
 			configurationSection: 'amlLanguageServer',
 			fileEvents: workspace.createFileSystemWatcher('**/.clientrc')
