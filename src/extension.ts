@@ -4,13 +4,17 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as net from 'net'
 import * as child_process from "child_process"
+import * as vscode from 'vscode';
 
 import { window, workspace, ExtensionContext } from 'vscode'
 import { LanguageClient, LanguageClientOptions, StreamInfo, SelectionRangeRequest, CancellationToken } from 'vscode-languageclient'
+import { RenameFileActionParams, RenameFileActionResult } from './types'
+import { registerCommands } from './commands'
 
 var upath = require("upath")
 
 export function activate(context: ExtensionContext) {
+
 	const documentSelector = [
 		{ language: 'raml' },
 		{ language: 'oas-yaml' },
@@ -35,7 +39,6 @@ export function activate(context: ExtensionContext) {
 			}).on('error', (err) => { throw err })
 
 			const javaExecutablePath = findJavaExecutable('java');
-
 			server.listen(() => {
 				const extensionPath = context.extensionPath
 				const storagePath = context.storagePath || context.globalStoragePath
@@ -93,6 +96,8 @@ export function activate(context: ExtensionContext) {
 		'AML Language Server', 
 		createServer, 
 		clientOptions)
+
+	registerCommands(languageClient)
 
 	const disposable = languageClient.start()
 

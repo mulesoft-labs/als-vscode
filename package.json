@@ -53,6 +53,26 @@
                     "description": "Traces the communication between VS Code and the language server."
                 }
             }
+        },
+        "commands": [
+            {
+                "command": "als.renameFile",
+                "title": "ALS Rename file",
+                "category": "Modifications",
+                "icon": {
+                    "light": "path/to/light/icon.svg",
+                    "dark": "path/to/dark/icon.svg"
+                }
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "when": "resourceLangId == raml",
+                    "command": "als.renameFile",
+                    "group": "7_modification"
+                }
+            ]
         }
     },
     "dependencies": {
