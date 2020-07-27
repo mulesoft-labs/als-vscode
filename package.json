@@ -51,6 +51,26 @@
                     ],
                     "default": "verbose",
                     "description": "Traces the communication between VS Code and the language server."
+                },
+                "amlLanguageServer.formattingOptions.RAML.tabSize": {
+                    "type": "number",
+                    "default": 4,
+                    "description": "How many spaces does each tab represent."
+                },
+                "amlLanguageServer.formattingOptions.OAS.YAML.tabSize": {
+                    "type": "number",
+                    "default": 4,
+                    "description": "How many spaces does each tab represent."
+                },
+                "amlLanguageServer.formattingOptions.OAS.JSON.tabSize": {
+                    "type": "number",
+                    "default": 4,
+                    "description": "If prefer spaces, how many spaces does each tab represent."
+                },
+                "amlLanguageServer.formattingOptions.OAS.JSON.preferSpaces": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Use spaces when tabulating rather than tabs"
                 }
             }
         },

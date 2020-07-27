@@ -1,14 +1,16 @@
 
 import * as vscode from 'vscode';
-import { RenameFileActionParams, RenameFileActionResult } from './types';
-import { LanguageClient } from 'vscode-languageclient';
+import { RenameFileActionParams, messages, RenameFileActionResult } from './types';
+import { LanguageClient, StateChangeEvent } from 'vscode-languageclient';
 import { awaitInputBox } from './ui';
+import { notifyConfig } from './configuration';
 
 var languageClient: LanguageClient
 
 export function registerCommands(langClient: LanguageClient) {
     languageClient = langClient
     vscode.commands.registerCommand("als.renameFile", renameFileHandler)
+    languageClient.onDidChangeState(languageClientStateListener)
 }
 
 
@@ -22,34 +24,48 @@ const renameFileHandler = (fileUri: vscode.Uri) => {
     console.log("Old name: " + fileUri.toString() + " (" +oldFileName + ")")
 
     awaitInputBox(oldFileName, "New name", "New file name", [0, oldFileName.lastIndexOf(currentExtension) - 1])
-    .then((newName) => {
-        if(newName === undefined) {
-            console.log("Rename cancelled")
-        } else { 
-            console.log("New name: " +  originalPath + newName)
-
-            const params: RenameFileActionParams = {
-                oldDocument: { uri: fileUri.toString() },
-                newDocument: { uri: originalPath + newName }
+        .then((newName) => {
+            if(newName === undefined) {
+                console.log("Rename cancelled")
+            } else { 
+                console.log("New name: " +  originalPath + newName)
+                sendRenameRequest(fileUri, originalPath, newName);
             }
+        })
 
-            languageClient.sendRequest<RenameFileActionResult>("renameFile", params).then(result => {
-                const edits = new vscode.WorkspaceEdit()
-                console.log(JSON.stringify(result))
-                edits.renameFile(vscode.Uri.parse(result.rename.oldUri), vscode.Uri.parse(result.rename.newUri), result.rename.options)
-                result.textEdits.forEach(textEdits => {
-                    textEdits.edits.forEach(edit => {
-                        edits.replace(
-                            languageClient.protocol2CodeConverter.asUri(textEdits.textDocument.uri),
-                            languageClient.protocol2CodeConverter.asRange(edit.range),
-                            edit.newText)
-                    })
-                })
-                vscode.workspace.applyEdit(edits).then(aa => {
-                    console.log(JSON.stringify(aa))
-                })
-            })
-        }
-    })
+}
 
+function sendRenameRequest(fileUri: vscode.Uri, originalPath: string, newName: string) {
+    const params: RenameFileActionParams = {
+        oldDocument: { uri: fileUri.toString() },
+        newDocument: { uri: originalPath + newName }
+    };
+
+    languageClient.sendRequest(messages.AlsRenameFileRequest.type, params).then(result => {
+        applyRenameEdits(result);
+    });
+}
+
+function applyRenameEdits(result: RenameFileActionResult) {
+    const edits = languageClient.protocol2CodeConverter.asWorkspaceEdit(result.edits)
+    vscode.workspace.applyEdit(edits).then(result => {
+        console.log(JSON.stringify(result));
+    });
+}
+
+export const languageClientStateListener = (e: StateChangeEvent) => {
+    switch(e.newState){
+        case 1:
+            console.log("[ALS] Client stopped")
+            break
+        case 2:
+            console.log("[ALS] Client running")
+            notifyConfig(languageClient)
+            break
+        case 3:
+            console.log("[ALS] Client starting")
+            break
+        default:
+            console.log("[ALS] Unknown state: " + e.newState)
+    }
 }

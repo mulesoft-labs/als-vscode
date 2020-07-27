@@ -7,9 +7,9 @@ import * as child_process from "child_process"
 import * as vscode from 'vscode';
 
 import { window, workspace, ExtensionContext } from 'vscode'
-import { LanguageClient, LanguageClientOptions, StreamInfo, SelectionRangeRequest, CancellationToken } from 'vscode-languageclient'
-import { RenameFileActionParams, RenameFileActionResult } from './types'
+import { LanguageClient, LanguageClientOptions, StreamInfo, InitializedNotification, StateChangeEvent, State } from 'vscode-languageclient'
 import { registerCommands } from './commands'
+import { notifyConfig } from './configuration'
 
 var upath = require("upath")
 
@@ -98,7 +98,7 @@ export function activate(context: ExtensionContext) {
 		clientOptions)
 
 	registerCommands(languageClient)
-
+	workspace.onDidChangeConfiguration(() => notifyConfig(languageClient))
 	const disposable = languageClient.start()
 
 	window.onDidChangeActiveTextEditor(() => {
