@@ -12,6 +12,8 @@ import { registerCommands } from './commands'
 import { notifyConfig } from './configuration'
 
 var upath = require("upath")
+const agentLibArgs = '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
+const agentLibArgsDebug = '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n'
 
 export function activate(context: ExtensionContext) {
 
@@ -64,7 +66,7 @@ export function activate(context: ExtensionContext) {
 
 				const args = [
 					'-jar',
-					'-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005',
+					agentLibArgs,
 					jarPath,
 					'--port',
 					port.toString()
