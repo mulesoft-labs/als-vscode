@@ -23,9 +23,26 @@ Internal mulesoft extension to play arround with ALS server. As ALS uses AMF fra
 Java 1.8 or later
 
 ## ALS setup
-To run the ALS-JVM dependent version you need to build the fat jar for als, in als project (use sbt -mem 4096 serverJVM/assembly) and copy that jar into folder lib renaming it to als-server.jar.
+To run the ALS-JVM dependent version you need to build the fat jar (als/als-server/jvm/target/scala-2.12/als-server-assembly-%VERSION%.jar) for als, in als project (use sbt -mem 4096 serverJVM/assembly) and copy that jar into folder lib renaming it to als-server.jar.
 "lib/als-server.jar" should exists before start the extension.
 
+## Setup & install
+After ALS setup!
+
+Setup
+```
+npm install
+```
+
+:warning: make sure that you have set the expected version for this extension in package.json 
+
+Package
+```
+npm run webpack
+vsce package
+```
+
+In order to enable debug use `agentLibArgsDebug` instead of `agentLibArgs` in `extensions.ts`
 ## Known Issues
 
 ## Release Notes
