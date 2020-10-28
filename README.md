@@ -34,6 +34,8 @@ Setup
 npm install
 ```
 
+:warning: make sure that you have set the expected version for this extension in package.json 
+
 Package
 ```
 npm run webpack
