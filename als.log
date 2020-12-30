@@ -1,219 +1,27 @@
-Listening for transport dt_socket at address: 5005
+Starting ALS...
+Starting in port 56798
+ALS started
  DEBUG TextDocumentManager:applyConfig    Config applied
- DEBUG WorkspaceManager:initializeWS    Adding workspace: file:///Users/aayerza/mulesoft/test-als-files/als1146
- DEBUG EditorManager:onOpenDocument    Document is opened file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml
+ DEBUG CodeActionManager:applyConfig    actions to be used:
+Extract to Declaration
+Extract to Declaration
+Extract to Fragment
+Extract to Fragment
+Delete declaration (Cascade)
+Extract to Library
+Convert to Json schema
+Convert to RAML Type
+ DEBUG CodeActionManager:applyConfig    supports documentChanges: true
+ DEBUG SerializationManager:applyConfig    Serialization manager enabled: false
+ DEBUG WorkspaceManager:initializeWS    Adding workspace: file:///Users/llibarona/Desktop/ALS-1230
+ DEBUG EditorManager:onOpenDocument    Document is opened file:///Users/llibarona/Desktop/ALS-1230/als-1243.raml
  DEBUG ValidationManager:newASTAvailable    Got new AST:
-file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml
- DEBUG ValidationManager:newASTAvailable    Number of parser errors is:
-0
+file:///Users/llibarona/Desktop/ALS-1230/als-1243.raml
+ DEBUG ResolutionTaskManager:processTask    Updating file:///Users/llibarona/Desktop/ALS-1230/als-1243.raml unit
  DEBUG ValidationManager:newASTAvailable    Got new AST:
-file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml
- DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml of size 5
+file:///Users/llibarona/Desktop/ALS-1230/als-1243.raml
+ DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/llibarona/Desktop/ALS-1230/als-1243.raml of size 3
  DEBUG ValidationManager:newASTAvailable    Number of resolution errors is:
-0
- DEBUG ValidationManager:gatherValidationErrors    It took 176 milliseconds to validate
- DEBUG ValidationManager:newASTAvailable    End report: 0375219b-ea14-4c3f-8a68-e137a3b4ef00
- DEBUG EditorManager:onOpenDocument    Document is opened file:///Users/aayerza/mulesoft/test-als-files/als1146/trait.raml
-Jul 16, 2020 5:28:19 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleNotification
-WARNING: Notification threw an exception: {
-  "jsonrpc": "2.0",
-  "method": "didFocus",
-  "params": {
-    "uri": "file:///Users/aayerza/mulesoft/test-als-files/als1146/trait.raml",
-    "version": 1
-  }
-}
-java.lang.IllegalArgumentException: argument type mismatch
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
-	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.notify(GenericEndpoint.java:152)
-	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleNotification(RemoteEndpoint.java:220)
-	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:187)
-	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
-	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
-	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-	at java.lang.Thread.run(Thread.java:748)
-
- DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/aayerza/mulesoft/test-als-files/als1146/trait.raml of size 1
-Jul 16, 2020 5:28:20 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleNotification
-WARNING: Notification threw an exception: {
-  "jsonrpc": "2.0",
-  "method": "didFocus",
-  "params": {
-    "uri": "file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml",
-    "version": 1
-  }
-}
-java.lang.IllegalArgumentException: argument type mismatch
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
-	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.notify(GenericEndpoint.java:152)
-	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleNotification(RemoteEndpoint.java:220)
-	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:187)
-	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
-	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
-	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-	at java.lang.Thread.run(Thread.java:748)
-
- DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml of size 5
- DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml of size 5
- DEBUG EditorManager:onOpenDocument    Document is opened file:///Users/aayerza/mulesoft/test-als-files/als1146/newTrait.raml
- DEBUG ValidationManager:newASTAvailable    Got new AST:
-file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml
- DEBUG ValidationManager:newASTAvailable    Number of parser errors is:
-2
- DEBUG ValidationManager:newASTAvailable    Got new AST:
-file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml
- ERROR WorkspaceContentManager:Processing request    File Not Found: /Users/aayerza/mulesoft/test-als-files/als1146/trait.raml (No such file or directory)
- DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml of size 5
- DEBUG ValidationManager:newASTAvailable    Number of resolution errors is:
-2
- DEBUG ValidationManager:gatherValidationErrors    It took 27 milliseconds to validate
- DEBUG ValidationManager:newASTAvailable    End report: daaac83c-7ef2-47de-8835-eb10de5e20a0
- DEBUG EditorManager:onChangeDocument    Document is changed file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml
- DEBUG ValidationManager:newASTAvailable    Got new AST:
-file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml
- DEBUG ValidationManager:newASTAvailable    Number of parser errors is:
-0
- DEBUG ValidationManager:newASTAvailable    Got new AST:
-file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml
- DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml of size 5
- DEBUG ValidationManager:newASTAvailable    Number of resolution errors is:
-0
- DEBUG ValidationManager:gatherValidationErrors    It took 27 milliseconds to validate
- DEBUG ValidationManager:newASTAvailable    End report: a733add6-e4ad-4dba-b603-9205ccab8cc4
-Jul 16, 2020 5:29:31 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleNotification
-WARNING: Notification threw an exception: {
-  "jsonrpc": "2.0",
-  "method": "didFocus",
-  "params": {
-    "uri": "file:///Users/aayerza/mulesoft/test-als-files/als1146/newTrait.raml",
-    "version": 1
-  }
-}
-java.lang.IllegalArgumentException: argument type mismatch
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
-	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.notify(GenericEndpoint.java:152)
-	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleNotification(RemoteEndpoint.java:220)
-	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:187)
-	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
-	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
-	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-	at java.lang.Thread.run(Thread.java:748)
-
-Jul 16, 2020 5:29:31 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleCancellation
-WARNING: Unmatched cancel notification for request id 20
- DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/aayerza/mulesoft/test-als-files/als1146/newTrait.raml of size 1
- DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/aayerza/mulesoft/test-als-files/als1146/newTrait.raml of size 1
- DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/aayerza/mulesoft/test-als-files/als1146/newTrait.raml of size 1
- DEBUG ValidationManager:newASTAvailable    Got new AST:
-file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml
- DEBUG ValidationManager:newASTAvailable    Number of parser errors is:
-2
- DEBUG ValidationManager:newASTAvailable    Got new AST:
-file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml
- DEBUG EditorManager:onOpenDocument    Document is opened file:///Users/aayerza/mulesoft/test-als-files/als1146/trait.raml
- DEBUG ValidationManager:newASTAvailable    Got new AST:
-file:///Users/aayerza/mulesoft/test-als-files/als1146/trait.raml#
- DEBUG ValidationManager:newASTAvailable    Number of parser errors is:
-0
- DEBUG ValidationManager:newASTAvailable    Got new AST:
-file:///Users/aayerza/mulesoft/test-als-files/als1146/trait.raml#
- DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/aayerza/mulesoft/test-als-files/als1146/trait.raml of size 1
-Jul 16, 2020 5:29:40 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleNotification
-WARNING: Notification threw an exception: {
-  "jsonrpc": "2.0",
-  "method": "didFocus",
-  "params": {
-    "uri": "file:///Users/aayerza/mulesoft/test-als-files/als1146/trait.raml",
-    "version": 1
-  }
-}
-java.lang.IllegalArgumentException: argument type mismatch
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
-	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.notify(GenericEndpoint.java:152)
-	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleNotification(RemoteEndpoint.java:220)
-	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:187)
-	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
-	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
-	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-	at java.lang.Thread.run(Thread.java:748)
-
- DEBUG ValidationManager:newASTAvailable    Number of resolution errors is:
-0
- DEBUG ValidationManager:gatherValidationErrors    It took 8 milliseconds to validate
- DEBUG ValidationManager:newASTAvailable    End report: a71c2a87-8889-4637-9c7a-2d8bde10a9cb
- DEBUG ValidationManager:newASTAvailable    Number of resolution errors is:
-2
- DEBUG ValidationManager:gatherValidationErrors    It took 24 milliseconds to validate
- DEBUG ValidationManager:newASTAvailable    End report: 24db721d-e9ff-4d5b-8af7-3abcde69e5f9
- DEBUG EditorManager:onChangeDocument    Document is changed file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml
- DEBUG ValidationManager:newASTAvailable    Got new AST:
-file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml
- DEBUG ValidationManager:newASTAvailable    Number of parser errors is:
-0
- DEBUG ValidationManager:newASTAvailable    Got new AST:
-file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml
- DEBUG ValidationManager:newASTAvailable    Number of resolution errors is:
-0
- DEBUG ValidationManager:gatherValidationErrors    It took 28 milliseconds to validate
- DEBUG ValidationManager:newASTAvailable    End report: 5a027d98-4c17-46c9-bacb-c00100d3763a
- DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/aayerza/mulesoft/test-als-files/als1146/trait.raml of size 1
-Jul 16, 2020 5:29:41 PM org.eclipse.lsp4j.jsonrpc.RemoteEndpoint handleNotification
-WARNING: Notification threw an exception: {
-  "jsonrpc": "2.0",
-  "method": "didFocus",
-  "params": {
-    "uri": "file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml",
-    "version": 3
-  }
-}
-java.lang.IllegalArgumentException: argument type mismatch
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.lambda$null$0(GenericEndpoint.java:65)
-	at org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint.notify(GenericEndpoint.java:152)
-	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.handleNotification(RemoteEndpoint.java:220)
-	at org.eclipse.lsp4j.jsonrpc.RemoteEndpoint.consume(RemoteEndpoint.java:187)
-	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.handleMessage(StreamMessageProducer.java:194)
-	at org.eclipse.lsp4j.jsonrpc.json.StreamMessageProducer.listen(StreamMessageProducer.java:94)
-	at org.eclipse.lsp4j.jsonrpc.json.ConcurrentMessageProcessor.run(ConcurrentMessageProcessor.java:113)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
-	at java.lang.Thread.run(Thread.java:748)
-
- DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/aayerza/mulesoft/test-als-files/als1146/test-als-issue.raml of size 5
+1
+ DEBUG ValidationManager:gatherValidationErrors    It took 114 milliseconds to validate
+ DEBUG ValidationManager:newASTAvailable    End report: cd1c9ba6-b788-4cca-99eb-40f66d588301

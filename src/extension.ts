@@ -12,7 +12,6 @@ import { registerCommands } from './commands'
 import { notifyConfig } from './configuration'
 
 var upath = require("upath")
-const agentLibArgs = '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n'
 const agentLibArgsDebug = '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
 
 export function activate(context: ExtensionContext) {
@@ -21,8 +20,7 @@ export function activate(context: ExtensionContext) {
 		{ language: 'raml' },
 		{ language: 'oas-yaml' },
 		{ language: 'oas-json' },
-		{ language: 'async-api' },
-		{ language: 'mark-visit' }
+		{ language: 'async-api' }
 	]
 
 	function createServer(): Promise<StreamInfo> {
@@ -44,9 +42,19 @@ export function activate(context: ExtensionContext) {
 			server.listen(() => {
 				const extensionPath = context.extensionPath
 				const storagePath = context.storagePath || context.globalStoragePath
-				const jarPath = `${extensionPath}/lib/als-server.jar`
-				const logFile = `${storagePath}/vscode-aml-language-server.log`
+				// const jarPath = `/Users/llibarona/mulesoft/als/als-server/jvm/target/scala-2.12/als-server-assembly-3.3.0-SNAPSHOT.jar`
+				// const jarPath =  `${extensionPath}/lib/als-server.jar`
 
+				const logFile = `/Users/llibarona/mulesoft/als-vscode/als.log`
+
+				const jsPath = '/Users/llibarona/mulesoft/als/als-node-client/node-package/dist/als-node-client.js'
+				// const jsPath = '/Users/llibarona/mulesoft/als/als-node-client/target/scala-2.12/als-node-client-fastopt.js'
+				// const options = { 
+				// 	cwd: '/Users/jisoldi/MuleSoft/als/als-server/js/',
+				// }
+				const options = { 
+					cwd: workspace.rootPath,
+				}
 				const address = server.address()
 				const port = typeof address === 'object' ? address.port : 0
 
@@ -55,24 +63,23 @@ export function activate(context: ExtensionContext) {
 				console.log("[ALS] Extension path: " + extensionPath)
 				console.log("[ALS] Dialect path: " + dialectPath)
 				console.log("[ALS] Storage path: " + storagePath)
-				console.log("[ALS] jar path: " + jarPath)
+				// console.log("[ALS] jar path: " + jarPath)
+				console.log("[ALS] js path: " + jsPath)
 				console.log("[ALS] Log path: " + logFile)
 				console.log("[ALS] Server port: " + port)
-				console.log("[ALS] java eexeec filee: " + javaExecutablePath)
-
-				const options = { 
-					cwd: workspace.rootPath,
-				}
-
-				const args = [
-					'-jar',
-					agentLibArgs,
-					jarPath,
-					'--port',
-					port.toString()
-				]
+				console.log("[ALS] java exec file: " + javaExecutablePath)
+				
+				const args = [ jsPath, '--port', port.toString() ]
+				// const args = [
+				// 	'-jar',
+				// 	agentLibArgsDebug,
+				// 	jarPath,
+				// 	'--port',
+				// 	port.toString()
+				// ]
 				console.log("[ALS] Spawning at port: " + port);
-				const process = child_process.spawn(javaExecutablePath, args, options)
+				// const process = child_process.spawn(javaExecutablePath, args, options)
+				const process = child_process.spawn('node', args, options)
 
 				if (!fs.existsSync(storagePath))
 					fs.mkdirSync(storagePath)
@@ -103,16 +110,6 @@ export function activate(context: ExtensionContext) {
 	workspace.onDidChangeConfiguration(() => notifyConfig(languageClient))
 	const disposable = languageClient.start()
 
-	window.onDidChangeActiveTextEditor(() => {
-		//TODO: request DocumentSymbol
-		if (window.activeTextEditor) {
-			languageClient.sendNotification("didFocus", {
-				"uri":window.activeTextEditor.document.uri.toString(),
-				"version": window.activeTextEditor.document.version
-			})
-		}
-	})
-	
 	context.subscriptions.push(disposable)
 }
 
