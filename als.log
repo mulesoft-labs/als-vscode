@@ -1,6 +1,4 @@
-Starting ALS...
-Starting in port 56798
-ALS started
+Listening for transport dt_socket at address: 5005
  DEBUG TextDocumentManager:applyConfig    Config applied
  DEBUG CodeActionManager:applyConfig    actions to be used:
 Extract to Declaration
@@ -14,14 +12,28 @@ Convert to RAML Type
  DEBUG CodeActionManager:applyConfig    supports documentChanges: true
  DEBUG SerializationManager:applyConfig    Serialization manager enabled: false
  DEBUG WorkspaceManager:initializeWS    Adding workspace: file:///Users/llibarona/Desktop/ALS-1230
- DEBUG EditorManager:onOpenDocument    Document is opened file:///Users/llibarona/Desktop/ALS-1230/als-1243.raml
+ DEBUG EditorManager:onOpenDocument    Document is opened file:///Users/llibarona/Desktop/ALS-1230/lib.raml
  DEBUG ValidationManager:newASTAvailable    Got new AST:
 file:///Users/llibarona/Desktop/ALS-1230/als-1243.raml
+ DEBUG ValidationManager:newASTAvailable    Number of parser errors is:
+0
+ DEBUG ResolutionTaskManager:processTask    Replacing file:///Users/llibarona/Desktop/ALS-1230/als-1243.raml with unit resolved from file:///Users/llibarona/Desktop/ALS-1230/als-1243.raml
  DEBUG ResolutionTaskManager:processTask    Updating file:///Users/llibarona/Desktop/ALS-1230/als-1243.raml unit
  DEBUG ValidationManager:newASTAvailable    Got new AST:
 file:///Users/llibarona/Desktop/ALS-1230/als-1243.raml
- DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/llibarona/Desktop/ALS-1230/als-1243.raml of size 3
+ DEBUG ValidationManager:newASTAvailable    Got new AST:
+file:///Users/llibarona/Desktop/ALS-1230/lib.raml
+ DEBUG ValidationManager:newASTAvailable    Number of parser errors is:
+0
+ DEBUG ResolutionTaskManager:processTask    Updating file:///Users/llibarona/Desktop/ALS-1230/lib.raml unit
+ DEBUG ValidationManager:newASTAvailable    Got new AST:
+file:///Users/llibarona/Desktop/ALS-1230/lib.raml
+ DEBUG StructureManager:onDocumentStructure    Got result for url file:///Users/llibarona/Desktop/ALS-1230/lib.raml of size 1
  DEBUG ValidationManager:newASTAvailable    Number of resolution errors is:
-1
- DEBUG ValidationManager:gatherValidationErrors    It took 114 milliseconds to validate
- DEBUG ValidationManager:newASTAvailable    End report: cd1c9ba6-b788-4cca-99eb-40f66d588301
+0
+ DEBUG ValidationManager:gatherValidationErrors    It took 325 milliseconds to validate
+ DEBUG ValidationManager:newASTAvailable    Number of resolution errors is:
+0
+ DEBUG ValidationManager:gatherValidationErrors    It took 325 milliseconds to validate
+ DEBUG ValidationManager:newASTAvailable    End report: 2d412792-373d-4d82-8e76-aae2c82de5ed
+ DEBUG ValidationManager:newASTAvailable    End report: 8228bae7-3bc1-473a-bee7-f528dbd86915
