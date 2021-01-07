@@ -39,15 +39,15 @@ export function activate(context: ExtensionContext) {
 
 			const javaExecutablePath = findJavaExecutable('java');
 			server.listen(() => {
-				const isJVM = true
+				const isJVM = false
+				const isLocal = false
 				
 				const extensionPath = context.extensionPath
 				const storagePath = context.storagePath || context.globalStoragePath
 
-				const jarPath = `/Users/llibarona/mulesoft/als/als-server/jvm/target/scala-2.12/als-server-assembly-3.3.0-SNAPSHOT.jar`
-				// const jarPath =  `${extensionPath}/lib/als-server.jar`
-				const jsPath = '/Users/llibarona/mulesoft/als/als-node-client/node-package/dist/als-node-client.js'
-				const logFile = `/Users/llibarona/mulesoft/als-vscode/als.log`
+				const jarPath = isLocal? `/Users/llibarona/mulesoft/als/als-server/jvm/target/scala-2.12/als-server-assembly-3.3.0-SNAPSHOT.jar` : `${extensionPath}/lib/als-server.jar`
+				const jsPath = isLocal? '/Users/llibarona/mulesoft/als/als-node-client/node-package/dist/als-node-client.js' : `${extensionPath}/lib/node-package/dist/als-node-client.js`
+				const logFile = isLocal? `/Users/llibarona/mulesoft/als-vscode/als.log` : `${storagePath}/vscode-aml-language-server.log`
 				
 				const path = isJVM? jarPath : jsPath
 
@@ -62,11 +62,13 @@ export function activate(context: ExtensionContext) {
 				console.log("[ALS] Extension path: " + extensionPath)
 				console.log("[ALS] Dialect path: " + dialectPath)
 				console.log("[ALS] Storage path: " + storagePath)
+				console.log("[ALS] used path: " + path)
 				console.log("[ALS] jar path: " + jarPath)
 				console.log("[ALS] js path: " + jsPath)
 				console.log("[ALS] Log path: " + logFile)
 				console.log("[ALS] Server port: " + port)
 				console.log("[ALS] java exec file: " + javaExecutablePath)
+				console.log("[ALS] RUN AS JVM?: " + isJVM)
 				
 				const jsArgs = [ jsPath, '--port', port.toString() ]
 				const jvmArgs = [
@@ -79,7 +81,8 @@ export function activate(context: ExtensionContext) {
 
 				console.log("[ALS] Spawning at port: " + port);
 				// const process = child_process.spawn(javaExecutablePath, args, options)
-				const process = isJVM? child_process.spawn(javaExecutablePath, jvmArgs, options) : child_process.spawn('node', jsArgs, options)
+				const process = isJVM? child_process.spawn(javaExecutablePath, jvmArgs, options)
+									 : child_process.spawn('node', jsArgs, options)
 
 				if (!fs.existsSync(storagePath))
 					fs.mkdirSync(storagePath)
