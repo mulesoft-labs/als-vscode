@@ -4,15 +4,18 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as net from 'net'
 import * as child_process from "child_process"
-import * as vscode from 'vscode';
+import * as vscode from 'vscode'
+
+
 
 import { window, workspace, ExtensionContext } from 'vscode'
 import { LanguageClient, LanguageClientOptions, StreamInfo, InitializedNotification, StateChangeEvent, State } from 'vscode-languageclient'
 import { registerCommands } from './commands'
 import { notifyConfig } from './configuration'
-
+import { platform } from 'os'
+import { mainModule } from 'process'
+var jsAls = require.resolve("@mulesoft/als-node-client")
 var upath = require("upath")
-const agentLibArgsDebug = '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
 
 export function activate(context: ExtensionContext) {
 
@@ -39,15 +42,21 @@ export function activate(context: ExtensionContext) {
 
 			const javaExecutablePath = findJavaExecutable('java');
 			server.listen(() => {
-				const isJVM = false
-				const isLocal = false
+				const runParams = vscode.workspace.getConfiguration(`amlLanguageServer.run`)
+				const isJVM = runParams.get("platform") === "jvm"
+				const customPath: string = runParams.get("path")
+				const logPath: string = runParams.get("logPath")
+				const isLocal = customPath !== null
+				const debugPort: number = isJVM ? runParams.get("debug") : 0
 				
+				const agentLibArgsDebug = '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=' + debugPort
+
 				const extensionPath = context.extensionPath
 				const storagePath = context.storagePath || context.globalStoragePath
 
-				const jarPath = isLocal? `/Users/llibarona/mulesoft/als/als-server/jvm/target/scala-2.12/als-server-assembly-3.3.0-SNAPSHOT.jar` : `${extensionPath}/lib/als-server.jar`
-				const jsPath = isLocal? '/Users/llibarona/mulesoft/als/als-node-client/node-package/dist/als-node-client.js' : `${extensionPath}/lib/node-package/dist/als-node-client.js`
-				const logFile = isLocal? `/Users/llibarona/mulesoft/als-vscode/als.log` : `${storagePath}/vscode-aml-language-server.log`
+				const jarPath = isLocal? customPath : `${extensionPath}/lib/als-server.jar`
+				const jsPath = isLocal? customPath : jsAls
+				const logFile = logPath !== null ? logPath : `${storagePath}/vscode-aml-language-server.log`
 				
 				const path = isJVM? jarPath : jsPath
 
@@ -59,6 +68,8 @@ export function activate(context: ExtensionContext) {
 
 				const dialectPath = `${withRootSlash(upath.toUnix(extensionPath))}/resources/dialect.yaml`
 
+
+				console.log("[ALS] Configuration: " + JSON.stringify(runParams))
 				console.log("[ALS] Extension path: " + extensionPath)
 				console.log("[ALS] Dialect path: " + dialectPath)
 				console.log("[ALS] Storage path: " + storagePath)
@@ -69,9 +80,11 @@ export function activate(context: ExtensionContext) {
 				console.log("[ALS] Server port: " + port)
 				console.log("[ALS] java exec file: " + javaExecutablePath)
 				console.log("[ALS] RUN AS JVM?: " + isJVM)
+				console.log("[ALS] debug mode?: " + debugPort)
 				
-				const jsArgs = [ jsPath, '--port', port.toString() ]
-				const jvmArgs = [
+				const jsArgs: string[] = [ jsPath, '--port', port.toString() ]
+
+				const jvmArgsDebug: string[] = [
 					'-jar',
 					agentLibArgsDebug,
 					jarPath,
@@ -79,9 +92,16 @@ export function activate(context: ExtensionContext) {
 					port.toString()
 				]
 
+				const jvmArgs: string[] = [
+					'-jar',
+					jarPath,
+					'--port',
+					port.toString()
+				]
 				console.log("[ALS] Spawning at port: " + port);
-				// const process = child_process.spawn(javaExecutablePath, args, options)
-				const process = isJVM? child_process.spawn(javaExecutablePath, jvmArgs, options)
+				const process = isJVM? child_process.spawn(javaExecutablePath,
+					debugPort > 0 ? jvmArgsDebug : jvmArgs,
+					options)
 									 : child_process.spawn('node', jsArgs, options)
 
 				if (!fs.existsSync(storagePath))
