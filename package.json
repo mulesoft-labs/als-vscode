@@ -3,7 +3,7 @@
     "displayName": "AML support",
     "description": "",
     "publisher": "MuleSoft",
-    "version": "2.0.0",
+    "version": "2.0.0-SNAPSHOT",
     "engines": {
         "vscode": "^1.43.0"
     },
@@ -43,26 +43,29 @@
             "properties": {
                 "amlLanguageServer.run.platform": {
                     "scope": "application",
-                    "type":"string",
-                    "enum": ["jvm", "js"],
+                    "type": "string",
+                    "enum": [
+                        "jvm",
+                        "js"
+                    ],
                     "default": "js",
                     "description": "Run ALS as a node or java app"
                 },
                 "amlLanguageServer.run.debug": {
                     "scope": "application",
-                    "type":"integer",
+                    "type": "integer",
                     "default": 0,
                     "description": "Only Applies with jvm, the debug port to be used (0 if no debug needed)"
                 },
                 "amlLanguageServer.run.path": {
                     "scope": "application",
-                    "type":"string",
+                    "type": "string",
                     "default": null,
                     "description": "Select a specific path to run ALS from (beware it corresponds to the selected platform)"
                 },
                 "amlLanguageServer.run.logPath": {
                     "scope": "application",
-                    "type":"string",
+                    "type": "string",
                     "default": null,
                     "description": "Select a specific path to dump logs to"
                 },
@@ -96,6 +99,11 @@
                     "type": "boolean",
                     "default": true,
                     "description": "Use spaces when tabulating rather than tabs"
+                },
+                "amlLanguageServer.formattingOptions.disableTemplates": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Disable suggested templates for nodes"
                 }
             }
         },

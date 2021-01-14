@@ -6,7 +6,8 @@ import { workspace } from "vscode";
 export const initialConfiguration: AlsConfiguration = {
     formattingOptions: {
         "application/raml+yaml": { tabSize: 2, preferSpaces: true }
-    }
+    },
+    disableTemplates: false
 }
 
 export var currentConfiguration: AlsConfiguration = initialConfiguration
@@ -23,6 +24,7 @@ function readSettingsFromVSCode() {
             "application/raml+yaml": { tabSize: currentSettings.get("RAML.tabSize"), preferSpaces: true },
             "application/yaml": { tabSize: currentSettings.get("OAS.YAML.tabSize"), preferSpaces: true },
             "application/json": { tabSize: currentSettings.get("OAS.JSON.tabSize"), preferSpaces: currentSettings.get("OAS.JSON.preferSpaces") }
-        }
+        },
+        disableTemplates: currentSettings.get("disableTemplates")
     }
 }

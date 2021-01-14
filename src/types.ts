@@ -1,13 +1,19 @@
 import { TextDocumentIdentifier, InitializeParams, NotificationType, RequestType, WorkspaceEdit } from "vscode-languageclient"
+import { workspace } from "vscode";
 
 interface IMap<V> { [key: string]: V }
 
+const platform = workspace.getConfiguration("amlLanguageServer.run").get("platform")
+
+const renameFile = platform == "js"? "RenameFile" : "renameFile"
+const updateConfiguration = platform == "js"? "UpdateConfiguration" : "updateConfiguration"
+
 export namespace messages {
     export const AlsConfigurationNotification = {
-        type: new NotificationType<AlsConfiguration>("updateConfiguration")
+        type: new NotificationType<AlsConfiguration>(updateConfiguration)
     }
     export const AlsRenameFileRequest = {
-        type: new RequestType<RenameFileActionParams, RenameFileActionResult, void>("renameFile")
+        type: new RequestType<RenameFileActionParams, RenameFileActionResult, void>(renameFile)
     }
 }
 
@@ -23,6 +29,7 @@ export type RenameFileActionParams = {
 
 export type AlsConfiguration = {
     formattingOptions: IMap<AlsFormattingOptions>
+    disableTemplates: Boolean
 }
 
 export type AlsFormattingOptions = {
