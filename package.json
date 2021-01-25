@@ -100,10 +100,15 @@
                     "default": true,
                     "description": "Use spaces when tabulating rather than tabs"
                 },
-                "amlLanguageServer.formattingOptions.disableTemplates": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Disable suggested templates for nodes"
+                "amlLanguageServer.formattingOptions.templateType": {
+                    "type": "string",
+                    "enum": [
+                        "NONE",
+                        "SIMPLE",
+                        "FULL"
+                    ],
+                    "default": "FULL",
+                    "description": "Preferences for suggested tempaltes"
                 }
             }
         },

@@ -29,7 +29,7 @@ export type RenameFileActionParams = {
 
 export type AlsConfiguration = {
     formattingOptions: IMap<AlsFormattingOptions>
-    disableTemplates: Boolean
+    templateType: String
 }
 
 export type AlsFormattingOptions = {
