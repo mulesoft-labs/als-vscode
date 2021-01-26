@@ -26,7 +26,6 @@ RUN apt-get install -y nodejs
 RUN apt-get install -y npm
 RUN apt-get update
 RUN npm install -g vsce
-RUN npm install build-essential
 
 # Final user and home config
 RUN useradd --create-home --shell /bin/bash jenkins
