@@ -7,5 +7,6 @@ echo "node --version"
 node --version
 echo "npm install"
 npm install
+npm install @types/node --save-dev
 echo "npm run compile"
 npm run compile
