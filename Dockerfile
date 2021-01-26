@@ -23,8 +23,8 @@ RUN apt-get install openjdk-8-jdk --assume-yes
 
 # Install NPM
 RUN apt-get install -y nodejs
+RUN apt-get install -y npm
 RUN apt-get update
-RUN npm install -g npm
 RUN npm install -g vsce
 RUN npm install build-essential
 
