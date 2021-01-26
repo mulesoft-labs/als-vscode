@@ -5,7 +5,9 @@ echo "npm --version"
 npm --version
 echo "node --version"
 node --version
-echo "npm i"
-npm i
+echo "npm ci"
+npm ci
+echo "ls -larth node_modules"
+ls -larth node_modules
 echo "npm run compile"
 npm run compile
