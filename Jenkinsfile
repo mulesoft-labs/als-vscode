@@ -15,13 +15,13 @@ pipeline {
         NODE_OPTIONS = '--max_old_space_size=4096'
     }
     stages {
-        stage('Install') {
-            steps {
-                script {
-                    sh 'bash add_registry.sh'
-                }
-            }
-        }
+        // stage('Install') {
+        //     steps {
+        //         script {
+        //             sh 'bash add_registry.sh'
+        //         }
+        //     }
+        // }
         stage('Compile modules') {
             steps {
                 script {
