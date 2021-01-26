@@ -15,18 +15,10 @@ pipeline {
         NODE_OPTIONS = '--max_old_space_size=4096'
     }
     stages {
-        stage('NPM Registry') {
-            steps {
-                script {
-                    sh bash add_registry.sh
-                }
-            }
-        }
-    stages {
         stage('Install') {
             steps {
                 script {
-                    sh 'npm install'
+                    sh 'bash add_registry.sh'
                 }
             }
         }
