@@ -7,3 +7,5 @@ echo "node --version"
 node --version
 echo "npm install"
 npm install
+echo "npm run compile"
+npm run compile

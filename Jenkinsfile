@@ -22,13 +22,6 @@ pipeline {
                 }
             }
         }
-        stage('Compile modules') {
-            steps {
-                script {
-                    sh 'npm run compile'
-                }
-            }
-        }
         stage('Package') {
             steps {
                 script {
