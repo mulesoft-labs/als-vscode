@@ -15,6 +15,16 @@ pipeline {
         NODE_OPTIONS = '--max_old_space_size=4096'
     }
     stages {
+        stage('NPM Registry') {
+            steps {
+                script {
+                    echo "Connecting to MuleSoft internal registry"
+                    printf "@mulesoft:registry=https://nexus3.build.msap.io/repository/npm-internal/\n//nexus3.build.msap.io/repository/npm-internal/:_authToken=$NPM_TOKEN" > .npmrc
+                    touch .npmrc
+                }
+            }
+        }
+    stages {
         stage('Install') {
             steps {
                 script {
