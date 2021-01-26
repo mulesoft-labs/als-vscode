@@ -6,9 +6,6 @@
 		"outDir": "./out",
 		"sourceRoot": "./src",
 		"lib": [ "es2018" ],
-		"sourceMap": true,
-		"typeRoots": [
-			 "node_modules/@types"
-		 ]
+		"sourceMap": true
 	}
 }
