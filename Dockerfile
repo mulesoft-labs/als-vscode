@@ -21,6 +21,13 @@ RUN add-apt-repository ppa:openjdk-r/ppa
 RUN apt-get update
 RUN apt-get install openjdk-8-jdk --assume-yes
 
+# Install NPM
+RUN apt-get install -y nodejs
+RUN apt-get update
+RUN npm install -g npm@latest
+RUN npm install -g vsce@latest
+RUN npm install build-essential
+
 # Final user and home config
 RUN useradd --create-home --shell /bin/bash jenkins
 USER jenkins
