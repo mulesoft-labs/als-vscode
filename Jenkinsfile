@@ -16,24 +16,32 @@ pipeline {
     }
     stages {
         stage('Install') {
-            runStage('Install', {
-                sh 'CI=true bash run.sh npm install'
-            })
+            steps {
+                script {
+                    sh 'npm install'
+                }
+            }
         }
         stage('Compile modules') {
-            runStage('Compile modules', {
-                sh 'CI=true bash run.sh npm run compile'
-            })
+            steps {
+                script {
+                    sh 'npm run compile'
+                }
+            }
         }
         stage('Package') {
-            runStage('Package', {
-                sh 'CI=true bash run.sh vsce package'
-            })
+            steps {
+                script {
+                    sh 'vsce package'
+                }
+            }
         }
         stage('Upload') {
             steps {
-                sh 'chmod +x gradlew'
-                sh "./gradlew nexusIq"
+                script {
+                    sh 'chmod +x gradlew'
+                    sh "./gradlew nexusIq"
+                }
             }
         }
     }
