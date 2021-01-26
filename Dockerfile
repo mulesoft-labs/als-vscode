@@ -25,6 +25,9 @@ RUN apt-get install openjdk-8-jdk --assume-yes
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
 RUN apt-get update
+RUN npm install npm -g
+RUN npm install -g n
+RUN n stable
 RUN npm install -g vsce
 
 # Final user and home config
