@@ -5,7 +5,7 @@ echo "npm --version"
 npm --version
 echo "node --version"
 node --version
-echo "npm install"
-npm install
+echo "npm i"
+npm i
 echo "npm run compile"
 npm run compile
