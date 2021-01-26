@@ -22,6 +22,7 @@ RUN apt-get update
 RUN apt-get install openjdk-8-jdk --assume-yes
 
 # Install NPM
+RUN apt-get install -y curl
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
 RUN apt-get update
