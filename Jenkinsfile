@@ -14,7 +14,7 @@ pipeline {
         NODE_MODULES_CACHE = false
         NODE_OPTIONS = '--max_old_space_size=4096'
     }
-    node {
+    stages {
         stage('Install') {
             runStage('Install', {
                 sh 'CI=true bash run.sh npm install'
