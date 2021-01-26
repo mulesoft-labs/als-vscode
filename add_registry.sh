@@ -7,6 +7,5 @@ echo "node --version"
 node --version
 echo "npm install"
 npm install
-ls -larth node_modules
 echo "npm run compile"
 npm run compile
