@@ -9,5 +9,7 @@ echo "npm ci"
 npm ci
 echo "ls -larth node_modules"
 ls -larth node_modules
+echo "ls -larth node_modules/.bin"
+ls -larth node_modules/.bin
 echo "npm run compile"
 npm run compile
