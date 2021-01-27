@@ -5,6 +5,10 @@ echo "npm --version"
 npm --version
 echo "node --version"
 node --version
+echo "node_modules/.bin/tsc -v"
+node_modules/.bin/tsc -v
+echo "tsc -v"
+tsc -v
 echo "npm install"
 npm ci
 echo "npm install @types/node --save-dev"
