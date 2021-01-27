@@ -7,10 +7,6 @@ echo "node --version"
 node --version
 echo "npm ci"
 npm ci
-echo "npm_package_engines_vscode='^1.19.0' node ./node_modules/vscode/bin/install"
-npm_package_engines_vscode="^1.19.0" node ./node_modules/vscode/bin/install
-echo "npm ci"
-npm ci
 echo "ls -larth node_modules"
 ls -larth node_modules
 echo "ls -larth node_modules/.bin"

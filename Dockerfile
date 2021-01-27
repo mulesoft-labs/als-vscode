@@ -31,6 +31,7 @@ RUN npm install -g n
 RUN n stable
 RUN npm install -g vsce
 RUN npm install -g typescript
+npm i --save-dev @types/node
 
 # Final user and home config
 RUN useradd --create-home --shell /bin/bash jenkins
