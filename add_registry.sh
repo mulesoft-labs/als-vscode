@@ -5,7 +5,7 @@ echo "npm --version"
 npm --version
 echo "node --version"
 node --version
-echo "npm ci"
+echo "npm install"
 npm ci
 echo "npm install @types/node --save-dev"
 npm install @types/node --save-dev
