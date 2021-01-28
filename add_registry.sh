@@ -5,13 +5,15 @@ echo "npm --version"
 npm --version
 echo "node --version"
 node --version
+echo "npm ci"
+npm ci
 echo "node_modules/.bin/tsc -v"
 node_modules/.bin/tsc -v
 echo "tsc -v"
 tsc -v
-echo "npm install"
-npm ci
-echo "npm install @types/node --save-dev"
-npm install @types/node --save-dev
+echo "ls -larth node_modules"
+ls -larth node_modules
+echo "ls -larth node_modules/.bin"
+ls -larth node_modules/.bin
 echo "npm run compile"
 npm run compile
