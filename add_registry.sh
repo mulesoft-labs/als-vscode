@@ -5,6 +5,8 @@ echo "sed -i 's/{VERSION}/'$VERSION'/' package.json"
 sed -i 's/{VERSION}/'$VERSION'/' package.json
 echo "sed -i 's/{VERSION}/'$VERSION'/' package-lock.json"
 sed -i 's/{VERSION}/'$VERSION'/' package-lock.json
+echo "sed -i 's/{VERSION}/'$VERSION'/' build.gradle"
+sed -i 's/{VERSION}/'$VERSION'/' build.gradle
 npm --version
 echo "npm --version"
 npm --version

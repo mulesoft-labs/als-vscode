@@ -1,4 +1,4 @@
-version '0.1.0-SNAPSHOT'
+version '{VERSION}'
 group 'com.mulesoft.als.vscode'
 
 apply plugin: "base"
