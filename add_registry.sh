@@ -12,6 +12,10 @@ echo "node --version"
 node --version
 echo "npm ci"
 npm ci
+
+# when receiving specific {ALS-VERSION}
+# npm i @mulesoft/als-node-client@{ALS-VERSION}
+
 echo "node_modules/.bin/tsc -v"
 node_modules/.bin/tsc -v
 echo "tsc -v"

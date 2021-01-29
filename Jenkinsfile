@@ -8,9 +8,8 @@ pipeline {
         NEXUS = credentials('exchange-nexus')
         NEXUSIQ = credentials('nexus-iq')
         NPM_TOKEN = credentials('npm-mulesoft')
-        NPM_CONFIG_PRODUCTION = true
-        NODE_ENV = 'dev'
-        VERSION = "${env.BUILD_NUMBER}"
+        NPM_CONFIG_PRODUCTION = false
+        VERSION = "2.0.${env.BUILD_NUMBER}" // check if ALS version is snapshot, and adjust accordingly?
         NODE_MODULES_CACHE = false
         NODE_OPTIONS = '--max_old_space_size=4096'
     }
