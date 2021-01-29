@@ -1,119 +1,38 @@
 version '0.1.0-SNAPSHOT'
 
-group 'com.mulesoft.als.vscode'
+apply plugin: "base"
+apply plugin: "maven"
+apply plugin: "maven-publish"
 
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        maven {
-            name "mule-ee-releases"
-            url "https://repository.mulesoft.org/nexus/content/repositories/releases/"
-        }
-        maven {
-            name "mule-snapshots"
-            url "http://repository.mulesoft.org/nexus/content/repositories/snapshots/"
-        }
-        maven {
-            name "mulesoft-releases"
-            url "https://repository-master.mulesoft.org/nexus/content/repositories/ci-releases/"
-        }
-        maven {
-            name "mulesoft-snapshots"
-            url "https://repository-master.mulesoft.org/snapshots/"
-        }
-    }
-    dependencies {
-        classpath 'net.linguica.gradle:maven-settings-plugin:0.5'
-        classpath "com.mulesoft:gradle-tools:0.1.112"
-        classpath files('lib//nexus-iq-cli-1.40.0-02.jar')
-    }
+repositories {
+    maven { url "http://repository.mulesoft.org/nexus/content/repositories/private/" }
 }
 
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: 'net.linguica.maven-settings'
-apply plugin: 'maven-publish'
-apply plugin: 'com.mulesoft.gradle.nexusIq'
-
-nexusIq.user = "${System.env.NEXUSIQ_USR}"
-nexusIq.password = "${System.env.NEXUSIQ_PSW}"
+task assembleArtifact(type: Zip, group: 'com.mulesoft.als.vscode') {
+    archiveName 'als-vscode.zip'
+    destinationDir file("$project.buildDir/distributions")
+    from '.'
+    include '*.vsix'
+    description "Assemble archive $archiveName into ${relativePath(destinationDir)}"
+}
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            from components.java
+            artifact source: assembleArtifact, extension: 'zip'
         }
     }
     repositories {
-        mavenLocal()
         maven {
             credentials {
-                username "${System.env.NEXUS_DEPLOY_USR}"
-                password "${System.env.NEXUS_DEPLOY_PSW}"
+                username System.env.NEXUS_USR
+                password System.env.NEXUS_PSW
             }
-            url "https://nexus.build.msap.io/nexus/content/repositories/snapshots/"
+            url "http://repository.mulesoft.org/nexus/content/repositories/private/"
         }
     }
 }
 
-repositories {
-    mavenCentral()
-
-    //Mule repositories
-    maven {
-        name "mule-ee-releases"
-        url "https://repository.mulesoft.org/nexus/content/repositories/ci-releases/"
-        credentials {
-            username "${System.env.NEXUS_USR}"
-            password "${System.env.NEXUS_PSW}"
-        }
-    }
-    maven {
-        name "mule-ee-snapshots"
-        url "https://repository.mulesoft.org/nexus/content/repositories/ci-snapshots/"
-        credentials {
-            username "${System.env.NEXUS_USR}"
-            password "${System.env.NEXUS_PSW}"
-        }
-    }
-    maven {
-        name "mule-releases"
-        url "http://repository.mulesoft.org/nexus/content/repositories/releases/"
-    }
-    maven {
-        name "mule-snapshots"
-        url "http://repository.mulesoft.org/nexus/content/repositories/snapshots/"
-    }
-    maven {
-        name "mule-ee-private"
-        url "http://repository.mulesoft.org/nexus/content/repositories/private/"
-        credentials {
-            username "${System.env.NEXUS_USR}"
-            password "${System.env.NEXUS_PSW}"
-        }
-    }
-    maven {
-        name "mule-ee-dependencies"
-        url "https://repository.mulesoft.org/nexus/content/groups/mule-ee-dependencies/"
-        credentials {
-            username "${System.env.NEXUS_USR}"
-            password "${System.env.NEXUS_PSW}"
-        }
-    }
-
-}
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
-// The only use for the build.gradle is this distZip task. Used in the nexusiq scan
-task distZip(type: Zip) {
-    zip64 true
-    from '.'
-    include '*.vsix'
-    archiveName 'als-vscode.zip'
-    destinationDir(file("$project.buildDir/distributions"))
-}
-tasks.nexusIq.dependsOn(distZip)
+assemble.dependsOn assembleArtifact
+   build.dependsOn assemble
+ publish.dependsOn build

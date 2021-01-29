@@ -32,7 +32,7 @@ pipeline {
             steps {
                 script {
                     sh 'chmod +x gradlew'
-                    sh "./gradlew nexusIq"
+                    sh "./gradlew publish"
                 }
             }
         }
