@@ -8,16 +8,24 @@ pipeline {
         NEXUS = credentials('exchange-nexus')
         NEXUSIQ = credentials('nexus-iq')
         NPM_TOKEN = credentials('npm-mulesoft')
+        ALS_VERSION = "3.3.0-SNAPSHOT.30" // set with received parameter when available
         NPM_CONFIG_PRODUCTION = false
         VERSION = "2.0.${env.BUILD_NUMBER}" // check if ALS version is snapshot, and adjust accordingly?
         NODE_MODULES_CACHE = false
         NODE_OPTIONS = '--max_old_space_size=4096'
     }
     stages {
-        stage('Install') {
+        stage('Set versions') {
             steps {
                 script {
-                    sh 'bash add_registry.sh'
+                    sh 'bash set_versions.sh'
+                }
+            }
+        }
+        stage('Install & Compile') {
+            steps {
+                script {
+                    sh 'bash install_compile.sh'
                 }
             }
         }
