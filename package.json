@@ -3,7 +3,7 @@
     "displayName": "AML support",
     "description": "",
     "publisher": "MuleSoft",
-    "version": "2.0.0-SNAPSHOT",
+    "version": "2.0.{VERSION}",
     "engines": {
         "vscode": "^1.43.0"
     },
