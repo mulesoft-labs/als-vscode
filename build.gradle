@@ -1,5 +1,6 @@
 version '{VERSION}'
 group 'com.mulesoft.als.vscode'
+def name = 'als-vscode'
 
 apply plugin: "base"
 apply plugin: "maven"
@@ -29,7 +30,8 @@ publishing {
                 username System.env.NEXUS_USR
                 password System.env.NEXUS_PSW
             }
-            url "http://repository.mulesoft.org/nexus/content/repositories/private/"
+            name "mule-ee-releases"
+            url "https://repository.mulesoft.org/nexus/content/repositories/releases/"
         }
     }
 }
