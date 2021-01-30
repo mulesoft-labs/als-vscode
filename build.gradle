@@ -1,5 +1,5 @@
 version '{VERSION}'
-group 'com.mulesoft.als.vscode'
+group 'com.mulesoft.alsvscode'
 
 apply plugin: "base"
 apply plugin: "maven"
