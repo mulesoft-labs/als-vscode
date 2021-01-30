@@ -4,10 +4,34 @@ group 'com.mulesoft.als'
 apply plugin: "base"
 apply plugin: "maven"
 apply plugin: "maven-publish"
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            name "mule-ee-releases"
+            url "https://repository.mulesoft.org/nexus/content/repositories/releases/"
+        }
+    }
+    dependencies {
+        classpath "com.mulesoft:gradle-tools:0.2.6"
+    }
+}
 
 repositories {
-    maven { url "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots" }
+    mavenCentral()
+    maven {
+        url "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots"
+    }
+    maven {
+        url "https://repository-master.mulesoft.org/nexus/content/repositories/releases"
+    }
+    maven { url 'https://jitpack.io' }
 }
+
 
 task assembleArtifact(type: Zip, group: group) {
     archiveName 'alsvscode.zip'
