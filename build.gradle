@@ -6,7 +6,7 @@ apply plugin: "maven"
 apply plugin: "maven-publish"
 
 repositories {
-    maven { url "http://repository.mulesoft.org/nexus/content/repositories/private/" }
+    maven { url "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots" }
 }
 
 task assembleArtifact(type: Zip, group: 'com.mulesoft.als.vscode') {
