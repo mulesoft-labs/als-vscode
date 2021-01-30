@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                     sh 'chmod +x gradlew'
-                    sh "./gradlew –info --stacktrace publish"
+                    sh "./gradlew -–info --stacktrace publish"
                 }
             }
         }
