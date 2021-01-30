@@ -1,5 +1,5 @@
 version '{VERSION}'
-group 'com.mulesoft.alsvscode'
+group 'com.mulesoft.als'
 
 apply plugin: "base"
 apply plugin: "maven"
@@ -9,8 +9,8 @@ repositories {
     maven { url "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots" }
 }
 
-task assembleArtifact(type: Zip, group: 'com.mulesoft.als.vscode') {
-    archiveName 'als-vscode.zip'
+task assembleArtifact(type: Zip, group: group) {
+    archiveName 'alsvscode.zip'
     destinationDir file("$project.buildDir/distributions")
     from '.'
     include '*.vsix'
@@ -20,6 +20,8 @@ task assembleArtifact(type: Zip, group: 'com.mulesoft.als.vscode') {
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            groupId 'com.mulesoft.als'
+            artifactId 'alsvscode'
             artifact source: assembleArtifact, extension: 'zip'
         }
     }
