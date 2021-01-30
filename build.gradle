@@ -1,4 +1,4 @@
-version '{VERSION}'
+version System.env.VERSION
 group 'com.mulesoft.als'
 
 apply plugin: "base"
@@ -34,11 +34,11 @@ repositories {
 
 
 task assembleArtifact(type: Zip, group: group) {
-    // archiveName 'alsvscode.zip'
-    // destinationDir file("$project.buildDir/distributions")
-    // from '.'
+    archiveName 'alsvscode.zip'
+    destinationDir file("$project.buildDir/distributions")
+    from '.'
     include 'aml-vscode-*.vsix'
-    // description "Assemble archive $archiveName into ${relativePath(destinationDir)}"
+    description "Assemble archive $archiveName into ${relativePath(destinationDir)}"
 }
 
 publishing {
