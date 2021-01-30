@@ -11,8 +11,8 @@ pipeline {
     }
 
     environment {
-        ALS_VERSION =  als_version// set with received parameter when available
-        VERSION = version
+        ALS_VERSION =  "3.3.0-SNAPSHOT.30" // set with received parameter when available
+        VERSION = "2.0.${env.BUILD_NUMBER}"
 
         NEXUS = credentials('exchange-nexus')
         NEXUSIQ = credentials('nexus-iq')
