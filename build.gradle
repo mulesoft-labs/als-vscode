@@ -34,16 +34,16 @@ repositories {
 
 
 task assembleArtifact(type: Zip, group: group) {
-    archiveName 'alsvscode.zip'
-    destinationDir file("$project.buildDir/distributions")
-    from '.'
+    // archiveName 'alsvscode.zip'
+    // destinationDir file("$project.buildDir/distributions")
+    // from '.'
     include 'aml-vscode-*.vsix'
-    description "Assemble archive $archiveName into ${relativePath(destinationDir)}"
+    // description "Assemble archive $archiveName into ${relativePath(destinationDir)}"
 }
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        mavenZip(MavenPublication) {
             groupId 'com.mulesoft.als'
             artifactId 'alsvscode'
             artifact source: assembleArtifact, extension: 'zip'
