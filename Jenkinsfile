@@ -5,12 +5,18 @@ pipeline {
     }
 
     environment {
+        ALS_VERSION = "3.3.0-SNAPSHOT.30" // set with received parameter when available
+        VERSION = "2.0.${env.BUILD_NUMBER}" // check if ALS version is snapshot, and adjust accordingly?
+        
+        if(ALS_VERSION.endsWith("-SNAPSHOT"))
+            VERSION = VERSION + "-SNAPSHOT"
+
+
         NEXUS = credentials('exchange-nexus')
         NEXUSIQ = credentials('nexus-iq')
+
         NPM_TOKEN = credentials('npm-mulesoft')
-        ALS_VERSION = "3.3.0-SNAPSHOT.30" // set with received parameter when available
         NPM_CONFIG_PRODUCTION = false
-        VERSION = "2.0.${env.BUILD_NUMBER}" // check if ALS version is snapshot, and adjust accordingly?
         NODE_MODULES_CACHE = false
         NODE_OPTIONS = '--max_old_space_size=4096'
     }
@@ -43,7 +49,6 @@ pipeline {
                     sh "ls -larth ./build/distributions"
                     sh 'chmod +x gradlew'
                     sh "./gradlew --info --stacktrace publish"
-                    sh "ls -larth ."
                 }
             }
         }
