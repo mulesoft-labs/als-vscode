@@ -37,7 +37,7 @@ task assembleArtifact(type: Zip, group: group) {
     archiveName 'alsvscode.zip'
     destinationDir file("$project.buildDir/distributions")
     from '.'
-    include '*.vsix'
+    include 'aml-vscode-*.vsix'
     description "Assemble archive $archiveName into ${relativePath(destinationDir)}"
 }
 

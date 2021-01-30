@@ -39,6 +39,7 @@ pipeline {
         stage('Upload') {
             steps {
                 script {
+                    sh "ls -larth ."
                     sh 'chmod +x gradlew'
                     sh "./gradlew --info --stacktrace publish"
                     sh "ls -larth ."
