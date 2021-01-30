@@ -1,9 +1,9 @@
 #!groovy
-
-def als_version = "3.3.0-SNAPSHOT.30"
-def version = "2.0.${env.BUILD_NUMBER}"
-if(als_version.contains("-SNAPSHOT"))
-    version = version + "-SNAPSHOT"
+def getVersion(alsVersion) {
+    if(alsVersion.contains("-SNAPSHOT"))
+        "2.1.${env.BUILD_NUMBER}-SNAPSHOT"
+    else "2.0.${env.BUILD_NUMBER}"
+}
 
 pipeline {
     agent {
@@ -12,7 +12,7 @@ pipeline {
 
     environment {
         ALS_VERSION =  "3.3.0-SNAPSHOT.30" // set with received parameter when available
-        VERSION = "2.0.${env.BUILD_NUMBER}"
+        VERSION = getVersion("3.3.0-SNAPSHOT.30")
 
         NEXUS = credentials('exchange-nexus')
         NEXUSIQ = credentials('nexus-iq')
