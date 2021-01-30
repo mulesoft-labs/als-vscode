@@ -8,7 +8,7 @@ pipeline {
         ALS_VERSION = "3.3.0-SNAPSHOT.30" // set with received parameter when available
         VERSION = "2.0.${env.BUILD_NUMBER}" // check if ALS version is snapshot, and adjust accordingly?
         
-        if(ALS_VERSION.endsWith("-SNAPSHOT"))
+        if(ALS_VERSION.contains("-SNAPSHOT"))
             VERSION = VERSION + "-SNAPSHOT"
 
 

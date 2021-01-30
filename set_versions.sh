@@ -7,8 +7,8 @@ npm --version
 echo "node --version"
 node --version
 
-echo "sed -i 's/{VERSION}/'$VERSION'/' build.gradle"
-sed -i 's/{VERSION}/'$VERSION'/' build.gradle
+# echo "sed -i 's/{VERSION}/'$VERSION'/' build.gradle"
+# sed -i 's/{VERSION}/'$VERSION'/' build.gradle
 
 echo "sed -i 's/{VERSION}/'$VERSION'/' package.json"
 sed -i 's/{VERSION}/'$VERSION'/' package.json
