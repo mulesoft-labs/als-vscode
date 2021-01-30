@@ -29,7 +29,7 @@ publishing {
                 username System.env.NEXUS_USR
                 password System.env.NEXUS_PSW
             }
-            url "https://repository.mulesoft.org/nexus/content/repositories/releases/"
+            url "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots"
         }
     }
 }
