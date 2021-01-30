@@ -1,16 +1,18 @@
 #!groovy
+
+def als_version = "3.3.0-SNAPSHOT.30"
+def version = "2.0.${env.BUILD_NUMBER}"
+if(als_version.contains("-SNAPSHOT"))
+    version = version + "-SNAPSHOT"
+
 pipeline {
     agent {
         dockerfile true
     }
 
     environment {
-        ALS_VERSION = "3.3.0-SNAPSHOT.30" // set with received parameter when available
-        VERSION = "2.0.${env.BUILD_NUMBER}" // check if ALS version is snapshot, and adjust accordingly?
-        
-        if(ALS_VERSION.contains("-SNAPSHOT"))
-            VERSION = VERSION + "-SNAPSHOT"
-
+        ALS_VERSION =  als_version// set with received parameter when available
+        VERSION = version
 
         NEXUS = credentials('exchange-nexus')
         NEXUSIQ = credentials('nexus-iq')
