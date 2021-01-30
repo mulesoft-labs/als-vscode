@@ -41,6 +41,7 @@ pipeline {
             steps {
                 script {
                     sh "ls -larth ."
+                    sh "ls -larth ./build/distributions"
                     sh 'chmod +x gradlew'
                     sh "./gradlew --info --stacktrace publish"
                     sh "ls -larth ."
