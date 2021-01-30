@@ -1,3 +1,10 @@
+# Clean previous
+echo "Clean previous"
+echo "rm aml-vscode-*.vsix"
+rm aml-vscode-*.vsix
+echo "rm build/distributions/*.zipix"
+rm build/distributions/*.zip
+
 echo "Install & Compile"
 echo "npm ci"
 npm ci
