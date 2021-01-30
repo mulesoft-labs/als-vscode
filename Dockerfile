@@ -31,6 +31,10 @@ RUN npm install -g n
 RUN n stable
 RUN npm install -g vsce
 
+# Clean previous
+RUN rm aml-vscode-*.vsix
+RUN rm build/distributions/*.zip
+
 # Final user and home config
 RUN useradd --create-home --shell /bin/bash jenkins
 USER jenkins

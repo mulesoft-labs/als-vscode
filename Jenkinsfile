@@ -32,7 +32,6 @@ pipeline {
         stage('Package') {
             steps {
                 script {
-                    sh "rm aml-vscode-*.vsix"
                     sh 'vsce package'
                 }
             }
