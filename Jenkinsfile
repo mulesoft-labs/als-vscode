@@ -1,4 +1,7 @@
 #!groovy
+
+def slackChannel = '#als-extension-bot'
+
 def getVersion(alsVersion) {
     if(alsVersion.contains("-SNAPSHOT"))
         "2.1.0-SNAPSHOT"
@@ -51,6 +54,14 @@ pipeline {
                     sh "ls -larth ./build/distributions"
                     sh 'chmod +x gradlew'
                     sh "./gradlew --info --stacktrace publish"
+                }
+            }
+        }
+        stage("Report to Slack") {
+            steps {
+                script {
+                    slackSend color: '#00FF00', channel: "${slackChannel}",
+                    message: ":ok_hand: VS Code extension published :ok_hand:\nversion: ${env.VERSION}\nlink: https://repository-master.mulesoft.org/nexus/content/repositories/snapshots/com/mulesoft/als/alsvscode/${env.VERSION}"
                 }
             }
         }
