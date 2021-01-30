@@ -1,7 +1,7 @@
 #!groovy
 def getVersion(alsVersion) {
     if(alsVersion.contains("-SNAPSHOT"))
-        "2.1.${env.BUILD_NUMBER}-SNAPSHOT"
+        "2.1.0-SNAPSHOT"
     else "2.0.${env.BUILD_NUMBER}"
 }
 
