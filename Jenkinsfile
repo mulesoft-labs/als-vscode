@@ -8,6 +8,13 @@ def getVersion(alsVersion) {
     else "2.0.${env.BUILD_NUMBER}"
 }
 
+def getNexusUri(version){
+    if(version.contains("-SNAPSHOT"))
+        "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots/com/mulesoft/als/alsvscode/${env.VERSION}"
+    else
+        "https://repository-master.mulesoft.org/nexus/content/repositories/releases/com/mulesoft/als/alsvscode/${env.VERSION}"
+
+}
 pipeline {
     agent {
         dockerfile true
@@ -62,7 +69,7 @@ pipeline {
             steps {
                 script {
                     slackSend color: '#00FF00', channel: "${slackChannel}",
-                    message: ":ok_hand: VS Code extension published :ok_hand:\nversion: ${env.VERSION}\nALS version: ${ALS_VERSION}\nlink: https://repository-master.mulesoft.org/nexus/content/repositories/snapshots/com/mulesoft/als/alsvscode/${env.VERSION}"
+                    message: ":ok_hand: VS Code extension published :ok_hand:\nversion: ${env.VERSION}\nALS version: ${ALS_VERSION}\nlink: ${getNexusUri(env.VERSION)}"
                 }
             }
         }
