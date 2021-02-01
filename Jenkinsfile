@@ -62,7 +62,7 @@ pipeline {
             steps {
                 script {
                     slackSend color: '#00FF00', channel: "${slackChannel}",
-                    message: ":ok_hand: VS Code extension published :ok_hand:\nversion: ${env.VERSION}\nlink: https://repository-master.mulesoft.org/nexus/content/repositories/snapshots/com/mulesoft/als/alsvscode/${env.VERSION}"
+                    message: ":ok_hand: VS Code extension published :ok_hand:\nversion: ${env.VERSION}\nALS version: ${ALS_VERSION}\nlink: https://repository-master.mulesoft.org/nexus/content/repositories/snapshots/com/mulesoft/als/alsvscode/${env.VERSION}"
                 }
             }
         }
