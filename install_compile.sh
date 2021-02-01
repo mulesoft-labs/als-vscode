@@ -9,7 +9,7 @@ echo "Install & Compile"
 echo "npm ci"
 npm ci
 
-
+echo "npm i @mulesoft/als-node-client@$ALS_VERSION"
 npm i @mulesoft/als-node-client@$ALS_VERSION
 
 echo "node_modules/.bin/tsc -v"

@@ -51,11 +51,14 @@ publishing {
     }
     repositories {
         maven {
+            def snapshotsRepoUrl = "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots"
+            def releasesRepoUrl = "https://repository-master.mulesoft.org/nexus/content/repositories/releases"
+            
             credentials {
                 username System.env.NEXUS_USR
                 password System.env.NEXUS_PSW
             }
-            url "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots"
+            url = version.contains('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl 
         }
     }
 }
