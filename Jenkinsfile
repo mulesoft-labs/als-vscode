@@ -29,6 +29,7 @@ pipeline {
 
         NEXUS = credentials('exchange-nexus')
         NEXUSIQ = credentials('nexus-iq')
+        NEXUSURL = getNexusUri("$VERSION")
 
         NPM_TOKEN = credentials('npm-mulesoft')
         NPM_CONFIG_PRODUCTION = false
@@ -69,7 +70,7 @@ pipeline {
             steps {
                 script {
                     slackSend color: '#00FF00', channel: "${slackChannel}",
-                    message: ":ok_hand: VS Code extension published :ok_hand:\nversion: ${env.VERSION}\nALS version: ${ALS_VERSION}\nlink: ${getNexusUri(env.VERSION)}"
+                    message: ":ok_hand: VS Code extension published :ok_hand:\nversion: ${env.VERSION}\nALS version: ${ALS_VERSION}\nlink: ${NEXUSURL}"
                 }
             }
         }
