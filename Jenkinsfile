@@ -12,10 +12,13 @@ pipeline {
     agent {
         dockerfile true
     }
+    parameters {
+        string(name: 'ALS_VERSION', defaultValue: '3.3.0-SNAPSHOT.30', description: 'ALS node client version')
+    }
 
     environment {
-        ALS_VERSION =  "3.3.0-SNAPSHOT.30" // set with received parameter when available
-        VERSION = getVersion("3.3.0-SNAPSHOT.30")
+        // ALS_VERSION =  '$jsBuild'
+        VERSION = getVersion("$ALS_VERSION")
 
         NEXUS = credentials('exchange-nexus')
         NEXUSIQ = credentials('nexus-iq')
@@ -50,8 +53,6 @@ pipeline {
         stage('Upload') {
             steps {
                 script {
-                    sh "ls -larth ."
-                    sh "ls -larth ./build/distributions"
                     sh 'chmod +x gradlew'
                     sh "./gradlew --info --stacktrace publish"
                 }
