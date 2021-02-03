@@ -47,7 +47,11 @@ pipeline {
         stage('Install & Compile') {
             steps {
                 script {
-                    sh 'bash install_compile.sh'
+                    def exitCode = 1
+                    exitCode = sh 'bash install_compile.sh', returnStatus = true
+                    if(exitCode != 0) {
+                        fail "Failed Install & Compile"
+                    }
                 }
             }
         }
