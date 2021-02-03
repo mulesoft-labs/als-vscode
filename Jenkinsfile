@@ -45,6 +45,12 @@ pipeline {
             }
         }
         stage('Install & Compile') {
+            when {
+                anyOf {
+                    branch 'publish/*'
+                    branch 'master'
+                }
+            }
             steps {
                 script {
                     def exitCode = 1
@@ -57,6 +63,12 @@ pipeline {
             }
         }
         stage('Package') {
+            when {
+                anyOf {
+                    branch 'publish/*'
+                    branch 'master'
+                }
+            }
             steps {
                 script {
                     sh 'vsce package'
@@ -64,6 +76,12 @@ pipeline {
             }
         }
         stage('Upload') {
+            when {
+                anyOf {
+                    branch 'publish/*'
+                    branch 'master'
+                }
+            }
             steps {
                 script {
                     sh 'chmod +x gradlew'
@@ -72,6 +90,12 @@ pipeline {
             }
         }
         stage("Report to Slack") {
+            when {
+                anyOf {
+                    branch 'publish/*'
+                    branch 'master'
+                }
+            }
             steps {
                 script {
                     slackSend color: '#00FF00', channel: "${slackChannel}",
