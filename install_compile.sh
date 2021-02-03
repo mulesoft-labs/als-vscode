@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Clean previous
 EXITCODE=0
 echo "Clean previous"
@@ -21,4 +23,6 @@ node_modules/.bin/tsc -v
 echo "npm run compile"
 npm run compile
 EXITCODE=EXITCODE+$?
+
+echo "exit code $EXITCODE"
 exit $EXITCODE
