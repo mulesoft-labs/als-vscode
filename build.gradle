@@ -43,7 +43,7 @@ task assembleArtifact(type: Zip, group: group) {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        mavenZip(MavenPublication) {
             groupId 'com.mulesoft.als'
             artifactId 'alsvscode'
             artifact source: assembleArtifact, extension: 'zip'
