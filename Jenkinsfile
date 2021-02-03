@@ -98,8 +98,7 @@ pipeline {
             }
             steps {
                 script {
-                    slackSend color: '#00FF00', channel: "${slackChannel}",
-                    message: ":ok_hand: VS Code extension published :ok_hand:\nversion: ${env.VERSION}\nALS version: ${ALS_VERSION}\nlink: ${NEXUSURL}"
+                    slackSend color: '#00FF00', channel: "${slackChannel}", message: ":ok_hand: VS Code extension published :ok_hand:\nversion: ${env.VERSION}\nALS version: ${ALS_VERSION}\nlink: ${NEXUSURL}"
                 }
             }
         }
