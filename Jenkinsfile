@@ -50,6 +50,7 @@ pipeline {
                     def exitCode = 1
                     exitCode = sh 'bash install_compile.sh', returnStatus = true
                     if(exitCode != 0) {
+                        sh "echo ${exitCode}"
                         fail "Failed Install & Compile"
                     }
                 }
