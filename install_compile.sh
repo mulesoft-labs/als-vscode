@@ -12,17 +12,17 @@ echo "Install & Compile"
 echo "npm ci"
 npm ci
 
-EXITCODE=EXITCODE+$?
+EXITCODE=$($EXITCODE+$?)
 
 echo "npm i @mulesoft/als-node-client@$ALS_VERSION"
 npm i @mulesoft/als-node-client@$ALS_VERSION
-EXITCODE=EXITCODE+$?
+EXITCODE=$($EXITCODE+$?)
 echo "node_modules/.bin/tsc -v"
 node_modules/.bin/tsc -v
 
 echo "npm run compile"
 npm run compile
-EXITCODE=EXITCODE+$?
+EXITCODE=$($EXITCODE+$?)
 
 echo "exit code $EXITCODE"
 exit $EXITCODE
