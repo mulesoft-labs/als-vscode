@@ -10,9 +10,9 @@ def getVersion(alsVersion) {
 
 def getNexusUri(version){
     if(version.contains("-SNAPSHOT"))
-        "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots/com/mulesoft/als/alsvscode/${env.VERSION}"
+        "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots/com/mulesoft/als/alsvscode/${version}"
     else
-        "https://repository-master.mulesoft.org/nexus/content/repositories/releases/com/mulesoft/als/alsvscode/${env.VERSION}"
+        "https://repository-master.mulesoft.org/nexus/content/repositories/releases/com/mulesoft/als/alsvscode/${version}"
 
 }
 pipeline {
