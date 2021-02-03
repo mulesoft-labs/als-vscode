@@ -25,6 +25,7 @@ repositories {
     mavenCentral()
     maven {
         url "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots"
+        uniqueVersion = false
     }
     maven {
         url "https://repository-master.mulesoft.org/nexus/content/repositories/releases"
@@ -47,7 +48,6 @@ publishing {
             groupId 'com.mulesoft.als'
             artifactId 'alsvscode'
             artifact source: assembleArtifact, extension: 'zip'
-            uniqueVersion = false
         }
     }
     repositories {
@@ -58,6 +58,7 @@ publishing {
             }
             url = System.env.NEXUSURL 
         }
+        uniqueVersion = false
     }
 }
 
