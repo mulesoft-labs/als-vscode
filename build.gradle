@@ -47,6 +47,7 @@ publishing {
             groupId 'com.mulesoft.als'
             artifactId 'alsvscode'
             artifact source: assembleArtifact, extension: 'zip'
+            uniqueVersion = false
         }
     }
     repositories {
