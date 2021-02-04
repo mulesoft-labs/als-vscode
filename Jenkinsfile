@@ -8,11 +8,18 @@ def getVersion(alsVersion) {
     else "2.0.${env.BUILD_NUMBER}"
 }
 
-def getNexusUri(version){
+def getNexusFullUri(version){
     if(version.contains("-SNAPSHOT"))
         "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots/com/mulesoft/als/alsvscode/${version}"
     else
         "https://repository-master.mulesoft.org/nexus/content/repositories/releases/com/mulesoft/als/alsvscode/${version}"
+
+}
+def getNexusUri(version){
+    if(version.contains("-SNAPSHOT"))
+        "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots"
+    else
+        "https://repository-master.mulesoft.org/nexus/content/repositories/releases"
 
 }
 pipeline {
@@ -30,6 +37,7 @@ pipeline {
         NEXUS = credentials('exchange-nexus')
         NEXUSIQ = credentials('nexus-iq')
         NEXUSURL = getNexusUri("$VERSION")
+        NEXUSFULLURL = getNexusFullUri("$VERSION")
 
         NPM_TOKEN = credentials('npm-mulesoft')
         NPM_CONFIG_PRODUCTION = false
@@ -98,7 +106,7 @@ pipeline {
             }
             steps {
                 script {
-                    slackSend color: '#00FF00', channel: "${slackChannel}", message: ":ok_hand: VS Code extension published :ok_hand:\nversion: ${env.VERSION}\nALS version: ${ALS_VERSION}\nlink: ${NEXUSURL}"
+                    slackSend color: '#00FF00', channel: "${slackChannel}", message: ":ok_hand: VS Code extension published :ok_hand:\nversion: ${env.VERSION}\nALS version: ${ALS_VERSION}\nlink: ${NEXUSFULLURL}"
                 }
             }
         }

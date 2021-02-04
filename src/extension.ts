@@ -18,6 +18,11 @@ var jsAls = require.resolve("@mulesoft/als-node-client")
 var upath = require("upath")
 
 export function activate(context: ExtensionContext) {
+    //Create output channel
+    let alsLog = vscode.window.createOutputChannel("alsLog");
+
+    //Write to output.
+    alsLog.appendLine("Hi! I am alsLog, and I will be your troubleshooting companion for the day. I hope you won't need me!");
 
 	const documentSelector = [
 		{ language: 'raml' },
@@ -30,14 +35,14 @@ export function activate(context: ExtensionContext) {
 
 		return new Promise((resolve, reject) => {
 			const server = net.createServer(socket => {
-				console.log("[ALS] Socket created")
+				alsLog.appendLine("[ALS] Socket created")
 
 				resolve({
 					reader: socket,
 					writer: socket,
 				});
 
-				socket.on('end', () => console.log("[ALS] Disconnected"))
+				socket.on('end', () => alsLog.appendLine("[ALS] Disconnected"))
 			}).on('error', (err) => { throw err })
 
 			const javaExecutablePath = findJavaExecutable('java');
@@ -46,7 +51,7 @@ export function activate(context: ExtensionContext) {
 				const isJVM = runParams.get("platform") === "jvm"
 				const customPath: string = runParams.get("path")
 				const logPath: string = runParams.get("logPath")
-				const isLocal = customPath !== null
+				const isLocal = customPath && customPath.length > 0
 				const debugPort: number = isJVM ? runParams.get("debug") : 0
 				
 				const agentLibArgsDebug = '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=' + debugPort
@@ -69,18 +74,18 @@ export function activate(context: ExtensionContext) {
 				const dialectPath = `${withRootSlash(upath.toUnix(extensionPath))}/resources/dialect.yaml`
 
 
-				console.log("[ALS] Configuration: " + JSON.stringify(runParams))
-				console.log("[ALS] Extension path: " + extensionPath)
-				console.log("[ALS] Dialect path: " + dialectPath)
-				console.log("[ALS] Storage path: " + storagePath)
-				console.log("[ALS] used path: " + path)
-				console.log("[ALS] jar path: " + jarPath)
-				console.log("[ALS] js path: " + jsPath)
-				console.log("[ALS] Log path: " + logFile)
-				console.log("[ALS] Server port: " + port)
-				console.log("[ALS] java exec file: " + javaExecutablePath)
-				console.log("[ALS] RUN AS JVM?: " + isJVM)
-				console.log("[ALS] debug mode?: " + debugPort)
+				alsLog.appendLine("[ALS] Configuration: " + JSON.stringify(runParams))
+				alsLog.appendLine("[ALS] Extension path: " + extensionPath)
+				alsLog.appendLine("[ALS] Dialect path: " + dialectPath)
+				alsLog.appendLine("[ALS] Storage path: " + storagePath)
+				alsLog.appendLine("[ALS] used path: " + path)
+				alsLog.appendLine("[ALS] jar path: " + jarPath)
+				alsLog.appendLine("[ALS] js path: " + jsPath)
+				alsLog.appendLine("[ALS] Log path: " + logFile)
+				alsLog.appendLine("[ALS] Server port: " + port)
+				alsLog.appendLine("[ALS] java exec file: " + javaExecutablePath)
+				alsLog.appendLine("[ALS] RUN AS JVM?: " + isJVM)
+				alsLog.appendLine("[ALS] debug mode?: " + debugPort)
 				
 				const jsArgs: string[] = [ jsPath, '--port', port.toString() ]
 
@@ -98,7 +103,7 @@ export function activate(context: ExtensionContext) {
 					'--port',
 					port.toString()
 				]
-				console.log("[ALS] Spawning at port: " + port);
+				alsLog.appendLine("[ALS] Spawning at port: " + port);
 				const process = isJVM? child_process.spawn(javaExecutablePath,
 					debugPort > 0 ? jvmArgsDebug : jvmArgs,
 					options)
