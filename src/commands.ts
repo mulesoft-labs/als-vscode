@@ -1,6 +1,6 @@
 
 import * as vscode from 'vscode';
-import { RenameFileActionParams, messages, RenameFileActionResult } from './types';
+import { RenameFileActionParams, messages, RenameFileActionResult, SerializationParams, SerializationResult } from './types';
 import { LanguageClient, StateChangeEvent } from 'vscode-languageclient';
 import { awaitInputBox } from './ui';
 import { notifyConfig } from './configuration';
@@ -10,9 +10,15 @@ var languageClient: LanguageClient
 export function registerCommands(langClient: LanguageClient) {
     languageClient = langClient
     vscode.commands.registerCommand("als.renameFile", renameFileHandler)
+    vscode.commands.registerCommand("als.serialization", serializationHandler)
     languageClient.onDidChangeState(languageClientStateListener)
 }
 
+
+const serializationHandler = (fileUri: vscode.Uri) => {
+    console.log("als.serialization called")
+    sendSerializationRequest(fileUri)
+}
 
 const renameFileHandler = (fileUri: vscode.Uri) => {
     console.log("als.rename called")
@@ -33,6 +39,29 @@ const renameFileHandler = (fileUri: vscode.Uri) => {
             }
         })
 
+}
+
+function sendSerializationRequest(fileUri: vscode.Uri) {
+    const params: SerializationParams = {
+        documentIdentifier: { uri: fileUri.toString() }
+    };
+
+    languageClient.sendRequest(messages.AlsSerializationRequest.type, params).then(result => {
+        applySerializationEdits(result);
+    });
+}
+
+
+function applySerializationEdits(result: SerializationResult) {
+    console.log("applySerializationEdits");
+    console.log(JSON.stringify(result));
+    const newUri = vscode.Uri.parse(result.uri + ".json");
+    const edits = new vscode.WorkspaceEdit();
+    edits.createFile(newUri)
+    edits.insert(newUri, new vscode.Position(0,0), JSON.stringify(result.model))
+    vscode.workspace.applyEdit(edits).then( result =>
+        console.log(JSON.stringify(result))
+    )
 }
 
 function sendRenameRequest(fileUri: vscode.Uri, originalPath: string, newName: string) {

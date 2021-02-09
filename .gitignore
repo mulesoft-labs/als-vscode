@@ -4,3 +4,4 @@ lib
 .DS_Store
 dist
 als.log
+*.vsix

@@ -121,6 +121,15 @@
                     "light": "path/to/light/icon.svg",
                     "dark": "path/to/dark/icon.svg"
                 }
+            },
+            {
+                "command": "als.serialization",
+                "title": "ALS Serialize",
+                "category": "Modifications",
+                "icon": {
+                    "light": "path/to/light/icon.svg",
+                    "dark": "path/to/dark/icon.svg"
+                }
             }
         ],
         "menus": {
@@ -128,6 +137,11 @@
                 {
                     "when": "resourceLangId == raml",
                     "command": "als.renameFile",
+                    "group": "7_modification"
+                },
+                {
+                    "when": "resourceLangId == raml",
+                    "command": "als.serialization",
                     "group": "7_modification"
                 }
             ]
