@@ -7,8 +7,4 @@ npm --version
 echo "node --version"
 node --version
 
-echo "sed -i 's/{VERSION}/'$VERSION'/' package.json"
-sed -i 's/{VERSION}/'$VERSION'/' package.json
-
-echo "sed -i 's/{VERSION}/'$VERSION'/' package-lock.json"
-sed -i 's/{VERSION}/'$VERSION'/' package-lock.json
+npm version $VERSION

@@ -31,7 +31,6 @@ pipeline {
     }
 
     environment {
-        // ALS_VERSION =  '$jsBuild'
         VERSION = getVersion("$ALS_VERSION")
 
         NEXUS = credentials('exchange-nexus')
