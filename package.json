@@ -3,7 +3,7 @@
     "displayName": "AML support",
     "description": "",
     "publisher": "MuleSoft",
-    "version": "{VERSION}",
+    "version": "2.1.0-SNAPSHOT",
     "engines": {
         "vscode": "^1.43.0"
     },
@@ -130,6 +130,15 @@
                     "light": "path/to/light/icon.svg",
                     "dark": "path/to/dark/icon.svg"
                 }
+            },
+            {
+                "command": "als.conversion",
+                "title": "ALS Conversion",
+                "category": "Modifications",
+                "icon": {
+                    "light": "path/to/light/icon.svg",
+                    "dark": "path/to/dark/icon.svg"
+                }
             }
         ],
         "menus": {
@@ -142,6 +151,11 @@
                 {
                     "when": "resourceLangId == raml",
                     "command": "als.serialization",
+                    "group": "7_modification"
+                },
+                {
+                    "when": "resourceLangId == raml",
+                    "command": "als.conversion",
                     "group": "7_modification"
                 }
             ]
