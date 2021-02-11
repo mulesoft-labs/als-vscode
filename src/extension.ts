@@ -6,14 +6,13 @@ import * as net from 'net'
 import * as child_process from "child_process"
 import * as vscode from 'vscode'
 
-
-
-import { window, workspace, ExtensionContext } from 'vscode'
-import { LanguageClient, LanguageClientOptions, StreamInfo, InitializedNotification, StateChangeEvent, State } from 'vscode-languageclient'
+import { workspace, ExtensionContext } from 'vscode'
+import { LanguageClient, LanguageClientOptions, StreamInfo } from 'vscode-languageclient'
 import { registerCommands } from './commands'
 import { notifyConfig } from './configuration'
-import { platform } from 'os'
-import { mainModule } from 'process'
+import { ConversionFeature } from './features'
+
+
 var jsAls = require.resolve("@mulesoft/als-node-client")
 var upath = require("upath")
 
@@ -33,7 +32,7 @@ export function activate(context: ExtensionContext) {
 
 	function createServer(): Promise<StreamInfo> {
 
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			const server = net.createServer(socket => {
 				alsLog.appendLine("[ALS] Socket created")
 
@@ -114,6 +113,8 @@ export function activate(context: ExtensionContext) {
 
 				const logStream = fs.createWriteStream(logFile, { flags: 'w' })
 
+
+
 				process.stdout.pipe(logStream)
 				process.stderr.pipe(logStream)
 			});
@@ -138,6 +139,7 @@ export function activate(context: ExtensionContext) {
 	workspace.onDidChangeConfiguration(() => notifyConfig(languageClient))
 	const disposable = languageClient.start()
 
+	languageClient.registerFeature(new ConversionFeature())
 	context.subscriptions.push(disposable)
 }
 
