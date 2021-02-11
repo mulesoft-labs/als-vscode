@@ -8,6 +8,8 @@ const platform = workspace.getConfiguration("amlLanguageServer.run").get("platfo
 const renameFile = platform == "js"? "RenameFile" : "renameFile"
 const updateConfiguration = platform == "js"? "UpdateConfiguration" : "updateConfiguration"
 const serialization = platform == "js"? "Serialization" : "serialization"
+const conversion = platform == "js"? "Conversion" : "conversion"
+
 
 export namespace messages {
     export const AlsConfigurationNotification = {
@@ -19,6 +21,9 @@ export namespace messages {
     export const AlsSerializationRequest = {
         type: new RequestType<SerializationParams, SerializationResult, void>(serialization)
     }
+    export const AlsConversionRequest = {
+        type: new RequestType<ConversionParams, SerializedDocument, void>(conversion)
+    }
 }
 
 export type SerializationParams = {
@@ -29,6 +34,18 @@ export type SerializationParams = {
      uri: string,
      model: any
   }
+
+  export type ConversionParams = {
+    uri: string,
+    target: string,
+    syntax?: string
+ }
+
+ export type SerializedDocument = {
+     uri: string,
+     document: string
+  }
+
 
 export type RenameFileActionParams = {
     oldDocument: TextDocumentIdentifier,
