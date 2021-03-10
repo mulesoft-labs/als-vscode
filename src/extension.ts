@@ -16,7 +16,7 @@ import { ConversionFeature } from './features'
 var jsAls = require.resolve("@mulesoft/als-node-client")
 var upath = require("upath")
 
-export function activate(context: ExtensionContext) {
+export async function activate(context: ExtensionContext): Promise<LanguageClient> {
     //Create output channel
     let alsLog = vscode.window.createOutputChannel("alsLog");
 
@@ -141,6 +141,9 @@ export function activate(context: ExtensionContext) {
 
 	languageClient.registerFeature(new ConversionFeature())
 	context.subscriptions.push(disposable)
+
+	await languageClient.onReady();
+    return languageClient;
 }
 
 // MIT Licensed code from: https://github.com/georgewfraser/vscode-javac
