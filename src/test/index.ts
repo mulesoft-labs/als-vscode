@@ -1,17 +1,20 @@
 import * as path from 'path';
 import * as Mocha from 'mocha';
 import * as glob from 'glob';
-
-export function run(): Promise<void> {
+import * as vscode from 'vscode';
+import { activateExtension } from './helper';
+export async function run(): Promise<void> {
 	// Create the mocha test
 	const mocha = new Mocha({
 		ui: 'tdd',
-		timeout: 5000,
+		timeout: 7000,
 		slow: 2000,
 		color: true
 	});
 
 	const testsRoot = path.resolve(__dirname, '..');
+
+	await activateExtension();
 
 	return new Promise((c, e) => {
 		glob('**/**.test.js', { cwd: testsRoot }, (err, files) => {

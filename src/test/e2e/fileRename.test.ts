@@ -2,7 +2,7 @@
 
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import { getDocUri, activate} from '../helper';
+import { getDocUri, activate, testFilesDirectory, activateExtension} from '../helper';
 import { messages, RenameFileActionParams, RenameFileActionResult } from '../../types';
 
 suite('Should rename file', function() {
@@ -11,8 +11,8 @@ suite('Should rename file', function() {
 		const expectedResult: RenameFileActionResult = {
 			edits: {
 				documentChanges: [{
-					oldUri: "file:///Users/aayerza/mulesoft/als-vscode/testFixture/DataType.raml",
-					newUri: "file:///Users/aayerza/mulesoft/als-vscode/testFixture/RENAMED.raml",
+					oldUri: "file://" + testFilesDirectory + "/DataType.raml",
+					newUri: "file://" + testFilesDirectory + "/RENAMED.raml",
 					kind:"rename"
 				}]
 			}
@@ -36,9 +36,10 @@ async function testRename(
         oldDocument: { uri: docUri.toString() },
 		newDocument: { uri: originalPath + "RENAMED." + currentExtension }
     };
-
-	const languageClient = await activate(docUri)
-    await (languageClient.sendRequest(messages.AlsRenameFileRequest.type, params).then(result => {
-		assert.deepStrictEqual(result, expected)
-    }));
+	activate(docUri).then(async () => {
+		const languageClient = await activateExtension();
+		await (languageClient.sendRequest(messages.AlsRenameFileRequest.type, params).then(result => {
+			assert.deepStrictEqual(result, expected)
+		}))
+	});
 }

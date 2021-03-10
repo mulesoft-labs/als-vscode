@@ -14,23 +14,24 @@ export let platformEol: string;
 /**
  * Activates the extension
  */
-export async function activate(docUri: vscode.Uri): Promise<LanguageClient> {
-	// The extensionId is `publisher.name` from package.json
+export async function activate(docUri: vscode.Uri) {
+    doc = await vscode.workspace.openTextDocument(docUri);
+    try {
+        editor = await vscode.window.showTextDocument(doc);
+        await sleep(500); // Wait for parsing
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+export async function activateExtension(): Promise<LanguageClient> {
+    // The extensionId is `publisher.name` from package.json
+    await vscode.commands.executeCommand("vscode.openFolder", vscode.Uri.file(testFilesDirectory));
+    
 	const ext = vscode.extensions.getExtension('MuleSoft.aml-vscode')!;
 
     if (ext) {
-        if(!ext.isActive){
-            await vscode.commands.executeCommand("vscode.openFolder", vscode.Uri.file(testFilesDirectory));
-        }
-        const client = await ext.activate();
-        doc = await vscode.workspace.openTextDocument(docUri);
-        try {
-            editor = await vscode.window.showTextDocument(doc);
-            await sleep(500); // Wait for parsing
-        } catch (e) {
-            console.error(e);
-        }
-        return client
+        return await ext.activate();
     } else {
         throw new Error('Extension missing?');
     }

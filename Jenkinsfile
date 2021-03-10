@@ -73,8 +73,6 @@ pipeline {
                     sh "sleep 3" // Give xvfb time to startup
 
                     exitCode = sh script:"DISPLAY=:99 npm test", returnStatus:true
-                    sh "echo ${exitCode}-exit-code"
-                    sh "cat /home/jenkins/.config/Code/User/globalStorage/mulesoft.aml-vscode/vscode-aml-language-server.log"
                     if(exitCode != 0) {
                         sh "echo ${exitCode}"
                         fail "Failed Install & Compile"

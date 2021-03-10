@@ -5,11 +5,9 @@ import * as path from 'path';
 import * as assert from 'assert';
 import { activate, forEachTestFile, getDocUri, RAML_LANGUAGE_ID } from './helper';
 suite('RAML Language tests', function() {
-    test('RAML Language', () => {
-        test('Should be registered', () => {
-            vscode.languages.getLanguages().then(langs => {
-                assert.notStrictEqual(langs.indexOf(RAML_LANGUAGE_ID), -1)
-            })
+    test('Should be registered', () => {
+        vscode.languages.getLanguages().then(langs => {
+            assert.notStrictEqual(langs.indexOf(RAML_LANGUAGE_ID), -1)
         })
     })
 
