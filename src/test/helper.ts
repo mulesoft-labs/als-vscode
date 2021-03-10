@@ -17,10 +17,14 @@ export let platformEol: string;
 export async function activate(docUri: vscode.Uri): Promise<LanguageClient> {
 	// The extensionId is `publisher.name` from package.json
 	const ext = vscode.extensions.getExtension('MuleSoft.aml-vscode')!;
+
     if (ext) {
+        if(!ext.isActive){
+            await vscode.commands.executeCommand("vscode.openFolder", vscode.Uri.file(testFilesDirectory));
+        }
         const client = await ext.activate();
+        doc = await vscode.workspace.openTextDocument(docUri);
         try {
-            doc = await vscode.workspace.openTextDocument(docUri);
             editor = await vscode.window.showTextDocument(doc);
             await sleep(500); // Wait for parsing
         } catch (e) {

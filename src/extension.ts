@@ -63,9 +63,10 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 				const logFile = logPath !== null ? logPath : `${storagePath}/vscode-aml-language-server.log`
 				
 				const path = isJVM? jarPath : jsPath
-
+				
+				const folder = workspace.rootPath? workspace.rootPath : "";
 				const options = { 
-					cwd: workspace.rootPath,
+					cwd: folder
 				}
 				const address = server.address()
 				const port = typeof address === 'object' ? address.port : 0
@@ -105,16 +106,13 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 				alsLog.appendLine("[ALS] Spawning at port: " + port);
 				const process = isJVM? child_process.spawn(javaExecutablePath,
 					debugPort > 0 ? jvmArgsDebug : jvmArgs,
-					options)
-									 : child_process.spawn('node', jsArgs, options)
+					options) : child_process.spawn('node', jsArgs, options)
 
 				if (!fs.existsSync(storagePath))
 					fs.mkdirSync(storagePath)
 
 				const logStream = fs.createWriteStream(logFile, { flags: 'w' })
-
-
-
+				
 				process.stdout.pipe(logStream)
 				process.stderr.pipe(logStream)
 			});
