@@ -4,6 +4,7 @@ import { RenameFileActionParams, messages, RenameFileActionResult, Serialization
 import { LanguageClient, StateChangeEvent } from 'vscode-languageclient';
 import { awaitInputBox } from './ui';
 import { notifyConfig } from './configuration';
+import { registerFormatter } from './language';
 
 var languageClient: LanguageClient
 
@@ -13,6 +14,7 @@ export function registerCommands(langClient: LanguageClient) {
     vscode.commands.registerCommand("als.conversion", conversionHandler)
     vscode.commands.registerCommand("als.serialization", serializationHandler)
     languageClient.onDidChangeState(languageClientStateListener)
+    registerFormatter(languageClient)
 }
 
 

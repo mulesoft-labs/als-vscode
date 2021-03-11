@@ -27,7 +27,7 @@ pipeline {
         dockerfile true
     }
     parameters {
-        string(name: 'ALS_VERSION', defaultValue: '3.3.0-SNAPSHOT.199', description: 'ALS node client version')
+        string(name: 'ALS_VERSION', defaultValue: '3.3.0-SNAPSHOT.222', description: 'ALS node client version')
     }
 
     environment {
@@ -53,12 +53,6 @@ pipeline {
             }
         }
         stage('Install & Compile') {
-            when {
-                anyOf {
-                    branch 'publish/*'
-                    branch 'master'
-                }
-            }
             steps {
                 script {
                     def exitCode = 1
@@ -67,6 +61,23 @@ pipeline {
                         sh "echo ${exitCode}"
                         fail "Failed Install & Compile"
                     }
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                script {
+                    def exitCode = 1
+                    sh 'Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &'
+                    sh 'echo ">>> Started xvfb"'
+                    sh "sleep 3" // Give xvfb time to startup
+
+                    exitCode = sh script:"DISPLAY=:99 npm test", returnStatus:true
+                    if(exitCode != 0) {
+                        sh "echo ${exitCode}"
+                        fail "Failed Install & Compile"
+                    }
+                    
                 }
             }
         }

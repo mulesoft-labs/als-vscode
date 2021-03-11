@@ -11,6 +11,9 @@ echo "Install & Compile"
 echo "npm ci"
 npm ci
 
+echo "npm i --save-dev typescript"
+npm i --save-dev typescript
+
 retVal=$?
 if [ $retVal -ne 0 ]; then
     echo "Error"

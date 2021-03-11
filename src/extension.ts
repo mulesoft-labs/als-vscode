@@ -16,7 +16,7 @@ import { ConversionFeature } from './features'
 var jsAls = require.resolve("@mulesoft/als-node-client")
 var upath = require("upath")
 
-export function activate(context: ExtensionContext) {
+export async function activate(context: ExtensionContext): Promise<LanguageClient> {
     //Create output channel
     let alsLog = vscode.window.createOutputChannel("alsLog");
 
@@ -63,9 +63,10 @@ export function activate(context: ExtensionContext) {
 				const logFile = logPath !== null ? logPath : `${storagePath}/vscode-aml-language-server.log`
 				
 				const path = isJVM? jarPath : jsPath
-
+				
+				const folder = workspace.rootPath? workspace.rootPath : "";
 				const options = { 
-					cwd: workspace.rootPath,
+					cwd: folder
 				}
 				const address = server.address()
 				const port = typeof address === 'object' ? address.port : 0
@@ -105,16 +106,13 @@ export function activate(context: ExtensionContext) {
 				alsLog.appendLine("[ALS] Spawning at port: " + port);
 				const process = isJVM? child_process.spawn(javaExecutablePath,
 					debugPort > 0 ? jvmArgsDebug : jvmArgs,
-					options)
-									 : child_process.spawn('node', jsArgs, options)
+					options) : child_process.spawn('node', jsArgs, options)
 
 				if (!fs.existsSync(storagePath))
 					fs.mkdirSync(storagePath)
 
 				const logStream = fs.createWriteStream(logFile, { flags: 'w' })
-
-
-
+				
 				process.stdout.pipe(logStream)
 				process.stderr.pipe(logStream)
 			});
@@ -141,6 +139,9 @@ export function activate(context: ExtensionContext) {
 
 	languageClient.registerFeature(new ConversionFeature())
 	context.subscriptions.push(disposable)
+
+	await languageClient.onReady();
+    return languageClient;
 }
 
 // MIT Licensed code from: https://github.com/georgewfraser/vscode-javac
