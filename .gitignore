@@ -5,5 +5,4 @@ lib
 dist
 als.log
 *.vsix
-.vscode/**
 .vscode-test/**
