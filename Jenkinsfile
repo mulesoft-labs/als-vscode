@@ -27,7 +27,7 @@ pipeline {
         dockerfile true
     }
     parameters {
-        string(name: 'ALS_VERSION', defaultValue: '3.3.0-SNAPSHOT.222', description: 'ALS node client version')
+        string(name: 'ALS_VERSION', defaultValue: '3.3.0-SNAPSHOT.227', description: 'ALS node client version')
     }
 
     environment {
