@@ -70,7 +70,7 @@ pipeline {
                     def exitCode = 1
                     sh 'Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &'
                     sh 'echo ">>> Started xvfb"'
-                    sh "sleep 3" // Give xvfb time to startup
+                    sh "sleep 10" // Give xvfb time to startup
 
                     exitCode = sh script:"DISPLAY=:99 npm test", returnStatus:true
                     if(exitCode != 0) {
