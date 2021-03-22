@@ -60,6 +60,12 @@ async function testCompletion(
 		""
 	)) as vscode.CompletionList;
 	
+	actualCompletionList.items.forEach(e => {
+		console.log(e);
+	})
+
+	console.log("Size: " + actualCompletionList.items.length);
+	console.log("ESize: " + expectedCompletionList.items.length);
 
 	assert.ok(actualCompletionList.items.length >= expectedCompletionList.items.length);
 	expectedCompletionList.items.forEach((expectedItem, i) => {
