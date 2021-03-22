@@ -4,71 +4,115 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as net from 'net'
 import * as child_process from "child_process"
+import * as vscode from 'vscode'
 
-import { window, workspace, ExtensionContext } from 'vscode'
+import { workspace, ExtensionContext } from 'vscode'
 import { LanguageClient, LanguageClientOptions, StreamInfo } from 'vscode-languageclient'
+import { registerCommands } from './commands'
+import { notifyConfig } from './configuration'
+import { ConversionFeature } from './features'
 
+
+var jsAls = require.resolve("@mulesoft/als-node-client")
 var upath = require("upath")
 
-export function activate(context: ExtensionContext) {
+export async function activate(context: ExtensionContext): Promise<LanguageClient> {
+    //Create output channel
+    let alsLog = vscode.window.createOutputChannel("alsLog");
+
+    //Write to output.
+    alsLog.appendLine("Hi! I am alsLog, and I will be your troubleshooting companion for the day. I hope you won't need me!");
+
+	const documentSelector = [
+		{ language: 'raml' },
+		{ language: 'oas-yaml' },
+		{ language: 'oas-json' },
+		{ language: 'async-api' }
+	]
 
 	function createServer(): Promise<StreamInfo> {
-		return new Promise((resolve, reject) => {
+
+		return new Promise((resolve) => {
 			const server = net.createServer(socket => {
-				console.log("[ALS] Socket created")
+				alsLog.appendLine("[ALS] Socket created")
 
 				resolve({
 					reader: socket,
 					writer: socket,
 				});
 
-				socket.on('end', () => console.log("[ALS] Disconnected"))
+				socket.on('end', () => alsLog.appendLine("[ALS] Disconnected"))
 			}).on('error', (err) => { throw err })
 
 			const javaExecutablePath = findJavaExecutable('java');
-
 			server.listen(() => {
+				const runParams = vscode.workspace.getConfiguration(`amlLanguageServer.run`)
+				const isJVM = runParams.get("platform") === "jvm"
+				const customPath: string = runParams.get("path")
+				const logPath: string = runParams.get("logPath")
+				const isLocal = customPath && customPath.length > 0
+				const debugPort: number = isJVM ? runParams.get("debug") : 0
+				
+				const agentLibArgsDebug = '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=' + debugPort
+
 				const extensionPath = context.extensionPath
 				const storagePath = context.storagePath || context.globalStoragePath
-				const jarPath = `${extensionPath}/lib/als-server.jar`
-				const logFile = `${storagePath}/vscode-aml-language-server.log`
 
+				const jarPath = isLocal? customPath : `${extensionPath}/lib/als-server.jar`
+				const jsPath = isLocal? customPath : jsAls
+				const logFile = logPath !== null ? logPath : `${storagePath}/vscode-aml-language-server.log`
+				
+				const path = isJVM? jarPath : jsPath
+				
+				const folder = workspace.rootPath? workspace.rootPath : "";
+				const options = { 
+					cwd: folder
+				}
 				const address = server.address()
 				const port = typeof address === 'object' ? address.port : 0
 
 				const dialectPath = `${withRootSlash(upath.toUnix(extensionPath))}/resources/dialect.yaml`
 
-				console.log("[ALS] Extension path: " + extensionPath)
-				console.log("[ALS] Dialect path: " + dialectPath)
-				console.log("[ALS] Storage path: " + storagePath)
-				console.log("[ALS] jar path: " + jarPath)
-				console.log("[ALS] Log path: " + logFile)
-				console.log("[ALS] Server port: " + port)
-				console.log("[ALS] java eexeec filee: " + javaExecutablePath)
 
-				const options = { 
-					cwd: workspace.rootPath,
-				}
+				alsLog.appendLine("[ALS] Configuration: " + JSON.stringify(runParams))
+				alsLog.appendLine("[ALS] Extension path: " + extensionPath)
+				alsLog.appendLine("[ALS] Dialect path: " + dialectPath)
+				alsLog.appendLine("[ALS] Storage path: " + storagePath)
+				alsLog.appendLine("[ALS] used path: " + path)
+				alsLog.appendLine("[ALS] jar path: " + jarPath)
+				alsLog.appendLine("[ALS] js path: " + jsPath)
+				alsLog.appendLine("[ALS] Log path: " + logFile)
+				alsLog.appendLine("[ALS] Server port: " + port)
+				alsLog.appendLine("[ALS] java exec file: " + javaExecutablePath)
+				alsLog.appendLine("[ALS] RUN AS JVM?: " + isJVM)
+				alsLog.appendLine("[ALS] debug mode?: " + debugPort)
+				
+				const jsArgs: string[] = [ jsPath, '--port', port.toString() ]
 
-				const args = [
+				const jvmArgsDebug: string[] = [
 					'-jar',
-					'-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005',
+					agentLibArgsDebug,
 					jarPath,
 					'--port',
-					port.toString(),
-					'--dialect',
-					dialectPath,
-					'--dialectProfile',
-					'Mark Visit 1.0'
+					port.toString()
 				]
 
-				const process = child_process.spawn(javaExecutablePath, args, options)
+				const jvmArgs: string[] = [
+					'-jar',
+					jarPath,
+					'--port',
+					port.toString()
+				]
+				alsLog.appendLine("[ALS] Spawning at port: " + port);
+				const process = isJVM? child_process.spawn(javaExecutablePath,
+					debugPort > 0 ? jvmArgsDebug : jvmArgs,
+					options) : child_process.spawn('node', jsArgs, options)
 
 				if (!fs.existsSync(storagePath))
 					fs.mkdirSync(storagePath)
 
 				const logStream = fs.createWriteStream(logFile, { flags: 'w' })
-
+				
 				process.stdout.pipe(logStream)
 				process.stderr.pipe(logStream)
 			});
@@ -76,13 +120,7 @@ export function activate(context: ExtensionContext) {
 	};
 
 	const clientOptions: LanguageClientOptions = {
-		documentSelector: [
-			{ language: 'raml' },
-			{ language: 'oas-yaml' },
-			{ language: 'oas-json' },
-			{ language: 'async-api' },
-			{ language: 'mark-visit' }
-		],
+		documentSelector: documentSelector,
 		synchronize: {
 			configurationSection: 'amlLanguageServer',
 			fileEvents: workspace.createFileSystemWatcher('**/.clientrc')
@@ -95,19 +133,15 @@ export function activate(context: ExtensionContext) {
 		createServer, 
 		clientOptions)
 
+	registerCommands(languageClient)
+	workspace.onDidChangeConfiguration(() => notifyConfig(languageClient))
 	const disposable = languageClient.start()
 
-	window.onDidChangeActiveTextEditor(() => {
-		//TODO: request DocumentSymbol
-		if (window.activeTextEditor) {
-			languageClient.sendNotification("didFocus", {
-				"uri":window.activeTextEditor.document.uri.toString(),
-				"version": window.activeTextEditor.document.version
-			})
-		}
-	})
-	
+	languageClient.registerFeature(new ConversionFeature())
 	context.subscriptions.push(disposable)
+
+	await languageClient.onReady();
+    return languageClient;
 }
 
 // MIT Licensed code from: https://github.com/georgewfraser/vscode-javac

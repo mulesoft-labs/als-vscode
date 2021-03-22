@@ -1,0 +1,65 @@
+version System.env.VERSION
+group 'com.mulesoft.als'
+
+apply plugin: "base"
+apply plugin: "maven"
+apply plugin: "maven-publish"
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            name "mule-ee-releases"
+            url "https://repository.mulesoft.org/nexus/content/repositories/releases/"
+        }
+    }
+    dependencies {
+        classpath "com.mulesoft:gradle-tools:0.2.6"
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://repository-master.mulesoft.org/nexus/content/repositories/snapshots"
+    }
+    maven {
+        url "https://repository-master.mulesoft.org/nexus/content/repositories/releases"
+    }
+    maven { url 'https://jitpack.io' }
+}
+
+
+task assembleArtifact(type: Zip, group: group) {
+    archiveName 'alsvscode.zip'
+    destinationDir file("$project.buildDir/distributions")
+    from '.'
+    include 'aml-vscode-*.vsix'
+    description "Assemble archive $archiveName into ${relativePath(destinationDir)}"
+}
+
+publishing {
+    publications {
+        mavenZip(MavenPublication) {
+            groupId 'com.mulesoft.als'
+            artifactId 'alsvscode'
+            artifact source: assembleArtifact, extension: 'zip'
+        }
+    }
+    repositories {
+        maven {
+            credentials {
+                username System.env.NEXUS_USR
+                password System.env.NEXUS_PSW
+            }
+            url = System.env.NEXUSURL 
+        }
+    }
+}
+
+assemble.dependsOn assembleArtifact
+   build.dependsOn assemble
+ publish.dependsOn build

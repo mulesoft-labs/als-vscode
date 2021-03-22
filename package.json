@@ -3,77 +3,30 @@
     "displayName": "AML support",
     "description": "",
     "publisher": "MuleSoft",
-    "version": "0.0.1",
+    "version": "2.1.0-SNAPSHOT",
     "engines": {
-        "vscode": "^1.33.0"
+        "vscode": "^1.43.0"
     },
     "categories": [
         "Programming Languages"
     ],
     "main": "./out/extension",
     "activationEvents": [
-        "onLanguage:raml",
-        "onLanguage:oas-json",
-        "onLanguage:oas-yaml",
-        "onLanguage:async-api",
-        "onLanguage:mark-visit"
+        "onLanguage:raml"
     ],
     "contributes": {
         "languages": [
             {
                 "id": "raml",
                 "aliases": [
-                    "RAML",
-                    "raml"
+                    "ALS",
+                    "als"
                 ],
                 "extensions": [
-                    ".raml"
-                ],
-                "configuration": "./raml-configuration.json"
-            },
-            {
-                "id": "oas-yaml",
-                "aliases": [
-                    "Open API",
-                    "oas"
-                ],
-                "filenamePatterns": [
-                    "api.yaml"
-                ],
-                "configuration": "./raml-configuration.json"
-            },
-            {
-                "id": "oas-json",
-                "aliases": [
-                    "Open API",
-                    "oas"
-                ],
-                "filenamePatterns": [
-                    "api.json",
-                    "*api.json"
-                ],
-                "configuration": "./raml-configuration.json"
-            },
-            {
-                "id": "async-api",
-                "firstLine": "^#%AsyncAPI 0\\.6$",
-                "aliases": [
-                    "Async API"
-                ],
-                "extensions": [
-                    "api.yaml",
-                    "*api.yaml"
-                ],
-                "configuration": "./raml-configuration.json"
-            },
-            {
-                "id": "mark-visit",
-                "aliases": [
-                    "Mark Visit"
-                ],
-                "firstLine": "^#%Mark Visit 1.0$",
-                "extensions": [
-                    ".yaml"
+                    ".raml",
+                    ".yaml",
+                    ".yml",
+                    ".json"
                 ],
                 "configuration": "./raml-configuration.json"
             }
@@ -83,31 +36,39 @@
                 "language": "raml",
                 "scopeName": "source.raml",
                 "path": "./syntaxes/raml.tmLanguage.json"
-            },
-            {
-                "language": "oas-yaml",
-                "scopeName": "source.yaml",
-                "path": "./syntaxes/yaml.tmLanguage.json"
-            },
-            {
-                "language": "oas-json",
-                "scopeName": "source.json",
-                "path": "./syntaxes/json.tmLanguage.json"
-            },
-            {
-                "language": "async-api",
-                "scopeName": "source.asyncapi",
-                "path": "./syntaxes/asyncapi.tmLanguage.json"
-            },
-            {
-                "language": "mark-visit",
-                "scopeName": "source.yaml",
-                "path": "./syntaxes/yaml.tmLanguage.json"
             }
         ],
         "configuration": {
-            "title": "AML Language Server configurations",
+            "title": "AML Language Server",
             "properties": {
+                "amlLanguageServer.run.platform": {
+                    "scope": "application",
+                    "type": "string",
+                    "enum": [
+                        "jvm",
+                        "js"
+                    ],
+                    "default": "js",
+                    "description": "Run ALS as a node or java app"
+                },
+                "amlLanguageServer.run.debug": {
+                    "scope": "application",
+                    "type": "integer",
+                    "default": 0,
+                    "description": "Only Applies with jvm, the debug port to be used (0 if no debug needed)"
+                },
+                "amlLanguageServer.run.path": {
+                    "scope": "application",
+                    "type": "string",
+                    "default": null,
+                    "description": "Select a specific path to run ALS from (beware it corresponds to the selected platform)"
+                },
+                "amlLanguageServer.run.logPath": {
+                    "scope": "application",
+                    "type": "string",
+                    "default": null,
+                    "description": "Select a specific path to dump logs to"
+                },
                 "amlLanguageServer.trace.server": {
                     "scope": "window",
                     "type": "string",
@@ -118,21 +79,110 @@
                     ],
                     "default": "verbose",
                     "description": "Traces the communication between VS Code and the language server."
+                },
+                "amlLanguageServer.formattingOptions.RAML.tabSize": {
+                    "type": "number",
+                    "default": 4,
+                    "description": "How many spaces does each tab represent."
+                },
+                "amlLanguageServer.formattingOptions.OAS.YAML.tabSize": {
+                    "type": "number",
+                    "default": 4,
+                    "description": "How many spaces does each tab represent."
+                },
+                "amlLanguageServer.formattingOptions.OAS.JSON.tabSize": {
+                    "type": "number",
+                    "default": 4,
+                    "description": "If prefer spaces, how many spaces does each tab represent."
+                },
+                "amlLanguageServer.formattingOptions.OAS.JSON.preferSpaces": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Use spaces when tabulating rather than tabs"
+                },
+                "amlLanguageServer.formattingOptions.templateType": {
+                    "type": "string",
+                    "enum": [
+                        "NONE",
+                        "SIMPLE",
+                        "FULL"
+                    ],
+                    "default": "FULL",
+                    "description": "Preferences for suggested tempaltes"
                 }
             }
+        },
+        "commands": [
+            {
+                "command": "als.renameFile",
+                "title": "ALS Rename file",
+                "category": "Modifications",
+                "icon": {
+                    "light": "path/to/light/icon.svg",
+                    "dark": "path/to/dark/icon.svg"
+                }
+            },
+            {
+                "command": "als.serialization",
+                "title": "ALS Serialize",
+                "category": "Modifications",
+                "icon": {
+                    "light": "path/to/light/icon.svg",
+                    "dark": "path/to/dark/icon.svg"
+                }
+            },
+            {
+                "command": "als.conversion",
+                "title": "ALS Conversion",
+                "category": "Modifications",
+                "icon": {
+                    "light": "path/to/light/icon.svg",
+                    "dark": "path/to/dark/icon.svg"
+                }
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "when": "resourceLangId == raml",
+                    "command": "als.renameFile",
+                    "group": "7_modification"
+                },
+                {
+                    "when": "resourceLangId == raml",
+                    "command": "als.serialization",
+                    "group": "7_modification"
+                },
+                {
+                    "when": "resourceLangId == raml",
+                    "command": "als.conversion",
+                    "group": "7_modification"
+                }
+            ]
         }
     },
     "dependencies": {
-        "vscode-languageclient": "^5.2.1",
-        "upath": "^1.1.2"
-    },
-    "devDependencies": {
-        
-        "@types/node": "^11.13.6",
-        "typescript": "^3.4.4",
-        "vscode": "^1.1.33"
+        "@mulesoft/als-node-client": "^3.3.0-SNAPSHOT.227",
+        "@types/mocha": "^8.2.1",
+        "@types/node": "^11.15.20",
+        "@types/vscode": "1.43.0",
+        "mocha": "^8.3.1",
+        "ts-loader": "^8.0.1",
+        "typescript": "^3.9.7",
+        "upath": "^1.2.0",
+        "vsce": "^1.83.0",
+        "vscode-languageclient": "^6.1.3",
+        "vscode-test": "^1.3.0",
+        "webpack": "^4.44.1",
+        "webpack-cli": "^3.3.12"
     },
     "scripts": {
-        "compile": "tsc"
+        "compile": "tsc",
+        "vscode:prepublish": "webpack --mode production",
+        "webpack": "webpack --mode development",
+        "webpack-dev": "webpack --mode development --watch",
+        "test-compile": "tsc -p ./",
+        "pretest": "npm run test-compile",
+        "test": "node ./out/test/runTest.js"
     }
 }
