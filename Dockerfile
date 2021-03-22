@@ -9,8 +9,9 @@ RUN apt-get update && apt-get install -y locales
 
 #Install XVFB
 RUN echo "Installing Visual Interface (XVFB)"
-RUN apt-get -qq --assume-yes install xvfb xfonts-100dpi xfonts-75dpi xfonts-cyrillic xorg dbus-x11 > /dev/null
 RUN apt-get --assume-yes install libgtk-3-0 libdbus-glib-1-2 libasound2 libgtk2.0-0 apt-utils > /dev/null
+RUN apt-get -qq --assume-yes install xvfb
+RUN Xvfb :99 -screen 0 1280x1024x24 -ac &
 
 RUN echo "en_US UTF-8" >> /etc/locale.gen
 RUN dpkg-reconfigure locales

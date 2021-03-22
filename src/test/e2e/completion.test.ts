@@ -21,7 +21,10 @@ suite('Should do completion', function() {
 			items: [
 				{ label: '#%Dialect 1.0', kind: vscode.CompletionItemKind.Property },
 				{ label: '#%Library / Dialect 1.0', kind: vscode.CompletionItemKind.Property },
+				{ label: '#%Library / Vocabulary 1.0', kind: vscode.CompletionItemKind.Property },
 				{ label: '#%Patch / Dialect 1.0', kind: vscode.CompletionItemKind.Property },
+				{ label: '#%Patch / Vocabulary 1.0', kind: vscode.CompletionItemKind.Property },
+				{ label: '#%Vocabulary 1.0', kind: vscode.CompletionItemKind.Property },
 				{ label: 'asyncapi: "2.0.0"', kind: vscode.CompletionItemKind.Property },
 				{ label: 'openapi: "3.0.0"', kind: vscode.CompletionItemKind.Property },
 				{ label: 'swagger: "2.0"', kind: vscode.CompletionItemKind.Property }
