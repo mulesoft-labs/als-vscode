@@ -2,7 +2,7 @@
     "name": "aml-vscode",
     "displayName": "AML support",
     "description": "",
-    "publisher": "MuleSoft",
+    "publisher": "MuleSoftInc",
     "version": "2.1.0-SNAPSHOT",
     "engines": {
         "vscode": "^1.43.0"
