@@ -12,30 +12,31 @@
     ],
     "main": "./out/extension",
     "activationEvents": [
-        "onLanguage:raml"
+        "onLanguage:aml"
     ],
     "contributes": {
         "languages": [
             {
-                "id": "raml",
+                "id": "aml",
                 "aliases": [
                     "ALS",
                     "als"
                 ],
                 "extensions": [
                     ".raml",
+                    ".aml",
                     ".yaml",
                     ".yml",
                     ".json"
                 ],
-                "configuration": "./raml-configuration.json"
+                "configuration": "./aml-configuration.json"
             }
         ],
         "grammars": [
             {
-                "language": "raml",
-                "scopeName": "source.raml",
-                "path": "./syntaxes/raml.tmLanguage.json"
+                "language": "aml",
+                "scopeName": "source.aml",
+                "path": "./syntaxes/aml.tmLanguage.json"
             }
         ],
         "configuration": {
@@ -49,25 +50,25 @@
                         "js"
                     ],
                     "default": "js",
-                    "description": "Run ALS as a node or java app"
+                    "description": "Run ALS as a node or java app. (Requires restart)"
                 },
                 "amlLanguageServer.run.debug": {
                     "scope": "application",
                     "type": "integer",
                     "default": 0,
-                    "description": "Only Applies with jvm, the debug port to be used (0 if no debug needed)"
+                    "description": "Only Applies with jvm, the debug port to be used (0 if no debug needed). (Requires restart)"
                 },
                 "amlLanguageServer.run.path": {
                     "scope": "application",
                     "type": "string",
                     "default": null,
-                    "description": "Select a specific path to run ALS from (beware it corresponds to the selected platform)"
+                    "description": "Select a specific path to run ALS from (beware it corresponds to the selected platform). (Requires restart)"
                 },
                 "amlLanguageServer.run.logPath": {
                     "scope": "application",
                     "type": "string",
                     "default": null,
-                    "description": "Select a specific path to dump logs to"
+                    "description": "Select a specific path to dump logs to. (Requires restart)"
                 },
                 "amlLanguageServer.trace.server": {
                     "scope": "window",
@@ -78,7 +79,7 @@
                         "verbose"
                     ],
                     "default": "verbose",
-                    "description": "Traces the communication between VS Code and the language server."
+                    "description": "Traces the communication between VS Code and the language server. (Requires restart)"
                 },
                 "amlLanguageServer.formattingOptions.RAML.tabSize": {
                     "type": "number",
@@ -144,17 +145,17 @@
         "menus": {
             "explorer/context": [
                 {
-                    "when": "resourceLangId == raml",
+                    "when": "resourceLangId == aml",
                     "command": "als.renameFile",
                     "group": "7_modification"
                 },
                 {
-                    "when": "resourceLangId == raml",
+                    "when": "resourceLangId == aml",
                     "command": "als.serialization",
                     "group": "7_modification"
                 },
                 {
-                    "when": "resourceLangId == raml",
+                    "when": "resourceLangId == aml",
                     "command": "als.conversion",
                     "group": "7_modification"
                 }
