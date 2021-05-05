@@ -24,6 +24,7 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
     alsLog.appendLine("Hi! I am alsLog, and I will be your troubleshooting companion for the day. I hope you won't need me!");
 
 	const documentSelector = [
+		{ language: 'aml' },
 		{ language: 'raml' },
 		{ language: 'oas-yaml' },
 		{ language: 'oas-json' },
@@ -71,12 +72,10 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 				const address = server.address()
 				const port = typeof address === 'object' ? address.port : 0
 
-				const dialectPath = `${withRootSlash(upath.toUnix(extensionPath))}/resources/dialect.yaml`
 
 
 				alsLog.appendLine("[ALS] Configuration: " + JSON.stringify(runParams))
 				alsLog.appendLine("[ALS] Extension path: " + extensionPath)
-				alsLog.appendLine("[ALS] Dialect path: " + dialectPath)
 				alsLog.appendLine("[ALS] Storage path: " + storagePath)
 				alsLog.appendLine("[ALS] used path: " + path)
 				alsLog.appendLine("[ALS] jar path: " + jarPath)
