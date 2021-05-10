@@ -164,6 +164,7 @@
     },
     "dependencies": {
         "@mulesoft/als-node-client": "^3.2.7-0",
+        "@mulesoft/als-server": "^3.3.0-SNAPSHOT.258",
         "@types/mocha": "^8.2.1",
         "@types/node": "^11.15.20",
         "@types/vscode": "1.43.0",

@@ -2,7 +2,7 @@
 
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import { getDocUri, activate } from '../helper';
+import { getDocUri, activate, sleep } from '../helper';
 
 suite('Should do completion', function() {
 
@@ -59,13 +59,6 @@ async function testCompletion(
 		position,
 		""
 	)) as vscode.CompletionList;
-	
-	actualCompletionList.items.forEach(e => {
-		console.log(e);
-	})
-
-	console.log("Size: " + actualCompletionList.items.length);
-	console.log("ESize: " + expectedCompletionList.items.length);
 
 	assert.ok(actualCompletionList.items.length >= expectedCompletionList.items.length);
 	expectedCompletionList.items.forEach((expectedItem, i) => {
