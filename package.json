@@ -56,7 +56,7 @@
                     "scope": "application",
                     "type": "integer",
                     "default": 0,
-                    "description": "Only Applies with jvm, the debug port to be used (0 if no debug needed). (Requires restart)"
+                    "description": "Only Applies with jvm, the debug port to be used (0 disables debug). (Requires restart)"
                 },
                 "amlLanguageServer.run.path": {
                     "scope": "application",
@@ -94,7 +94,7 @@
                 "amlLanguageServer.formattingOptions.OAS.JSON.tabSize": {
                     "type": "number",
                     "default": 4,
-                    "description": "If prefer spaces, how many spaces does each tab represent."
+                    "description": "If you prefer spaces, how many spaces does each tab represent."
                 },
                 "amlLanguageServer.formattingOptions.OAS.JSON.preferSpaces": {
                     "type": "boolean",
@@ -109,7 +109,7 @@
                         "FULL"
                     ],
                     "default": "FULL",
-                    "description": "Preferences for suggested tempaltes"
+                    "description": "Preferences for suggested templates"
                 }
             }
         },
