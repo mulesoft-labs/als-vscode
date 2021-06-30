@@ -1,6 +1,7 @@
 # aml-vscode README
 
-Custom ALS LSP client, implements LSP and other custom features
+Custom ALS LSP client, implements LSP and other custom features.
+Experimental project.
 
 ## Supported Web Apis:
 * Raml 1.0
