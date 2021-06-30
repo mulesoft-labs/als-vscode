@@ -4,8 +4,8 @@ def slackChannel = '#als-extension-bot'
 
 def getVersion(alsVersion) {
     if(alsVersion.contains("-SNAPSHOT"))
-        "2.1.0-SNAPSHOT"
-    else "2.0.${env.BUILD_NUMBER}"
+        "0.4.0-SNAPSHOT"
+    else "0.3.${env.BUILD_NUMBER}"
 }
 
 def getNexusFullUri(version){
@@ -27,7 +27,7 @@ pipeline {
         dockerfile true
     }
     parameters {
-        string(name: 'ALS_VERSION', defaultValue: '3.3.0-SNAPSHOT.283', description: 'ALS node client version')
+        string(name: 'ALS_VERSION', defaultValue: '3.3.0-SNAPSHOT.306', description: 'ALS node client version')
     }
 
     environment {

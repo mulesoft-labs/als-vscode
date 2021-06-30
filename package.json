@@ -3,7 +3,7 @@
     "displayName": "AML support",
     "description": "",
     "publisher": "MuleSoftInc",
-    "version": "2.1.0-SNAPSHOT",
+    "version": "0.1.0-SNAPSHOT",
     "engines": {
         "vscode": "^1.43.0"
     },
@@ -12,7 +12,7 @@
     ],
     "main": "./out/extension",
     "repository": {
-        "url": "https://github.com/mulesoft-TBD/als-vscode"
+        "url": "https://github.com/aml-org/als-vscode"
     },
     "icon": "als-icon.png",
     "activationEvents": [
@@ -167,7 +167,7 @@
         }
     },
     "dependencies": {
-        "@mulesoft/als-node-client": "^3.3.0-SNAPSHOT.283",
+        "@mulesoft/als-node-client": "^3.3.0-SNAPSHOT.306",
         "@types/mocha": "^8.2.2",
         "@types/node": "^11.15.54",
         "@types/vscode": "1.43.0",

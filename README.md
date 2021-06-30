@@ -11,7 +11,6 @@ Custom ALS LSP client, implements LSP and other custom features
 * AML documents: beta
 
 ## Features
-
 * Completion
 * Diagnostics
 * Structure
