@@ -87,17 +87,17 @@
                 },
                 "amlLanguageServer.formattingOptions.RAML.tabSize": {
                     "type": "number",
-                    "default": 4,
+                    "default": 2,
                     "description": "How many spaces does each tab represent."
                 },
                 "amlLanguageServer.formattingOptions.OAS.YAML.tabSize": {
                     "type": "number",
-                    "default": 4,
+                    "default": 2,
                     "description": "How many spaces does each tab represent."
                 },
                 "amlLanguageServer.formattingOptions.OAS.JSON.tabSize": {
                     "type": "number",
-                    "default": 4,
+                    "default": 2,
                     "description": "If you prefer spaces, how many spaces does each tab represent."
                 },
                 "amlLanguageServer.formattingOptions.OAS.JSON.preferSpaces": {

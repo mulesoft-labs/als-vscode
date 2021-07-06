@@ -7,7 +7,8 @@ import { notifyConfig } from './configuration';
 import { registerFormatter } from './language';
 
 var languageClient: LanguageClient
-
+// todo: cleanup all URIs using languageClient.code2ProtocolConverter.asUri(fileUri)
+    // vscode.Uri with `toString()` causes issues with windows paths
 export function registerCommands(langClient: LanguageClient) {
     languageClient = langClient
     vscode.commands.registerCommand("als.renameFile", renameFileHandler)
@@ -46,12 +47,12 @@ const renameFileHandler = (fileUri: vscode.Uri) => {
 
 const conversionHandler = (fileUri: vscode.Uri) => {
     console.log("als.conversion called")
-    var splittedPath = fileUri.toString().split("/")
+    var splittedPath = languageClient.code2ProtocolConverter.asUri(fileUri).split("/")
     const oldFileName = splittedPath[splittedPath.length - 1]
     const splittedName = oldFileName.split(".")
     const currentExtension = splittedName[splittedName.length - 1]
-    const originalPath = fileUri.toString().slice(0, fileUri.toString().lastIndexOf(oldFileName))
-    console.log("Old name: " + fileUri.toString() + " (" +oldFileName + ")")
+    const originalPath = languageClient.code2ProtocolConverter.asUri(fileUri).slice(0, languageClient.code2ProtocolConverter.asUri(fileUri).lastIndexOf(oldFileName))
+    console.log("Old name: " + languageClient.code2ProtocolConverter.asUri(fileUri) + " (" +oldFileName + ")")
     
 
     awaitInputBox(oldFileName, "New name", "New file name", [0, oldFileName.lastIndexOf(currentExtension) - 1])
@@ -79,7 +80,7 @@ const conversionHandler = (fileUri: vscode.Uri) => {
 
 function sendSerializationRequest(fileUri: vscode.Uri) {
     const params: SerializationParams = {
-        documentIdentifier: { uri: fileUri.toString() }
+        documentIdentifier: { uri: languageClient.code2ProtocolConverter.asUri(fileUri) }
     };
 
     languageClient.sendRequest(messages.AlsSerializationRequest.type, params).then(result => {
@@ -89,7 +90,7 @@ function sendSerializationRequest(fileUri: vscode.Uri) {
 
 function sendConversionRequest(fileUri: vscode.Uri, targetUri: vscode.Uri, vendor: string, syntax?: string) {
     const params: ConversionParams = {
-        uri: fileUri.toString(),
+        uri: languageClient.code2ProtocolConverter.asUri(fileUri),
         target: vendor,
         syntax: syntax
     };
@@ -124,8 +125,8 @@ function applySerializationEdits(result: SerializationResult) {
 
 function sendRenameRequest(fileUri: vscode.Uri, originalPath: string, newName: string) {
     const params: RenameFileActionParams = {
-        oldDocument: { uri: fileUri.toString() },
-        newDocument: { uri: originalPath + newName }
+        oldDocument: { uri: languageClient.code2ProtocolConverter.asUri(fileUri) },
+        newDocument: { uri: languageClient.code2ProtocolConverter.asUri(vscode.Uri.parse(originalPath + newName)) }
     };
 
     languageClient.sendRequest(messages.AlsRenameFileRequest.type, params).then(result => {
@@ -156,3 +157,5 @@ export const languageClientStateListener = (e: StateChangeEvent) => {
             console.log("[ALS] Unknown state: " + e.newState)
     }
 }
+
+
