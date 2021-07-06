@@ -5,8 +5,9 @@ import * as path from 'path'
 import * as net from 'net'
 import * as child_process from "child_process"
 import * as vscode from 'vscode'
+import * as url from 'url'
 
-import { workspace, ExtensionContext } from 'vscode'
+import { workspace, ExtensionContext, Uri } from 'vscode'
 import { LanguageClient, LanguageClientOptions, StreamInfo } from 'vscode-languageclient'
 import { registerCommands } from './commands'
 import { notifyConfig } from './configuration'
@@ -123,7 +124,11 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 		synchronize: {
 			configurationSection: 'amlLanguageServer',
 			fileEvents: workspace.createFileSystemWatcher('**/.clientrc')
-		}
+		},
+        uriConverters: {
+            code2Protocol: uri => new url.URL(uri.toString(true)).href,
+            protocol2Code: str => Uri.parse(str)
+        }
 	}
 
 	const languageClient = new LanguageClient(
