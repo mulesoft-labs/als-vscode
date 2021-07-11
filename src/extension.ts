@@ -11,8 +11,8 @@ import { workspace, ExtensionContext, Uri } from 'vscode'
 import { LanguageClient, LanguageClientOptions, StreamInfo } from 'vscode-languageclient'
 import { registerCommands } from './commands'
 import { notifyConfig } from './configuration'
-import { ConversionFeature } from './features'
-
+import { ConversionFeature, SerializationNotificationFeature } from './features'
+import {SerializationResult} from './types'
 
 var jsAls = require.resolve("@mulesoft/als-node-client")
 var upath = require("upath")
@@ -62,6 +62,8 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 
 				const jarPath = isLocal? customPath : `${extensionPath}/lib/als-server.jar`
 				const jsPath = isLocal? customPath : jsAls
+				// const jsPath = require.resolve(`${extensionPath}/lib/node-package/dist/als-node-client.min.js`)
+
 				const logFile = logPath !== null ? logPath : `${storagePath}/vscode-aml-language-server.log`
 				
 				const path = isJVM? jarPath : jsPath
@@ -139,9 +141,14 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 
 	registerCommands(languageClient)
 	workspace.onDidChangeConfiguration(() => notifyConfig(languageClient))
+
 	const disposable = languageClient.start()
 
-	languageClient.registerFeature(new ConversionFeature())
+	languageClient.registerFeatures([
+		// new SerializationNotificationFeature(),
+		new ConversionFeature()
+	])
+
 	context.subscriptions.push(disposable)
 
 	await languageClient.onReady();

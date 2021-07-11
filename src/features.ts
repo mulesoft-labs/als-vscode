@@ -6,3 +6,12 @@ export class ConversionFeature implements StaticFeature {
     initialize(): void {
     }
 }
+export class SerializationNotificationFeature implements StaticFeature {
+    fillClientCapabilities(capabilities): void {
+        capabilities.serialization = {
+            acceptsNotification: true
+        };
+    }
+    initialize(): void {
+    }
+}
