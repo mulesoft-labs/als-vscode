@@ -5,24 +5,20 @@ interface IMap<V> { [key: string]: V }
 
 const platform = workspace.getConfiguration("amlLanguageServer.run").get("platform")
 
-const renameFile = platform == "js"? "RenameFile" : "renameFile"
-const updateConfiguration = platform == "js"? "UpdateConfiguration" : "updateConfiguration"
-const serialization = platform == "js"? "Serialization" : "serialization"
-const conversion = platform == "js"? "Conversion" : "conversion"
 
 
 export namespace messages {
     export const AlsConfigurationNotification = {
-        type: new NotificationType<AlsConfiguration>(updateConfiguration)
+        type: new NotificationType<AlsConfiguration>("updateConfiguration")
     }
     export const AlsRenameFileRequest = {
-        type: new RequestType<RenameFileActionParams, RenameFileActionResult, void>(renameFile)
+        type: new RequestType<RenameFileActionParams, RenameFileActionResult, void>("renameFile")
     }
     export const AlsSerializationRequest = {
-        type: new RequestType<SerializationParams, SerializationResult, void>(serialization)
+        type: new RequestType<SerializationParams, SerializationResult, void>("serialization")
     }
     export const AlsConversionRequest = {
-        type: new RequestType<ConversionParams, SerializedDocument, void>(conversion)
+        type: new RequestType<ConversionParams, SerializedDocument, void>("conversion")
     }
 }
 
