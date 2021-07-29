@@ -117,7 +117,7 @@ function applySerializationEdits(result: SerializationResult) {
     const newUri = vscode.Uri.parse(result.uri + ".json");
     const edits = new vscode.WorkspaceEdit();
     edits.createFile(newUri)
-    edits.insert(newUri, new vscode.Position(0,0), JSON.stringify(result.model))
+    edits.insert(newUri, new vscode.Position(0,0), result.model)
     vscode.workspace.applyEdit(edits).then( result =>
         console.log(JSON.stringify(result))
     )
