@@ -1,5 +1,5 @@
 import { AlsConfiguration, messages } from "./types";
-import { LanguageClient } from "vscode-languageclient";
+import { LanguageClient } from "vscode-languageclient/node";
 import { workspace } from "vscode";
 
 

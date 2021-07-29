@@ -1,10 +1,11 @@
 
 import * as vscode from 'vscode';
 import { RenameFileActionParams, messages, RenameFileActionResult, SerializationParams, SerializationResult, ConversionParams, SerializedDocument } from './types';
-import { LanguageClient, StateChangeEvent } from 'vscode-languageclient';
+import { StateChangeEvent } from 'vscode-languageclient';
 import { awaitInputBox } from './ui';
 import { notifyConfig } from './configuration';
 import { registerFormatter } from './language';
+import { LanguageClient } from 'vscode-languageclient/node';
 
 var languageClient: LanguageClient
 // todo: cleanup all URIs using languageClient.code2ProtocolConverter.asUri(fileUri)
