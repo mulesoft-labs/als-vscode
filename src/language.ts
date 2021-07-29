@@ -1,11 +1,13 @@
 import * as vscode from 'vscode'
-import { DocumentFormattingParams, DocumentFormattingRequest, DocumentRangeFormattingParams, DocumentRangeFormattingRequest, FormattingOptions, LanguageClient, TextEdit } from 'vscode-languageclient'
+import { DocumentFormattingParams, DocumentFormattingRequest, DocumentRangeFormattingParams, DocumentRangeFormattingRequest, FormattingOptions, TextEdit } from 'vscode-languageclient'
+import { FileFormattingOptions } from 'vscode-languageclient/lib/common/codeConverter'
+import { LanguageClient } from 'vscode-languageclient/node'
 import { languageClientStateListener } from './commands'
 
 const defaultFormattingOptions = {
     tabSize: 2,
     insertSpaces: true
-} 
+}
 
 export const LANGUAGE_ID : string = "raml"
 
@@ -27,7 +29,7 @@ class FormattingProvider implements vscode.DocumentFormattingEditProvider, vscod
     const params : DocumentRangeFormattingParams = {
       textDocument : this.languageClient.code2ProtocolConverter.asTextDocumentIdentifier(document),
       range : this.languageClient.code2ProtocolConverter.asRange(range),
-      options : this.languageClient.code2ProtocolConverter.asFormattingOptions(options)
+      options : this.languageClient.code2ProtocolConverter.asFormattingOptions(options, {})
     }
 
     return this.languageClient.sendRequest(DocumentRangeFormattingRequest.type, params)
@@ -42,7 +44,7 @@ class FormattingProvider implements vscode.DocumentFormattingEditProvider, vscod
 
     var params : DocumentFormattingParams = {
       textDocument: this.languageClient.code2ProtocolConverter.asTextDocumentIdentifier(document),
-      options: this.languageClient.code2ProtocolConverter.asFormattingOptions(options)
+      options: this.languageClient.code2ProtocolConverter.asFormattingOptions(options, {})
     }
     // ProtocolRequestType<DocumentFormattingParams, TextEdit[] | null, never, void, DocumentFormattingRegistrationOptions>;
     return this.languageClient.sendRequest(DocumentFormattingRequest.type, params)

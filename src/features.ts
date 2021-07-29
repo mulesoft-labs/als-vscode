@@ -1,5 +1,9 @@
-import { StaticFeature } from 'vscode-languageclient';
+import { InitializeParams, StaticFeature } from 'vscode-languageclient';
 export class ConversionFeature implements StaticFeature {
+    fillInitializeParams?: (params: InitializeParams) => void;
+    dispose(): void {
+        // do nothing
+    }
     fillClientCapabilities(capabilities): void {
         capabilities.conversion = { supported: true };
     }
@@ -7,6 +11,10 @@ export class ConversionFeature implements StaticFeature {
     }
 }
 export class SerializationNotificationFeature implements StaticFeature {
+    fillInitializeParams?: (params: InitializeParams) => void;
+    dispose(): void {
+        // do nothing
+    }
     fillClientCapabilities(capabilities): void {
         capabilities.serialization = {
             acceptsNotification: true

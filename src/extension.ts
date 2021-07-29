@@ -8,11 +8,18 @@ import * as vscode from 'vscode'
 import * as url from 'url'
 
 import { workspace, ExtensionContext, Uri } from 'vscode'
-import { LanguageClient, LanguageClientOptions, StreamInfo } from 'vscode-languageclient'
+import { BaseLanguageClient, ClientCapabilities, CommonLanguageClient, DocumentSelector, InitializeParams, ServerCapabilities, StaticFeature } from 'vscode-languageclient'
+import {
+  LanguageClient,
+  LanguageClientOptions,
+  ServerOptions,
+  StreamInfo,
+  TransportKind
+} from 'vscode-languageclient/node';
 import { registerCommands } from './commands'
 import { notifyConfig } from './configuration'
 import { ConversionFeature, SerializationNotificationFeature } from './features'
-import {SerializationResult} from './types'
+import {AlsInitializeParams, SerializationResult} from './types'
 
 var jsAls = require.resolve("@mulesoft/als-node-client")
 var upath = require("upath")
@@ -74,8 +81,6 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 				}
 				const address = server.address()
 				const port = typeof address === 'object' ? address.port : 0
-
-
 
 				alsLog.appendLine("[ALS] Configuration: " + JSON.stringify(runParams))
 				alsLog.appendLine("[ALS] Extension path: " + extensionPath)
@@ -146,6 +151,7 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 
 	languageClient.registerFeatures([
 		// new SerializationNotificationFeature(),
+		new AlsInitializeParamsFeature(),
 		new ConversionFeature()
 	])
 
@@ -194,4 +200,24 @@ function correctBinname(binname: string) {
 
 function withRootSlash(path: String) {
 	return path.startsWith("/") ? path : "/" + path
+}
+
+class AlsInitializeParamsFeature implements StaticFeature {
+	fillInitializeParams?: (params: InitializeParams) => void = (params: InitializeParams) => {
+			var castedParams = params as AlsInitializeParams
+			castedParams.projectConfigurationStyle = { 
+				style: "command"
+			}
+	}
+	fillClientCapabilities(capabilities: ClientCapabilities): void {
+		// do nothing
+	}
+	initialize(capabilities: ServerCapabilities<any>, documentSelector: DocumentSelector): void {
+		// do nothing
+	}
+	dispose(): void {
+		// do nothing
+	}
+	
+
 }

@@ -67,7 +67,12 @@ export type AlsFormattingOptions = {
     preferSpaces: Boolean,
 }
 
+export type ProjectConfigurationStyle = {
+    style: String
+}
+
 export type AlsInitializeParams = InitializeParams & {
-    alsConfiguration: AlsConfiguration
+    configuration: AlsConfiguration,
+    projectConfigurationStyle: ProjectConfigurationStyle
 }
 
