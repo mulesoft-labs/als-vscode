@@ -113,7 +113,12 @@
                         "FULL"
                     ],
                     "default": "FULL",
-                    "description": "Preferences for suggested templates"
+                    "description": "Preferences for suggested tempaltes"
+                },
+                "amlLanguageServer.shouldPrettyPrintSerialization": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Pretty print JSON-LD on serialization request"
                 }
             }
         },
@@ -167,9 +172,9 @@
         }
     },
     "dependencies": {
-        "@mulesoft/als-node-client": "^3.2.9",
-        "@types/mocha": "^8.2.2",
-        "@types/node": "^11.15.54",
+        "@mulesoft/als-node-client": "4.0.0-LSP-SNAPSHOT.22",
+        "@types/mocha": "^8.2.1",
+        "@types/node": "^11.15.20",
         "@types/vscode": "1.43.0",
         "mocha": "^8.4.0",
         "ts-loader": "^8.3.0",

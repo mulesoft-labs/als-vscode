@@ -1,10 +1,13 @@
 import { TextDocumentIdentifier, InitializeParams, NotificationType, RequestType, WorkspaceEdit } from "vscode-languageclient"
-import { workspace } from "vscode";
 
 interface IMap<V> { [key: string]: V }
 
-const platform = workspace.getConfiguration("amlLanguageServer.run").get("platform")
-
+const cleanDiagnosticTree = "cleanDiagnosticTree"   // cleanDiagnosticTree
+const conversion = "conversion"                     // conversion
+const fileUsage = "fileUsage"                       // fileUsage
+const renameFile = "renameFile"                     // renameFile
+const serialization = "serialization"               // serialization
+const updateConfiguration = "updateConfiguration"   // updateConfiguration
 
 
 export namespace messages {
@@ -56,6 +59,7 @@ export type RenameFileActionParams = {
 export type AlsConfiguration = {
     formattingOptions: IMap<AlsFormattingOptions>
     templateType: String
+    prettyPrintSerialization: boolean
 }
 
 export type AlsFormattingOptions = {
