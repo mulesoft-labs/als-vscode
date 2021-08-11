@@ -172,7 +172,7 @@
         }
     },
     "dependencies": {
-        "@mulesoft/als-node-client": "4.0.0-LSP-SNAPSHOT.22",
+        "@mulesoft/als-node-client": "4.0.0",
         "@types/mocha": "^8.2.1",
         "@types/node": "^11.15.20",
         "@types/vscode": "1.52.0",
