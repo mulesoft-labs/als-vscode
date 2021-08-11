@@ -37,19 +37,37 @@
             },
             {
                 "id": "oas",
-                "aliases": ["OAS3", "OpenApi3", "OpenApi 3.0"]
+                "aliases": [
+                    "OAS3",
+                    "OpenApi3",
+                    "OpenApi 3.0"
+                ]
             },
             {
                 "id": "swagger",
-                "aliases": ["Swagger 2", "OpenApi2", "OpenApi 2.0", "oas2.0"]
+                "aliases": [
+                    "Swagger 2",
+                    "OpenApi2",
+                    "OpenApi 2.0",
+                    "oas2.0"
+                ]
             },
             {
                 "id": "raml",
-                "aliases": ["RAML", "Raml 1.0", "Raml 0.8", "Raml"]
+                "aliases": [
+                    "RAML",
+                    "Raml 1.0",
+                    "Raml 0.8",
+                    "Raml"
+                ]
             },
             {
                 "id": "async",
-                "aliases": ["AsyncAPI", "AsyncAPI 1.0", "AsyncAPI 2.0"]
+                "aliases": [
+                    "AsyncAPI",
+                    "AsyncAPI 1.0",
+                    "AsyncAPI 2.0"
+                ]
             }
         ],
         "grammars": [
