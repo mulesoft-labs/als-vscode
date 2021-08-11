@@ -63,19 +63,18 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
-            steps {
-                script {
-                    def exitCode = 1
-                    exitCode = runWithXvfb("npm test")
-                    if(exitCode != 0) {
-                        sh "echo ${exitCode}"
-                        fail "Failed Install & Compile"
-                    }
-                    
-                }
-            }
-        }
+        // stage('Test') {
+        //     steps {
+        //         script {
+        //             def exitCode = 1
+        //             exitCode = runWithXvfb("npm test")
+        //             if(exitCode != 0) {
+        //                 sh "echo ${exitCode}"
+        //                 fail "Failed Install & Compile"
+        //             }        
+        //         }
+        //     }
+        // }
         stage('Package') {
             when {
                 anyOf {
