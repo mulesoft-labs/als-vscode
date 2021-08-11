@@ -1,10 +1,11 @@
 
 import * as vscode from 'vscode';
 import { RenameFileActionParams, messages, RenameFileActionResult, SerializationParams, SerializationResult, ConversionParams, SerializedDocument } from './types';
-import { LanguageClient, StateChangeEvent } from 'vscode-languageclient';
+import { StateChangeEvent } from 'vscode-languageclient';
 import { awaitInputBox } from './ui';
 import { notifyConfig } from './configuration';
 import { registerFormatter } from './language';
+import { LanguageClient } from 'vscode-languageclient/node';
 
 var languageClient: LanguageClient
 // todo: cleanup all URIs using languageClient.code2ProtocolConverter.asUri(fileUri)
@@ -117,7 +118,7 @@ function applySerializationEdits(result: SerializationResult) {
     const newUri = vscode.Uri.parse(result.uri + ".json");
     const edits = new vscode.WorkspaceEdit();
     edits.createFile(newUri)
-    edits.insert(newUri, new vscode.Position(0,0), JSON.stringify(result.model))
+    edits.insert(newUri, new vscode.Position(0,0), result.model)
     vscode.workspace.applyEdit(edits).then( result =>
         console.log(JSON.stringify(result))
     )

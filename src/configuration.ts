@@ -1,5 +1,5 @@
 import { AlsConfiguration, messages } from "./types";
-import { LanguageClient } from "vscode-languageclient";
+import { LanguageClient } from "vscode-languageclient/node";
 import { workspace } from "vscode";
 
 
@@ -7,7 +7,8 @@ export const initialConfiguration: AlsConfiguration = {
     formattingOptions: {
         "application/raml+yaml": { tabSize: 2, preferSpaces: true }
     },
-    templateType: "FULL"
+    templateType: "FULL",
+    prettyPrintSerialization: true
 }
 
 export var currentConfiguration: AlsConfiguration = initialConfiguration
@@ -25,6 +26,7 @@ function readSettingsFromVSCode() {
             "application/yaml": { tabSize: currentSettings.get("OAS.YAML.tabSize"), preferSpaces: true },
             "application/json": { tabSize: currentSettings.get("OAS.JSON.tabSize"), preferSpaces: currentSettings.get("OAS.JSON.preferSpaces") }
         },
-        templateType: currentSettings.get("templateType")
+        templateType: currentSettings.get("templateType"),
+        prettyPrintSerialization: workspace.getConfiguration("amlLanguageServer").get("shouldPrettyPrintSerialization")
     }
 }

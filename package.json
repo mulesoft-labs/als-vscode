@@ -5,7 +5,7 @@
     "publisher": "MuleSoftInc",
     "version": "0.1.0-SNAPSHOT",
     "engines": {
-        "vscode": "^1.43.0"
+        "vscode": "^1.52.0"
     },
     "categories": [
         "Programming Languages"
@@ -34,6 +34,22 @@
                     ".json"
                 ],
                 "configuration": "./aml-configuration.json"
+            },
+            {
+                "id": "oas",
+                "aliases": ["OAS3", "OpenApi3", "OpenApi 3.0"]
+            },
+            {
+                "id": "swagger",
+                "aliases": ["Swagger 2", "OpenApi2", "OpenApi 2.0", "oas2.0"]
+            },
+            {
+                "id": "raml",
+                "aliases": ["RAML", "Raml 1.0", "Raml 0.8", "Raml"]
+            },
+            {
+                "id": "async",
+                "aliases": ["AsyncAPI", "AsyncAPI 1.0", "AsyncAPI 2.0"]
             }
         ],
         "grammars": [
@@ -42,6 +58,15 @@
                 "scopeName": "source.aml",
                 "path": "./syntaxes/aml.tmLanguage.json"
             }
+        ],
+        "keywords": [
+            "aml",
+            "swagger",
+            "api",
+            "raml",
+            "openapi",
+            "asyncapi",
+            "mulesoft"
         ],
         "configuration": {
             "title": "AML Language Server",
@@ -113,7 +138,12 @@
                         "FULL"
                     ],
                     "default": "FULL",
-                    "description": "Preferences for suggested templates"
+                    "description": "Preferences for suggested tempaltes"
+                },
+                "amlLanguageServer.shouldPrettyPrintSerialization": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Pretty print JSON-LD on serialization request"
                 }
             }
         },
@@ -167,16 +197,16 @@
         }
     },
     "dependencies": {
-        "@mulesoft/als-node-client": "^3.2.9",
-        "@types/mocha": "^8.2.2",
-        "@types/node": "^11.15.54",
-        "@types/vscode": "1.43.0",
+        "@mulesoft/als-node-client": "4.0.0",
+        "@types/mocha": "^8.2.1",
+        "@types/node": "^11.15.20",
+        "@types/vscode": "1.52.0",
         "mocha": "^8.4.0",
         "ts-loader": "^8.3.0",
         "typescript": "^3.9.9",
         "upath": "^1.2.0",
         "vsce": "^1.88.0",
-        "vscode-languageclient": "^6.1.3",
+        "vscode-languageclient": "^7.0.0",
         "vscode-test": "^1.5.2",
         "webpack": "^4.46.0",
         "webpack-cli": "^3.3.12"

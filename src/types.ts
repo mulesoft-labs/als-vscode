@@ -1,28 +1,27 @@
 import { TextDocumentIdentifier, InitializeParams, NotificationType, RequestType, WorkspaceEdit } from "vscode-languageclient"
-import { workspace } from "vscode";
 
 interface IMap<V> { [key: string]: V }
 
-const platform = workspace.getConfiguration("amlLanguageServer.run").get("platform")
-
-const renameFile = platform == "js"? "RenameFile" : "renameFile"
-const updateConfiguration = platform == "js"? "UpdateConfiguration" : "updateConfiguration"
-const serialization = platform == "js"? "Serialization" : "serialization"
-const conversion = platform == "js"? "Conversion" : "conversion"
+const cleanDiagnosticTree = "cleanDiagnosticTree"   // cleanDiagnosticTree
+const conversion = "conversion"                     // conversion
+const fileUsage = "fileUsage"                       // fileUsage
+const renameFile = "renameFile"                     // renameFile
+const serialization = "serialization"               // serialization
+const updateConfiguration = "updateConfiguration"   // updateConfiguration
 
 
 export namespace messages {
     export const AlsConfigurationNotification = {
-        type: new NotificationType<AlsConfiguration>(updateConfiguration)
+        type: new NotificationType<AlsConfiguration>("updateConfiguration")
     }
     export const AlsRenameFileRequest = {
-        type: new RequestType<RenameFileActionParams, RenameFileActionResult, void>(renameFile)
+        type: new RequestType<RenameFileActionParams, RenameFileActionResult, void>("renameFile")
     }
     export const AlsSerializationRequest = {
-        type: new RequestType<SerializationParams, SerializationResult, void>(serialization)
+        type: new RequestType<SerializationParams, SerializationResult, void>("serialization")
     }
     export const AlsConversionRequest = {
-        type: new RequestType<ConversionParams, SerializedDocument, void>(conversion)
+        type: new RequestType<ConversionParams, SerializedDocument, void>("conversion")
     }
 }
 
@@ -60,6 +59,7 @@ export type RenameFileActionParams = {
 export type AlsConfiguration = {
     formattingOptions: IMap<AlsFormattingOptions>
     templateType: String
+    prettyPrintSerialization: boolean
 }
 
 export type AlsFormattingOptions = {
@@ -67,7 +67,12 @@ export type AlsFormattingOptions = {
     preferSpaces: Boolean,
 }
 
+export type ProjectConfigurationStyle = {
+    style: String
+}
+
 export type AlsInitializeParams = InitializeParams & {
-    alsConfiguration: AlsConfiguration
+    configuration: AlsConfiguration,
+    projectConfigurationStyle: ProjectConfigurationStyle
 }
 
