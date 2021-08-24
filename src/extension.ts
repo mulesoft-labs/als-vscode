@@ -8,18 +8,15 @@ import * as vscode from 'vscode'
 import * as url from 'url'
 
 import { workspace, ExtensionContext, Uri } from 'vscode'
-import { BaseLanguageClient, ClientCapabilities, CommonLanguageClient, DocumentSelector, InitializeParams, ServerCapabilities, StaticFeature } from 'vscode-languageclient'
+import { ClientCapabilities, DocumentSelector, InitializeParams, ServerCapabilities, StaticFeature } from 'vscode-languageclient'
 import {
   LanguageClient,
   LanguageClientOptions,
-  ServerOptions,
-  StreamInfo,
-  TransportKind
-} from 'vscode-languageclient/node';
-import { registerCommands } from './commands'
+  StreamInfo} from 'vscode-languageclient/node';
 import { notifyConfig } from './configuration'
-import { ConversionFeature, SerializationNotificationFeature } from './features'
-import {AlsInitializeParams, SerializationResult} from './types'
+import { ConversionFeature } from './features'
+import {AlsInitializeParams} from './types'
+import { AlsLanguageServer } from './server/als'
 
 var jsAls = require.resolve("@mulesoft/als-node-client")
 var upath = require("upath")
@@ -144,16 +141,16 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 		createServer, 
 		clientOptions)
 
-	registerCommands(languageClient)
-	workspace.onDidChangeConfiguration(() => notifyConfig(languageClient))
-
-	const disposable = languageClient.start()
-
+	const als = new AlsLanguageServer(languageClient)
+	
 	languageClient.registerFeatures([
-		// new SerializationNotificationFeature(),
 		new AlsInitializeParamsFeature(),
 		new ConversionFeature()
 	])
+
+	workspace.onDidChangeConfiguration(() => notifyConfig(languageClient))
+	
+	const disposable = languageClient.start()
 
 	context.subscriptions.push(disposable)
 

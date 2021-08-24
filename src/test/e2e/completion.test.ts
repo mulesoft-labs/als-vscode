@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import * as assert from 'assert';
 import { getDocUri, activate, sleep } from '../helper';
 
-suite('Should do completion', function() {
+suite('Should do completion', async function () {
 
 	test('Complete empty RAML file', async () => {
 		const docUri = getDocUri('empty.raml');

@@ -1,8 +1,6 @@
 import * as vscode from 'vscode'
-import { DocumentFormattingParams, DocumentFormattingRequest, DocumentRangeFormattingParams, DocumentRangeFormattingRequest, FormattingOptions, TextEdit } from 'vscode-languageclient'
-import { FileFormattingOptions } from 'vscode-languageclient/lib/common/codeConverter'
+import { DocumentFormattingParams, DocumentFormattingRequest, DocumentRangeFormattingParams, DocumentRangeFormattingRequest } from 'vscode-languageclient'
 import { LanguageClient } from 'vscode-languageclient/node'
-import { languageClientStateListener } from './commands'
 
 const defaultFormattingOptions = {
     tabSize: 2,
