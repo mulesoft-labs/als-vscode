@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as assert from 'assert';
 import { getDocUri, activate } from '../helper';
-suite('Should get diagnostics', function() {
+suite('Should get diagnostics', async function () {
 
 	test('Diagnoses RAML file', async () => {
 		await testDiagnostics(getDocUri('missing-title.raml'), [
@@ -30,17 +30,12 @@ function toLspRange(sLine: number, sChar: number, eLine: number, eChar: number) 
 
 async function testDiagnostics(docUri: vscode.Uri, expectedDiagnostics: vscode.Diagnostic[]) {
 	await activate(docUri);
-
 	const actualDiagnostics = vscode.languages.getDiagnostics(docUri);
-
-	assert.equal(actualDiagnostics.length, expectedDiagnostics.length);
-
+	assert.strictEqual(actualDiagnostics.length, expectedDiagnostics.length);
 	expectedDiagnostics.forEach((expectedDiagnostic, i) => {
-		const filteredDiagnostics = actualDiagnostics.filter(e => e.message == expectedDiagnostic.message);
-		assert.ok(filteredDiagnostics.length > 0)
-		const actualDiagnostic = filteredDiagnostics[0]
-		assert.equal(actualDiagnostic.message, expectedDiagnostic.message);
-		assert.deepEqual(actualDiagnostic.range, expectedDiagnostic.range);
-		assert.equal(actualDiagnostic.severity, expectedDiagnostic.severity);
+		const diagnostic = actualDiagnostics.find(e => e.message == expectedDiagnostic.message)
+		assert.strictEqual(diagnostic.message, expectedDiagnostic.message);
+		assert.deepStrictEqual(diagnostic.range, expectedDiagnostic.range);
+		assert.strictEqual(diagnostic.severity, expectedDiagnostic.severity);
 	});
 }

@@ -27,11 +27,12 @@ pipeline {
         dockerfile true
     }
     parameters {
-        string(name: 'ALS_VERSION', defaultValue: '3.3.0-SNAPSHOT.306', description: 'ALS node client version')
+        string(name: 'ALS_VERSION', defaultValue: '4.1.0-AMF-5-SNAPSHOT.60', description: 'ALS node client version')
     }
 
     environment {
         VERSION = getVersion("$ALS_VERSION")
+        
         ALS_VERSION = "$ALS_VERSION"    // Internal parameter to env variable
         NEXUS = credentials('exchange-nexus')
         NEXUSIQ = credentials('nexus-iq')
@@ -58,7 +59,7 @@ pipeline {
                     exitCode = sh script:"bash install_compile.sh", returnStatus:true
                     if(exitCode != 0) {
                         sh "echo ${exitCode}"
-                        fail "Failed Install & Compile"
+                        error("Failed Install & Compile")
                     }
                 }
             }
@@ -67,10 +68,10 @@ pipeline {
             steps {
                 script {
                     def exitCode = 1
-                    exitCode = runWithXvfb("npm test")
+                    exitCode = sh script:"bash test.sh", returnStatus:true
                     if(exitCode != 0) {
                         sh "echo ${exitCode}"
-                        fail "Failed Install & Compile"
+                        error("Failed tests")
                     }
                     
                 }
@@ -120,6 +121,6 @@ pipeline {
 }
 
 def runWithXvfb(String command) {
-   def status = sh script:"xvfb-run --server-num 99 ${command}", returnStatus:true
+   def status = sh script:"xvfb-run ${command}", returnStatus:true
    return status
 }

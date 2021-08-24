@@ -2,13 +2,6 @@ import { TextDocumentIdentifier, InitializeParams, NotificationType, RequestType
 
 interface IMap<V> { [key: string]: V }
 
-const cleanDiagnosticTree = "cleanDiagnosticTree"   // cleanDiagnosticTree
-const conversion = "conversion"                     // conversion
-const fileUsage = "fileUsage"                       // fileUsage
-const renameFile = "renameFile"                     // renameFile
-const serialization = "serialization"               // serialization
-const updateConfiguration = "updateConfiguration"   // updateConfiguration
-
 
 export namespace messages {
     export const AlsConfigurationNotification = {
@@ -22,6 +15,10 @@ export namespace messages {
     }
     export const AlsConversionRequest = {
         type: new RequestType<ConversionParams, SerializedDocument, void>("conversion")
+    }
+
+    export const AlsGetWorkspaceConfiguration = {
+        type: new RequestType<GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, void>("getWorkspaceConfiguration")
     }
 }
 
@@ -74,5 +71,21 @@ export type ProjectConfigurationStyle = {
 export type AlsInitializeParams = InitializeParams & {
     configuration: AlsConfiguration,
     projectConfigurationStyle: ProjectConfigurationStyle
+}
+
+export type DidChangeConfigurationNotificationParams = {
+    mainUri: string,
+    folder?: string,
+    dependencies: string[],
+    customValidationProfiles: string[]
+}
+
+export type GetWorkspaceConfigurationParams = {
+    textDocument: TextDocumentIdentifier
+}
+
+export type GetWorkspaceConfigurationResult = {
+    workspace: string,
+    configuration: DidChangeConfigurationNotificationParams
 }
 

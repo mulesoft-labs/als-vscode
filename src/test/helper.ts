@@ -27,8 +27,8 @@ export async function activate(docUri: vscode.Uri) {
 export async function activateExtension(): Promise<LanguageClient> {
     // The extensionId is `publisher.name` from package.json
     await vscode.commands.executeCommand("vscode.openFolder", vscode.Uri.file(testFilesDirectory));
-    
-	const ext = vscode.extensions.getExtension('MuleSoftInc.aml-vscode')!;
+
+    const ext = vscode.extensions.getExtension('MuleSoftInc.aml-vscode')!;
 
     if (ext) {
         return await ext.activate();
@@ -38,7 +38,7 @@ export async function activateExtension(): Promise<LanguageClient> {
 }
 
 export async function sleep(ms: number) {
-	return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export const forEachTestFile = (fn: (s: string) => void) => {
@@ -54,11 +54,11 @@ export const forEachTestFile = (fn: (s: string) => void) => {
 export const testFilesDirectory = path.join(__dirname, '../../testFixture')
 
 export const getDocPath = (p: string) => {
-	return path.resolve(testFilesDirectory, p);
+    return path.resolve(testFilesDirectory, p);
 };
 
 export const getDocUri = (p: string) => {
-	return vscode.Uri.file(getDocPath(p));
+    return vscode.Uri.file(getDocPath(p));
 };
 
 export const RAML_LANGUAGE_ID: string = "aml"

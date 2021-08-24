@@ -192,6 +192,24 @@
                     "light": "path/to/light/icon.svg",
                     "dark": "path/to/dark/icon.svg"
                 }
+            },
+            {
+                "command": "als.registerProfile",
+                "title": "Register profile",
+                "category": "Modifications",
+                "icon": {
+                    "light": "path/to/light/icon.svg",
+                    "dark": "path/to/dark/icon.svg"
+                }
+            },
+            {
+                "command": "als.unregisterProfile",
+                "title": "Unregister profile",
+                "category": "Modifications",
+                "icon": {
+                    "light": "path/to/light/icon.svg",
+                    "dark": "path/to/dark/icon.svg"
+                }
             }
         ],
         "menus": {
@@ -210,12 +228,40 @@
                     "when": "resourceLangId == aml",
                     "command": "als.conversion",
                     "group": "7_modification"
+                },
+                {
+                    "when": "resourceLangId == aml",
+                    "command": "als.registerProfile",
+                    "group": "7_modification"
+                },
+                {
+                    "when": "resourceLangId == aml",
+                    "command": "als.unregisterProfile",
+                    "group": "7_modification"
+                }
+            ]
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "package-explorer",
+                    "title": "AML Configuration",
+                    "icon": "resources/package-explorer.svg"
+                }
+            ]
+        },
+        "views": {
+            "package-explorer": [
+                {
+                    "id": "aml-configuration",
+                    "name": "AML Configuration"
                 }
             ]
         }
     },
     "dependencies": {
-        "@mulesoft/als-node-client": "4.0.0",
+        "@mulesoft/als-node-client": "4.1.0-AMF-5-SNAPSHOT.60",
+        "@aml-org/amf-custom-validator": "0.1.0-SNAPSHOT.10",
         "@types/mocha": "^8.2.1",
         "@types/node": "^11.15.20",
         "@types/vscode": "1.52.0",
@@ -225,7 +271,7 @@
         "upath": "^1.2.0",
         "vsce": "^1.88.0",
         "vscode-languageclient": "^7.0.0",
-        "vscode-test": "^1.5.2",
+        "@vscode/test-electron": "^1.6.2",
         "webpack": "^4.46.0",
         "webpack-cli": "^3.3.12"
     },
