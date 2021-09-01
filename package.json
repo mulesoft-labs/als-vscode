@@ -120,7 +120,10 @@
                 "amlLanguageServer.run.configurationStyle": {
                     "type": "string",
                     "default": "command",
-                    "enum": ["command", "file"],
+                    "enum": [
+                        "command",
+                        "file"
+                    ],
                     "description": "Select how should ALS determine a project configuration, either by `didChangeConfiguration` command or by reading an exchange.json file. For more informaiton please read the [documentation](https://github.com/aml-org/als/blob/7397005c8a17a580c8a102a2537f1a50ca66c965/documentation/features/features.md#als-initialize-params) (Reload required)",
                     "enumDescription": [
                         "ALS projects can only be configured by using the `didChangeConfiguration`",

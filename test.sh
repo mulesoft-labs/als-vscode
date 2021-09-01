@@ -1,3 +1,6 @@
+echo "Install"
+npm install
+
 echo "Compile tests"
 npm run pretest
 
