@@ -1,0 +1,12 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+	<title>New Project</title>
+	<defs>
+		<image  width="240" height="240" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAADwAQMAAAAEm3vRAAAAAXNSR0IB2cksfwAAAAZQTFRFAAAA////pdmf3QAAAAJ0Uk5TAP9bkSK1AAAAuklEQVR4nO3TsQ2DQBBE0UMEhJRAKZQGpVEKJRA6sAyJdbuYryEj8UyE7kknfnCleN5D2+tueNa8aF41b5pfmt+aP5oxPPFMvHw/Ogyvhy2GV24wPK7E8OCJwoNHCg8eKDy4p/BgDI8zDA/G8HQjhSem8MQUnpjCE1N4YgpPRxSemMLzhRCeedp/d+JR86C519xpbjU3mssNX8LPfAkv+C7rr5rNZrPZbDabzWaz2Ww2m/+I5czMnvfQDiJIMyfI2rKvAAAAAElFTkSuQmCC"/>
+		<image  width="188" height="188" id="img2" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALwAAAC8BAMAAAAwZ9mYAAAAAXNSR0IB2cksfwAAABJQTFRFAAAA////////////////////PlKtOgAAAAZ0Uk5TAP/UVX+q+SctRwAAA9RJREFUeJztmU2S4jAMhWOG3scU7Ok5wXADuAHc/zLT/MWSLMVPtmequ8paQSR9eX52Bzs9TSNGjBgxYsSIESN+asQU3dkh8jh2pcc8+sGl9GfMnegqvNsATia+Bz+nnTryddKlE/89q2frtj3oBzvVsn5+rSKa+YYxYLoUz/FfS7dvoq8OvsUeoDfUyw+IMqhIDUzYpZJ/u/f96aVCbUNU1dmDi/qskY9rqpEfHJKCH+/6a3c/Gu6C9stnq2gm1S751E7TpJTwTi6pX30gvz7dfPLJaO05JkUfPvlcvNFJn3guvBSvD5xmXJMb0kJDf2uNIjXSUN8bBUs8K3TgiaeGOzkedCdk4pWBp22tlASITz2WOzJ1gt1ZhJCNd6ZMpmB3kjfRxtMtvxBVg5cDp/izC7/A2KFkzotyd0D8nCEEnh+HPPiN6o1o5fhFDeBOiJo3Ah9b8AcNP/OaWnd063nrZzs+O8zOrCZPbVH8IsbAGynEfGtmqTQj5cJniIQ3UiBen1nSa+AD8It1smY2yVdSS0sJH8t4JQMvnShndpbukBsvH3esF8AnyQm3E/hZvHGI5bnN8R8xg7zi7MZn63KWv3vsbqEDnrtDvSEzdO+5wPgt7WPusC8cHxD8fprEqJk7fCb8eL7s2ZevHPOmD54q5uJb8fL5sxf40AOvPSF4pglvv+T9EfjcHZHojZ94og2fu9MXL+XL653xk7jeiJfu9MZre+KOeC6f1n8v/EHHU3fS1Ysbz5+0KaWJr3ggV+GPry/ejciR3Vl6s2U3rMBrhwY+WIYv0P8Dnq3MfUrlq0mIAPAXgacN5hV8A54dH2aW0y5EeF2SI4aC14rJgEC83CLbwWuAdamdH8riD6yzhOdzC+DhhaMd+tdKnQtHO3la8gMXENgfyQpeHssh8ffX4OWZ1V4q6F0yDy0c9Y3LVSnbpPTjO/ZChJh/EYBMhbQexefvRNSqGm+IjCgROn4phvDYS16JR715eL534JMUDK+5k6+dWm9Ud9SiKvHafx9W8JMbH1jXOj7pQL1R5CutQYp34bl8E0/OXjCdVhfwqQoXT+VvVvFV4ll90GeWKbZK1vClXq7A4w1nmvhzQYAdTJDeHK5aLRhUUVhv9ov3SKoR/9R0RgvddHtBKnS/eLQPVaE3lvhQkR7Gk9hdU9/bQucPRS1u9dbc44Hf1d8e4luAZvp7n7py63pr7mH+GH70oKe9grgc+9DVI1zx3FLF/4rD7xv51q5d8mN3+qS+AO9izDs2Gbyb9GcYr0n/wR2Aw/GIESNGjBgxYsSIESNGfMP4C8wB3Yv0Pw2fAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+		tspan { white-space:pre }
+	</style>
+	<use id="Layer 5" href="#img1" x="0" y="0" />
+	<use id="Layer 4" href="#img2" x="35" y="41" />
+</svg>

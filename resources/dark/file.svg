@@ -1,0 +1,20 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+	<title>New Project</title>
+	<defs>
+		<image  width="209" height="208" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANEAAADQAQMAAACjqBYJAAAAAXNSR0IB2cksfwAAAAZQTFRFAAAAAAAApWe5zwAAAAJ0Uk5TAP9bkSK1AAABmUlEQVR4nO3WO5LDIAwG4DAUlByBo3A0czSOwhFcuvBEGy8YWEkozmM7/kqTz5kgRWRyu83MzMxcjBrUR3ToasFM+GsmCpZabePYHDK7Cra12idke6sXZK4zwHbvbEUGtVSCaWwegmDxLA1s2OrhrGCO2jq0pb3gBVuo7YLVoQHsI1OMgWQhV5qzmCsjmOUsCVaG5oD2d5rnbBuZr5+ycFYGA2NTrIFk4SgeI6N7VsxQe3SchzawdBRWMEetPu4B8B2z59EH9ju0hZo5DQDatWl2F+wY2jGydhVzdDE9stCe6aPK55iRpdzLHdmtmBvZmm3HdsyjhJhvtr1irtmKzTZLgkVsRjDdLGBTzTDlwfyGjKwbDBlL1zxpvWuetN41mKjVBkkLXROUahNMC/WgzDHrQZlj1oNGwZgWZHPPjT3Lu+afGzsXyZbPjFkl2cYrKH/vb5q6YNwOvmv6ioXXTLpH1eL3zF6x9D1zV4xZesn8p8YsvWTLFWOW/j9Mmqe0Z+J9N8OVON/IXmn+/0KNHfx6zszMzMzg/AAWI3jX1DSZ6QAAAABJRU5ErkJggg=="/>
+		<image  width="240" height="240" id="img2" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAADwBAMAAADMe/ShAAAAAXNSR0IB2cksfwAAACpQTFRFAAAA////////////////////////////////////////////////////hrvKLwAAAA50Uk5TADD5/6BadkH9+rrQht7wlfpfAAABrklEQVR4nO3dwUkDYRDF8Q2CXgUbCNiA8CkiKgg24EUswAb05DVgI4INpISUYEkq6Mk9zMx7OhH+777zy1tmlySXb5oIIb+axeEo5UqFa+xHbjT3vgwfS+6i7I7xoMA7AnykwNcCPBRYcaXKEqxU1mCh8uflq/xlXzt5psGFz/39MLx0wSddcH29VLi8XipcrizD1coyXK2sw8su+LwLLn4TMcC19TLAtfVywKXKDrhU2QJXKlvgSmUPvO6CL7rgwr02wfkRJjhf2QWnZ7jgdGUbnB1igy+74LHpgpNTfHByvYxwbowRzlV2wqk5TjhV2Qq/dcGZv9ys8NjvghOTvHBivcxwfJQZjld2w+FZbjj8a9kNh++1HV52wdFhwNG0wQdd8LT39COPfwKrw4CBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgYGBgf8pvHLBz0n49NaTu2xja7Yelk5JmcsmCCvnwswm6Eon4cwl/mi+euHonXZXzryLdo1u/ewSQsiW5x1WCSYIn5EImAAAAABJRU5ErkJggg=="/>
+		<image  width="219" height="198" id="img3" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANsAAADGAQMAAABhBWdGAAAAAXNSR0IB2cksfwAAAAZQTFRFAAAA////pdmf3QAAAAJ0Uk5TAP9bkSK1AAABm0lEQVR4nO3WPdICIQwGYBkKSo7AUTgaHI2jcIQtLRzzucICHwlZ/OtIlfFxR/IaHC+XVatWrVpFlxj0z5K+6TlUvkMVOIy114FB06PeOLzW3sYeb7V3PZoGAeG9wa1HKK3gUCK04DkMR6vgirAcUXNoCNzG6OorlkNH4I3Dkh/AbYiCQmDRp06SGFKnONQkRg5zfgaIOQ+0JF6HaMsnORJzRMCgoBFY9HvzSI/YvoyKwMfoKb8Rxr3RHBoCywMWAF1BfUwwwmd+jkB1IADUO9XgncM9vz29elVzyYxyiL6+6V+J/FlqiDGNdO/xktEMcUvYr21KJhdGW7HfkhM0FfuvM82QK3IYECoOZUWPUFREliJ6Fk6viQgH1KSAM2hSwBk0g0YCy6B4kmYWwsos1CTluNRhy3Gpw5bjBg7j62gmkD7Q+2gnkE6IRfcpUvt1gsxmnmzC2yhmkFzN91FOoX8V2VtWMHwV9RTGr6KZQuo+sGg/R+o+sOimkLoPP0I2W3b7+N8ENd6S41H61g/+epTSo1/bVatW/ab+ANKReNeoGgSPAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+		tspan { white-space:pre }
+	</style>
+	<g id="file">
+		<use id="Layer 11" href="#img1" x="0" y="32" />
+		<use id="Layer 9" href="#img2" x="0" y="0" />
+		<use id="Layer 10" href="#img3" x="0" y="25" />
+	</g>
+	<g id="gear">
+	</g>
+	<g id="folder">
+	</g>
+</svg>

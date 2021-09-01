@@ -6,12 +6,14 @@ import { notifyConfig } from '../configuration';
 import { registerFormatter } from '../language';
 import { LanguageClient } from 'vscode-languageclient/node';
 import { conversionHandler, registerProfileHandler, renameFileHandler, serializationHandler, unregisterProfileHandler } from './handlers';
+import { ConfigurationViewProvider } from '../ui/configurationView';
 
 
 // todo: cleanup all URIs using languageClient.code2ProtocolConverter.asUri(fileUri)
 // vscode.Uri with `toString()` causes issues with windows paths
 export class AlsLanguageServer {
     languageClient: LanguageClient
+    readonly wsConfigTreeViewProvider =  new ConfigurationViewProvider(vscode.workspace.workspaceFolders, this)
     constructor(langClient: LanguageClient) {
         this.languageClient = langClient
         vscode.commands.registerCommand("als.renameFile", renameFileHandler(this))
@@ -108,16 +110,19 @@ export class AlsLanguageServer {
             ],
         })
             .then(() => console.log(`Notified new configuration: `, params), error => console.error(`Error while notifying new config to ALS`, error))
+            .then(() => this.wsConfigTreeViewProvider.refresh(vscode.workspace.workspaceFolders));
     }
 
     languageClientStateListener = (e: StateChangeEvent) => {
         switch (e.newState) {
             case 1:
                 console.log("[ALS] Client stopped")
+                this._ready =  false;
                 break
             case 2:
                 console.log("[ALS] Client running")
                 notifyConfig(this.languageClient)
+                this._ready = true;
                 break
             case 3:
                 console.log("[ALS] Client starting")
@@ -126,4 +131,6 @@ export class AlsLanguageServer {
                 console.log("[ALS] Unknown state: " + e.newState)
         }
     }
+    private _ready: boolean = false
+    ready = () => {return this._ready}
 }
