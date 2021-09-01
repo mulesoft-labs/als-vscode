@@ -89,3 +89,7 @@ export type GetWorkspaceConfigurationResult = {
     configuration: DidChangeConfigurationNotificationParams
 }
 
+export enum ProjectConfigurationStyles {
+    Command = "command",
+    File = "file"
+  }

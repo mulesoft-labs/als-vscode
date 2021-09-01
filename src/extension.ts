@@ -15,8 +15,9 @@ import {
   StreamInfo} from 'vscode-languageclient/node';
 import { notifyConfig } from './configuration'
 import { ConversionFeature } from './features'
-import {AlsInitializeParams} from './types'
+import {AlsInitializeParams, ProjectConfigurationStyles} from './types'
 import { AlsLanguageServer } from './server/als'
+import { ConfigurationViewProvider } from './ui/configurationView'
 
 var jsAls = require.resolve("@mulesoft/als-node-client")
 var upath = require("upath")
@@ -134,17 +135,26 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
             protocol2Code: str => Uri.parse(str)
         }
 	}
-
+	const runParams = vscode.workspace.getConfiguration(`amlLanguageServer.run`)
 	const languageClient = new LanguageClient(
 		'amlLanguageServer', 
 		'AML Language Server', 
 		createServer, 
 		clientOptions)
 
+	console.log("Starting ALS")
 	const als = new AlsLanguageServer(languageClient)
-	
+	workspace.onDidChangeWorkspaceFolders(e => {
+		als.wsConfigTreeViewProvider.refresh(vscode.workspace.workspaceFolders);
+	})
+	vscode.window.registerTreeDataProvider(
+		'aml-configuration',
+		als.wsConfigTreeViewProvider
+	);
+	console.log("Started ALS")
+
 	languageClient.registerFeatures([
-		new AlsInitializeParamsFeature(),
+		new AlsInitializeParamsFeature(runParams.get("configurationStyle")),
 		new ConversionFeature()
 	])
 
@@ -200,10 +210,25 @@ function withRootSlash(path: String) {
 }
 
 class AlsInitializeParamsFeature implements StaticFeature {
+	private configurationStyle: ProjectConfigurationStyles = ProjectConfigurationStyles.Command;
+	constructor(configurationStyle: String) {
+		switch(configurationStyle) {
+			case ProjectConfigurationStyles.Command:
+				this.configurationStyle = ProjectConfigurationStyles.Command;
+				break;
+			case ProjectConfigurationStyles.File:
+				this.configurationStyle = ProjectConfigurationStyles.File;
+				break;
+			default:
+				this.configurationStyle = ProjectConfigurationStyles.Command;
+				break;
+		}
+		console.log("ProjectConfigurationStyle: " + this.configurationStyle)
+	}
 	fillInitializeParams?: (params: InitializeParams) => void = (params: InitializeParams) => {
 			var castedParams = params as AlsInitializeParams
 			castedParams.projectConfigurationStyle = { 
-				style: "file"
+				style: this.configurationStyle.toString()
 			}
 	}
 	fillClientCapabilities(capabilities: ClientCapabilities): void {

@@ -16,7 +16,7 @@
     },
     "icon": "als-icon.png",
     "activationEvents": [
-        "onLanguage:aml"
+        "onStartupFinished"
     ],
     "contributes": {
         "languages": [
@@ -116,6 +116,16 @@
                     "type": "string",
                     "default": null,
                     "description": "Select a specific path to dump logs to. (Requires restart)"
+                },
+                "amlLanguageServer.run.configurationStyle": {
+                    "type": "string",
+                    "default": "command",
+                    "enum": ["command", "file"],
+                    "description": "Select how should ALS determine a project configuration, either by `didChangeConfiguration` command or by reading an exchange.json file. For more informaiton please read the [documentation](https://github.com/aml-org/als/blob/7397005c8a17a580c8a102a2537f1a50ca66c965/documentation/features/features.md#als-initialize-params) (Reload required)",
+                    "enumDescription": [
+                        "ALS projects can only be configured by using the `didChangeConfiguration`",
+                        "ALS will try to find and read an exchange.json file at the root of the workspace to configure the project."
+                    ]
                 },
                 "amlLanguageServer.trace.server": {
                     "scope": "window",
@@ -244,14 +254,14 @@
         "viewsContainers": {
             "activitybar": [
                 {
-                    "id": "package-explorer",
+                    "id": "aml-explorer",
                     "title": "AML Configuration",
-                    "icon": "resources/package-explorer.svg"
+                    "icon": "resources/mule-icon.svg"
                 }
             ]
         },
         "views": {
-            "package-explorer": [
+            "aml-explorer": [
                 {
                     "id": "aml-configuration",
                     "name": "AML Configuration"
