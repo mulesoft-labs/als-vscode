@@ -119,7 +119,7 @@
                 },
                 "amlLanguageServer.run.configurationStyle": {
                     "type": "string",
-                    "default": "command",
+                    "default": "file",
                     "enum": [
                         "command",
                         "file"
@@ -273,8 +273,7 @@
         }
     },
     "dependencies": {
-        "@mulesoft/als-node-client": "4.2.0-SNAPSHOT.338",
-        "@aml-org/amf-custom-validator": "0.1.0-SNAPSHOT.10",
+        "@mulesoft/als-node-client": "4.2.0-SNAPSHOT.339",
         "@types/mocha": "^8.2.1",
         "@types/node": "^11.15.20",
         "@types/vscode": "1.52.0",

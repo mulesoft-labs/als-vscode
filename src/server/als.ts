@@ -2,11 +2,12 @@
 import * as vscode from 'vscode';
 import { RenameFileActionParams, messages, RenameFileActionResult, SerializationParams, SerializationResult, ConversionParams, SerializedDocument, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, DidChangeConfigurationNotificationParams } from '../types';
 import { ExecuteCommandRequest, StateChangeEvent } from 'vscode-languageclient';
-import { notifyConfig } from '../configuration';
+import { notifyConfig } from './alsConfiguration';
 import { registerFormatter } from '../language';
 import { LanguageClient } from 'vscode-languageclient/node';
 import { conversionHandler, registerProfileHandler, renameFileHandler, serializationHandler, unregisterProfileHandler } from './handlers';
 import { ConfigurationViewProvider } from '../ui/configurationView';
+import { SettingsManager } from '../settings';
 
 
 // todo: cleanup all URIs using languageClient.code2ProtocolConverter.asUri(fileUri)
@@ -14,7 +15,7 @@ import { ConfigurationViewProvider } from '../ui/configurationView';
 export class AlsLanguageServer {
     languageClient: LanguageClient
     readonly wsConfigTreeViewProvider =  new ConfigurationViewProvider(vscode.workspace.workspaceFolders, this)
-    constructor(langClient: LanguageClient) {
+    constructor(private readonly langClient: LanguageClient, private readonly extensionConfigurationManager: SettingsManager) {
         this.languageClient = langClient
         vscode.commands.registerCommand("als.renameFile", renameFileHandler(this))
         vscode.commands.registerCommand("als.conversion", conversionHandler(this))
