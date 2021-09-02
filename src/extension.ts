@@ -8,19 +8,16 @@ import * as vscode from 'vscode'
 import * as url from 'url'
 
 import { workspace, ExtensionContext, Uri } from 'vscode'
-import { ClientCapabilities, DocumentSelector, InitializeParams, ServerCapabilities, StaticFeature } from 'vscode-languageclient'
 import {
   LanguageClient,
   LanguageClientOptions,
   StreamInfo} from 'vscode-languageclient/node';
-import { notifyConfig } from './configuration'
-import { ConversionFeature } from './features'
-import {AlsInitializeParams, ProjectConfigurationStyles} from './types'
+import { notifyConfig } from './server/alsConfiguration'
+import { AlsInitializeParamsFeature, ConversionFeature } from './features'
 import { AlsLanguageServer } from './server/als'
-import { ConfigurationViewProvider } from './ui/configurationView'
+import { SettingsManager } from './settings'
 
 var jsAls = require.resolve("@mulesoft/als-node-client")
-var upath = require("upath")
 
 export async function activate(context: ExtensionContext): Promise<LanguageClient> {
     //Create output channel
@@ -136,6 +133,7 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
         }
 	}
 	const runParams = vscode.workspace.getConfiguration(`amlLanguageServer.run`)
+	
 	const languageClient = new LanguageClient(
 		'amlLanguageServer', 
 		'AML Language Server', 
@@ -143,7 +141,8 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 		clientOptions)
 
 	console.log("Starting ALS")
-	const als = new AlsLanguageServer(languageClient)
+	const settingsManager = new SettingsManager(["amlLanguageServer.run"])
+	const als = new AlsLanguageServer(languageClient, settingsManager)
 	workspace.onDidChangeWorkspaceFolders(e => {
 		als.wsConfigTreeViewProvider.refresh(vscode.workspace.workspaceFolders);
 	})
@@ -203,43 +202,4 @@ function correctBinname(binname: string) {
 		return binname + '.exe';
 	else
 		return binname;
-}
-
-function withRootSlash(path: String) {
-	return path.startsWith("/") ? path : "/" + path
-}
-
-class AlsInitializeParamsFeature implements StaticFeature {
-	private configurationStyle: ProjectConfigurationStyles = ProjectConfigurationStyles.Command;
-	constructor(configurationStyle: String) {
-		switch(configurationStyle) {
-			case ProjectConfigurationStyles.Command:
-				this.configurationStyle = ProjectConfigurationStyles.Command;
-				break;
-			case ProjectConfigurationStyles.File:
-				this.configurationStyle = ProjectConfigurationStyles.File;
-				break;
-			default:
-				this.configurationStyle = ProjectConfigurationStyles.Command;
-				break;
-		}
-		console.log("ProjectConfigurationStyle: " + this.configurationStyle)
-	}
-	fillInitializeParams?: (params: InitializeParams) => void = (params: InitializeParams) => {
-			var castedParams = params as AlsInitializeParams
-			castedParams.projectConfigurationStyle = { 
-				style: this.configurationStyle.toString()
-			}
-	}
-	fillClientCapabilities(capabilities: ClientCapabilities): void {
-		// do nothing
-	}
-	initialize(capabilities: ServerCapabilities<any>, documentSelector: DocumentSelector): void {
-		// do nothing
-	}
-	dispose(): void {
-		// do nothing
-	}
-	
-
 }
