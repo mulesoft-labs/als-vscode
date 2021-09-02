@@ -206,7 +206,7 @@ class AlsInitializeParamsFeature implements StaticFeature {
 	fillInitializeParams?: (params: InitializeParams) => void = (params: InitializeParams) => {
 			var castedParams = params as AlsInitializeParams
 			castedParams.projectConfigurationStyle = { 
-				style: "command"
+				style: "file"
 			}
 	}
 	fillClientCapabilities(capabilities: ClientCapabilities): void {
