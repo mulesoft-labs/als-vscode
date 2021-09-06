@@ -9,12 +9,7 @@ const defaultFormattingOptions = {
 
 export const LANGUAGE_ID : string = "raml"
 
-export function registerFormatter(languageClient: LanguageClient) {
-  vscode.languages.registerDocumentFormattingEditProvider(LANGUAGE_ID, new FormattingProvider(languageClient))
-  vscode.languages.registerDocumentRangeFormattingEditProvider(LANGUAGE_ID, new FormattingProvider(languageClient))
-}
-
-class FormattingProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider {
+export class FormattingProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider {
   languageClient: LanguageClient
   constructor(languageClient: LanguageClient) {
     this.languageClient = languageClient

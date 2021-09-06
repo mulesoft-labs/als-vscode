@@ -2,11 +2,20 @@
 
 import * as vscode from 'vscode';
 import * as assert from 'assert';
-import { getDocUri, activate, activateExtension, sleep } from '../helper';
+import { getDocUri, activate, activateExtension, sleep, restartAls } from '../helper';
 import { ExecuteCommandRequest } from 'vscode-languageclient';
 
 suite('Custom Validations', async function () {
-
+	this.beforeAll(async () => {
+		const config = vscode.workspace.getConfiguration(`amlLanguageServer.run`)
+		await config.update("configurationStyle", "command");
+		await restartAls();
+	})
+	this.afterAll(async () => {
+		const config = vscode.workspace.getConfiguration(`amlLanguageServer.run`)
+		await config.update("configurationStyle", "file");
+		await restartAls();
+	})
 	test('Custom validation on RAML file', async () => {
 		await testDiagnostics(getDocUri('profile-api.raml'), getDocUri('profile.yaml'), [
 			{ message: 'Payload media type is mandatory', range: toLspRange(20, 5, 21, 15), severity: vscode.DiagnosticSeverity.Error, source: 'ex' },
@@ -79,6 +88,9 @@ async function getDiagnostics(docUri: vscode.Uri, diagnosticsLengthBeforeProfile
 		await sleep(100);
 		return getDiagnostics(docUri, diagnosticsLengthBeforeProfile, expectedDiagnostics)
 	} else {
+		if(actualDiagnostics.length != expectedDiagnostics.length){
+			console.log(actualDiagnostics);
+		}
 		assert.strictEqual(actualDiagnostics.length, expectedDiagnostics.length);
 		expectedDiagnostics.forEach((expectedDiagnostic, i) => {
 			const diagnostic = actualDiagnostics.find(e => e.message == expectedDiagnostic.message)

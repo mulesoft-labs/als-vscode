@@ -9,22 +9,46 @@ import * as url from 'url'
 
 import { workspace, ExtensionContext, Uri } from 'vscode'
 import {
-  LanguageClient,
-  LanguageClientOptions,
-  StreamInfo} from 'vscode-languageclient/node';
+	LanguageClient,
+	LanguageClientOptions,
+	StreamInfo
+} from 'vscode-languageclient/node';
 import { notifyConfig } from './server/alsConfiguration'
 import { AlsInitializeParamsFeature, ConversionFeature } from './features'
-import { AlsLanguageServer } from './server/als'
+import { AlsLanguageClient } from './server/als'
 import { SettingsManager } from './settings'
 
 var jsAls = require.resolve("@mulesoft/als-node-client")
 
-export async function activate(context: ExtensionContext): Promise<LanguageClient> {
-    //Create output channel
-    let alsLog = vscode.window.createOutputChannel("alsLog");
+export class AlsResolver {
+	als: AlsLanguageClient;
+	getCurrent = () => {
+		return this.als;
+	}
+}
+export async function activate(context: ExtensionContext): Promise<AlsResolver> {
+	const resolver = new AlsResolver();
+	//Create output channel
+	let alsLog = vscode.window.createOutputChannel("alsLog");
 
-    //Write to output.
-    alsLog.appendLine("Hi! I am alsLog, and I will be your troubleshooting companion for the day. I hope you won't need me!");
+	//Write to output.
+	alsLog.appendLine("Hi! I am alsLog, and I will be your troubleshooting companion for the day. I hope you won't need me!");
+	await createLanguageClient(alsLog, context).then(alsClient => {
+		resolver.als = alsClient;
+		return resolver.getCurrent();
+	})
+	
+	async function restartAls() {
+		resolver.als.dispose();
+		const alsClient = await createLanguageClient(alsLog, context);
+		resolver.als = alsClient;
+	}
+
+	context.subscriptions.push(vscode.commands.registerCommand("als.restart", restartAls));
+	return Promise.resolve(resolver);
+}
+
+async function createLanguageClient(alsLog: vscode.OutputChannel, context: ExtensionContext): Promise<AlsLanguageClient> {
 
 	const documentSelector = [
 		{ language: 'aml' },
@@ -34,8 +58,44 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 		{ language: 'async-api' }
 	]
 
-	function createServer(): Promise<StreamInfo> {
+	const clientOptions: LanguageClientOptions = {
+		documentSelector: documentSelector,
+		synchronize: {
+			configurationSection: 'amlLanguageServer',
+			fileEvents: workspace.createFileSystemWatcher('**/.clientrc')
+		},
+		uriConverters: {
+			code2Protocol: uri => new url.URL(uri.toString(true)).href,
+			protocol2Code: str => Uri.parse(str)
+		}
+	}
+	const runParams = vscode.workspace.getConfiguration(`amlLanguageServer.run`)
 
+	const languageClient = new LanguageClient(
+		'amlLanguageServer',
+		'AML Language Server',
+		createServer(alsLog, context),
+		clientOptions)
+
+	const settingsManager = new SettingsManager(["amlLanguageServer.run"])
+	const als = new AlsLanguageClient(languageClient, settingsManager)
+
+	languageClient.registerFeatures([
+		new AlsInitializeParamsFeature(runParams.get("configurationStyle")),
+		new ConversionFeature()
+	])
+
+	workspace.onDidChangeConfiguration(() => notifyConfig(languageClient))
+
+	const disposable = languageClient.start()
+	als.disposables.push(disposable)
+
+	await languageClient.onReady();
+	return als;
+}
+
+function createServer(alsLog: vscode.OutputChannel, context: ExtensionContext): () => Promise<StreamInfo> {
+	return () => {
 		return new Promise((resolve) => {
 			const server = net.createServer(socket => {
 				alsLog.appendLine("[ALS] Socket created")
@@ -56,22 +116,22 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 				const logPath: string = runParams.get("logPath")
 				const isLocal = customPath && customPath.length > 0
 				const debugPort: number = isJVM ? runParams.get("debug") : 0
-				
+
 				const agentLibArgsDebug = '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=' + debugPort
 
 				const extensionPath = context.extensionPath
 				const storagePath = context.storagePath || context.globalStoragePath
 
-				const jarPath = isLocal? customPath : `${extensionPath}/lib/als-server.jar`
-				const jsPath = isLocal? customPath : jsAls
+				const jarPath = isLocal ? customPath : `${extensionPath}/lib/als-server.jar`
+				const jsPath = isLocal ? customPath : jsAls
 				// const jsPath = require.resolve(`${extensionPath}/lib/node-package/dist/als-node-client.min.js`)
 
 				const logFile = logPath !== null ? logPath : `${storagePath}/vscode-aml-language-server.log`
-				
-				const path = isJVM? jarPath : jsPath
-				
-				const folder = workspace.rootPath? workspace.rootPath : "";
-				const options = { 
+
+				const path = isJVM ? jarPath : jsPath
+
+				const folder = workspace.rootPath ? workspace.rootPath : "";
+				const options = {
 					cwd: folder
 				}
 				const address = server.address()
@@ -88,8 +148,8 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 				alsLog.appendLine("[ALS] java exec file: " + javaExecutablePath)
 				alsLog.appendLine("[ALS] RUN AS JVM?: " + isJVM)
 				alsLog.appendLine("[ALS] debug mode?: " + debugPort)
-				
-				const jsArgs: string[] = [ jsPath, '--port', port.toString() ]
+
+				const jsArgs: string[] = [jsPath, '--port', port.toString()]
 
 				const jvmArgsDebug: string[] = [
 					'-jar',
@@ -106,7 +166,7 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 					port.toString()
 				]
 				alsLog.appendLine("[ALS] Spawning at port: " + port);
-				const process = isJVM? child_process.spawn(javaExecutablePath,
+				const process = isJVM ? child_process.spawn(javaExecutablePath,
 					debugPort > 0 ? jvmArgsDebug : jvmArgs,
 					options) : child_process.spawn('node', jsArgs, options)
 
@@ -114,58 +174,13 @@ export async function activate(context: ExtensionContext): Promise<LanguageClien
 					fs.mkdirSync(storagePath)
 
 				const logStream = fs.createWriteStream(logFile, { flags: 'w' })
-				
+
 				process.stdout.pipe(logStream)
 				process.stderr.pipe(logStream)
 			});
 		});
-	};
-
-	const clientOptions: LanguageClientOptions = {
-		documentSelector: documentSelector,
-		synchronize: {
-			configurationSection: 'amlLanguageServer',
-			fileEvents: workspace.createFileSystemWatcher('**/.clientrc')
-		},
-        uriConverters: {
-            code2Protocol: uri => new url.URL(uri.toString(true)).href,
-            protocol2Code: str => Uri.parse(str)
-        }
 	}
-	const runParams = vscode.workspace.getConfiguration(`amlLanguageServer.run`)
-	
-	const languageClient = new LanguageClient(
-		'amlLanguageServer', 
-		'AML Language Server', 
-		createServer, 
-		clientOptions)
-
-	console.log("Starting ALS")
-	const settingsManager = new SettingsManager(["amlLanguageServer.run"])
-	const als = new AlsLanguageServer(languageClient, settingsManager)
-	workspace.onDidChangeWorkspaceFolders(e => {
-		als.wsConfigTreeViewProvider.refresh(vscode.workspace.workspaceFolders);
-	})
-	vscode.window.registerTreeDataProvider(
-		'aml-configuration',
-		als.wsConfigTreeViewProvider
-	);
-	console.log("Started ALS")
-
-	languageClient.registerFeatures([
-		new AlsInitializeParamsFeature(runParams.get("configurationStyle")),
-		new ConversionFeature()
-	])
-
-	workspace.onDidChangeConfiguration(() => notifyConfig(languageClient))
-	
-	const disposable = languageClient.start()
-
-	context.subscriptions.push(disposable)
-
-	await languageClient.onReady();
-    return languageClient;
-}
+};
 
 // MIT Licensed code from: https://github.com/georgewfraser/vscode-javac
 function findJavaExecutable(binname: string) {
