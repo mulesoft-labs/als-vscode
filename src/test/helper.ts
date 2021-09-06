@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { LanguageClient } from 'vscode-languageclient/node';
+import { AlsResolver } from '../extension';
 
 export let doc: vscode.TextDocument;
 export let editor: vscode.TextEditor;
@@ -31,7 +32,10 @@ export async function activateExtension(): Promise<LanguageClient> {
     const ext = vscode.extensions.getExtension('MuleSoftInc.aml-vscode')!;
 
     if (ext) {
-        return await ext.activate();
+        const resolver: AlsResolver =  await ext.activate() as AlsResolver
+        const langClient = resolver.als.languageClient
+        await langClient.onReady();
+        return langClient;
     } else {
         throw new Error('Extension missing?');
     }
@@ -41,13 +45,18 @@ export async function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+export async function restartAls() {
+    await vscode.commands.executeCommand("als.restart");
+    await sleep(2000); // await startup
+}
+
 export const forEachTestFile = (fn: (s: string) => void) => {
     fs.readdir(testFilesDirectory, function (err, files) {
         //handling error
         if (err) {
             return console.log('Unable to scan test directory: ' + err);
         }
-        files.forEach(e => fn(e))
+        files.filter(f => f.toLocaleLowerCase().endsWith(".raml") || f.toLocaleLowerCase().endsWith(".yaml") || f.toLocaleLowerCase().endsWith(".json")).forEach(e => fn(e))
     });
 }
 

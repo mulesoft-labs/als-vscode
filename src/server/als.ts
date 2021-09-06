@@ -3,27 +3,35 @@ import * as vscode from 'vscode';
 import { RenameFileActionParams, messages, RenameFileActionResult, SerializationParams, SerializationResult, ConversionParams, SerializedDocument, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, DidChangeConfigurationNotificationParams } from '../types';
 import { ExecuteCommandRequest, StateChangeEvent } from 'vscode-languageclient';
 import { notifyConfig } from './alsConfiguration';
-import { registerFormatter } from '../language';
+import { FormattingProvider, LANGUAGE_ID } from '../language';
 import { LanguageClient } from 'vscode-languageclient/node';
 import { conversionHandler, registerProfileHandler, renameFileHandler, serializationHandler, unregisterProfileHandler } from './handlers';
 import { ConfigurationViewProvider } from '../ui/configurationView';
 import { SettingsManager } from '../settings';
+import { Disposable } from 'vscode';
 
 
 // todo: cleanup all URIs using languageClient.code2ProtocolConverter.asUri(fileUri)
 // vscode.Uri with `toString()` causes issues with windows paths
-export class AlsLanguageServer {
-    languageClient: LanguageClient
-    readonly wsConfigTreeViewProvider =  new ConfigurationViewProvider(vscode.workspace.workspaceFolders, this)
-    constructor(private readonly langClient: LanguageClient, private readonly extensionConfigurationManager: SettingsManager) {
-        this.languageClient = langClient
-        vscode.commands.registerCommand("als.renameFile", renameFileHandler(this))
-        vscode.commands.registerCommand("als.conversion", conversionHandler(this))
-        vscode.commands.registerCommand("als.serialization", serializationHandler(this))
-        vscode.commands.registerCommand("als.registerProfile", registerProfileHandler(this))
-        vscode.commands.registerCommand("als.unregisterProfile", unregisterProfileHandler(this))
-        this.languageClient.onDidChangeState(this.languageClientStateListener)
-        registerFormatter(this.languageClient)
+export class AlsLanguageClient {
+    disposables: Disposable[] = []
+    readonly wsConfigTreeViewProvider = new ConfigurationViewProvider(vscode.workspace.workspaceFolders, this)
+    constructor(readonly languageClient: LanguageClient, private readonly extensionConfigurationManager: SettingsManager) {
+        this.disposable(vscode.commands.registerCommand("als.renameFile", renameFileHandler(this)))
+        this.disposable(vscode.commands.registerCommand("als.conversion", conversionHandler(this)))
+        this.disposable(vscode.commands.registerCommand("als.serialization", serializationHandler(this)))
+        this.disposable(vscode.commands.registerCommand("als.registerProfile", registerProfileHandler(this)))
+        this.disposable(vscode.commands.registerCommand("als.unregisterProfile", unregisterProfileHandler(this)))
+        this.disposable(this.languageClient.onDidChangeState(this.languageClientStateListener))
+        this.disposable(vscode.languages.registerDocumentFormattingEditProvider(LANGUAGE_ID, new FormattingProvider(languageClient)))
+        this.disposable(vscode.languages.registerDocumentRangeFormattingEditProvider(LANGUAGE_ID, new FormattingProvider(languageClient)))
+        this.disposable(vscode.workspace.onDidChangeWorkspaceFolders(e => {
+            this.wsConfigTreeViewProvider.refresh(vscode.workspace.workspaceFolders);
+        }))
+        vscode.window.registerTreeDataProvider(
+            'aml-configuration',
+            this.wsConfigTreeViewProvider
+        );
     }
 
     sendSerializationRequest(fileUri: vscode.Uri) {
@@ -118,7 +126,7 @@ export class AlsLanguageServer {
         switch (e.newState) {
             case 1:
                 console.log("[ALS] Client stopped")
-                this._ready =  false;
+                this._ready = false;
                 break
             case 2:
                 console.log("[ALS] Client running")
@@ -133,5 +141,13 @@ export class AlsLanguageServer {
         }
     }
     private _ready: boolean = false
-    ready = () => {return this._ready}
+    ready = () => { return this._ready }
+
+    disposable(d: Disposable) {
+        this.disposables.push(d);
+    }
+
+    dispose() {
+        this.disposables.forEach((d: Disposable) => d.dispose())
+    }
 }

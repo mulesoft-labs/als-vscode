@@ -5,7 +5,7 @@ echo "Compile tests"
 npm run pretest
 
 echo "Run tests"
-xvfb-run -a npm cit
+xvfb-run -a npm run test
 retVal=$?
 echo "Finished running tests"
 if [ $retVal -ne 0 ]; then

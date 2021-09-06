@@ -1,9 +1,9 @@
-import { AlsLanguageServer } from "./als"
+import { AlsLanguageClient } from "./als"
 import * as vscode from 'vscode';
 import { DidChangeConfigurationNotificationParams } from "../types";
 import { awaitInputBox } from "../ui/ui";
 
-export const registerProfileHandler = (als: AlsLanguageServer) => {
+export const registerProfileHandler = (als: AlsLanguageClient) => {
   return (fileUri: vscode.Uri) => {
     console.log("Registering profile ", fileUri)
     const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri)
@@ -23,7 +23,7 @@ export const registerProfileHandler = (als: AlsLanguageServer) => {
   }
 }
 
-export const unregisterProfileHandler = (als: AlsLanguageServer) => {
+export const unregisterProfileHandler = (als: AlsLanguageClient) => {
   return (fileUri: vscode.Uri) => {
     console.log("Unregistering profile ", fileUri)
     const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri)
@@ -43,14 +43,14 @@ export const unregisterProfileHandler = (als: AlsLanguageServer) => {
 }
 
 
-export const serializationHandler = (als: AlsLanguageServer) => {
+export const serializationHandler = (als: AlsLanguageClient) => {
   return (fileUri: vscode.Uri) => {
     console.log("als.serialization called")
     als.sendSerializationRequest(fileUri)
   }
 }
 
-export const renameFileHandler = (als: AlsLanguageServer) => {
+export const renameFileHandler = (als: AlsLanguageClient) => {
   return (fileUri: vscode.Uri) => {
     console.log("als.rename called")
     var splittedPath = fileUri.toString().split("/")
@@ -72,7 +72,7 @@ export const renameFileHandler = (als: AlsLanguageServer) => {
   }
 }
 
-export const conversionHandler = (als: AlsLanguageServer) => {
+export const conversionHandler = (als: AlsLanguageClient) => {
   return (fileUri: vscode.Uri) => {
     console.log("als.conversion called")
     var splittedPath = als.languageClient.code2ProtocolConverter.asUri(fileUri).split("/")

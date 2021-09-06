@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
-import { AlsLanguageServer } from '../server/als';
+import { AlsLanguageClient } from '../server/als';
 import { GetWorkspaceConfigurationResult } from '../types';
 
 export class ConfigurationViewProvider implements vscode.TreeDataProvider<WorkspaceConfigurationEntry> {
-  constructor(private workspaces: ReadonlyArray<vscode.WorkspaceFolder>, private als: AlsLanguageServer) {}
+  constructor(private workspaces: ReadonlyArray<vscode.WorkspaceFolder>, private als: AlsLanguageClient) {}
 
   getTreeItem(element: WorkspaceConfigurationEntry): vscode.TreeItem {
     return element;
