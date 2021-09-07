@@ -4,5 +4,9 @@ lib
 .DS_Store
 dist
 als.log
+.gradle/**
 *.vsix
 .vscode-test/**
+.gradle/**
+.idea/**
+*.code-workspace
