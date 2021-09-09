@@ -1,7 +1,6 @@
 'use strict'
 
 import * as vscode from 'vscode';
-import * as path from 'path';
 import * as assert from 'assert';
 import { activate, forEachTestFile, getDocUri, RAML_LANGUAGE_ID } from './helper';
 suite('RAML Language tests', function () {

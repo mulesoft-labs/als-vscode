@@ -1,11 +1,11 @@
 
 import * as vscode from 'vscode';
-import { RenameFileActionParams, messages, RenameFileActionResult, SerializationParams, SerializationResult, ConversionParams, SerializedDocument, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, DidChangeConfigurationNotificationParams } from '../types';
+import { RenameFileActionParams, messages, RenameFileActionResult, SerializationParams, SerializationResult, ConversionParams, SerializedDocument, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, DidChangeConfigurationNotificationParams, ProjectConfigurationStyles } from '../types';
 import { ExecuteCommandRequest, StateChangeEvent } from 'vscode-languageclient';
 import { notifyConfig } from './alsConfiguration';
 import { FormattingProvider, LANGUAGE_ID } from '../language';
 import { LanguageClient } from 'vscode-languageclient/node';
-import { conversionHandler, registerProfileHandler, renameFileHandler, serializationHandler, unregisterProfileHandler } from './handlers';
+import { conversionHandler, registerProfileHandler, renameFileHandler, serializationHandler, setMainFileHandler, unregisterProfileHandler } from './handlers';
 import { ConfigurationViewProvider } from '../ui/configurationView';
 import { SettingsManager } from '../settings';
 import { Disposable } from 'vscode';
@@ -20,8 +20,11 @@ export class AlsLanguageClient {
         this.disposable(vscode.commands.registerCommand("als.renameFile", renameFileHandler(this)))
         this.disposable(vscode.commands.registerCommand("als.conversion", conversionHandler(this)))
         this.disposable(vscode.commands.registerCommand("als.serialization", serializationHandler(this)))
-        this.disposable(vscode.commands.registerCommand("als.registerProfile", registerProfileHandler(this)))
-        this.disposable(vscode.commands.registerCommand("als.unregisterProfile", unregisterProfileHandler(this)))
+        if(this.configurationByCommand){
+            this.disposable(vscode.commands.registerCommand("als.setMainFile", setMainFileHandler(this)))
+            this.disposable(vscode.commands.registerCommand("als.registerProfile", registerProfileHandler(this)))
+            this.disposable(vscode.commands.registerCommand("als.unregisterProfile", unregisterProfileHandler(this)))
+        }
         this.disposable(this.languageClient.onDidChangeState(this.languageClientStateListener))
         this.disposable(vscode.languages.registerDocumentFormattingEditProvider(LANGUAGE_ID, new FormattingProvider(languageClient)))
         this.disposable(vscode.languages.registerDocumentRangeFormattingEditProvider(LANGUAGE_ID, new FormattingProvider(languageClient)))
@@ -33,6 +36,9 @@ export class AlsLanguageClient {
             this.wsConfigTreeViewProvider
         );
     }
+
+    configurationStyle: ProjectConfigurationStyles = vscode.workspace.getConfiguration(`amlLanguageServer.run`).get("configurationStyle")
+    configurationByCommand: Boolean = this.configurationStyle == ProjectConfigurationStyles.Command
 
     sendSerializationRequest(fileUri: vscode.Uri) {
         const params: SerializationParams = {

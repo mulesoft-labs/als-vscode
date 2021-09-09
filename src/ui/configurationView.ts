@@ -5,7 +5,7 @@ import { GetWorkspaceConfigurationResult } from '../types';
 
 export class ConfigurationViewProvider implements vscode.TreeDataProvider<WorkspaceConfigurationEntry> {
   constructor(private workspaces: ReadonlyArray<vscode.WorkspaceFolder>, private als: AlsLanguageClient) {}
-
+  
   getTreeItem(element: WorkspaceConfigurationEntry): vscode.TreeItem {
     return element;
   }
@@ -25,23 +25,24 @@ export class ConfigurationViewProvider implements vscode.TreeDataProvider<Worksp
       if (element && element instanceof WorkspaceConfigurationParent) {
         const result = new Array<WorkspaceConfigurationEntry>()
         if(element.configuration.configuration.mainUri != "") {
-          return resolve([new MainFileEntry(element.configuration.configuration.mainUri)])
+          result.push(new MainFileEntry(element.configuration.configuration.mainUri))
         }
         if(element.configuration.configuration.customValidationProfiles.length > 0) {
           result.push(new ProfileHolderEntry("Profiles", vscode.TreeItemCollapsibleState.Collapsed, element.configuration))
         }
         return resolve(result);
       } else if(element && element instanceof ProfileHolderEntry){
-        return resolve(element.configuration.configuration.customValidationProfiles.map(profile => {
+        return resolve(element.configuration.configuration.customValidationProfiles.map(fullPath => {
           console.log(element.iconPath);
-          return new ProfileEntry(profile, vscode.TreeItemCollapsibleState.None, element.configuration)
+          const shortPath = fullPath.replace(element.configuration.workspace + path.sep, "")
+          return new ProfileEntry(fullPath, shortPath, vscode.TreeItemCollapsibleState.None, element.configuration)
         }))
       } else {
         return resolve(Promise.all(this.workspaces.map<Promise<WorkspaceConfigurationEntry>>(async ws => {
           const config = await this.als.getWorkspaceConfiguration(ws.uri.toString(true));
           console.log(config)
           const workspaceFolder = vscode.workspace.getWorkspaceFolder(vscode.Uri.file(config.workspace))
-          const workspaceName = workspaceFolder ? workspaceFolder.name : config.workspace.split("/")[config.workspace.split("/").length - 1];
+          const workspaceName = workspaceFolder ? workspaceFolder.name : config.workspace.split(path.sep)[config.workspace.split(path.sep).length - 1];
           const result: WorkspaceConfigurationEntry = new WorkspaceConfigurationParent(workspaceName, vscode.TreeItemCollapsibleState.Collapsed, config);
           return result;
         })))
@@ -71,11 +72,11 @@ class WorkspaceConfigurationEntry extends vscode.TreeItem {
 
 class WorkspaceConfigurationParent extends WorkspaceConfigurationEntry {
   constructor(
-    public readonly label: string,
+    public readonly shortPath: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
     public readonly configuration: GetWorkspaceConfigurationResult,
   ) {
-    super(label, collapsibleState);
+    super(shortPath, collapsibleState);
     this.tooltip = `${this.configuration.workspace}`;
     this.description = this.configuration.workspace;
   }
@@ -83,12 +84,12 @@ class WorkspaceConfigurationParent extends WorkspaceConfigurationEntry {
 
 class ProfileHolderEntry extends WorkspaceConfigurationEntry {
   constructor(
-    public readonly label: string,
+    public readonly shortPath: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
     public readonly configuration: GetWorkspaceConfigurationResult
   ) {
-    super(label, collapsibleState);
-    this.tooltip = `${this.label}`;
+    super(shortPath, collapsibleState);
+    this.tooltip = `${this.shortPath}`;
     this.description = "";
   }
 
@@ -100,13 +101,14 @@ class ProfileHolderEntry extends WorkspaceConfigurationEntry {
 
 class ProfileEntry extends WorkspaceConfigurationEntry {
   constructor(
-    public readonly label: string,
+    readonly fullPath: string,
+    public readonly shortPath: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
     public readonly configuration: GetWorkspaceConfigurationResult
   ) {
-    super(label, collapsibleState);
-    this.tooltip = `${this.label}`;
-    this.description = "";
+    super(shortPath, collapsibleState);
+    this.tooltip = `${this.fullPath}`;
+    this.description = fullPath;
   }
 
   iconPath = {
@@ -118,11 +120,11 @@ class ProfileEntry extends WorkspaceConfigurationEntry {
 
 class MainFileEntry extends WorkspaceConfigurationEntry {
   constructor(
-    public readonly label: string
+    public readonly uri: string
   ) {
-    super(label, vscode.TreeItemCollapsibleState.None);
-    this.tooltip = `${this.label}`;
-    this.description = this.label;
+    super("Main file: " + uri, vscode.TreeItemCollapsibleState.None);
+    this.tooltip = `${this.uri}`;
+    this.description = this.uri;
   }
 
   iconPath = {

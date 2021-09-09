@@ -8,11 +8,11 @@ export class SettingsManager {
   settingRequiresRestart(config: string) {
     vscode.workspace.onDidChangeConfiguration(event => {
       event.affectsConfiguration(config)
-      const errMsg = "AML Support configuration has changed and requires a reload.";
-      const reload: string = "Reload";
-      vscode.window.showInformationMessage(errMsg, reload).then(async (value?: string) => {
-        if (value === reload) {
-          vscode.commands.executeCommand("workbench.action.reloadWindow");
+      const errMsg = "AML Support configuration has changed and requires a restart.";
+      const restart: string = "Restart";
+      vscode.window.showInformationMessage(errMsg, restart).then(async (value?: string) => {
+        if (value === restart) {
+          vscode.commands.executeCommand("als.restart");
         }
       });
     })
