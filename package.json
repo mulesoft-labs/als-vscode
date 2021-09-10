@@ -292,7 +292,7 @@
         }
     },
     "dependencies": {
-        "@mulesoft/als-node-client": "4.2.0-SNAPSHOT.341",
+        "@mulesoft/als-node-client": "4.2.0-SNAPSHOT.343",
         "@types/mocha": "^8.2.1",
         "@types/node": "^11.15.20",
         "@types/vscode": "1.52.0",
