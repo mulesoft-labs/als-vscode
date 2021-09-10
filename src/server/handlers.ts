@@ -1,6 +1,6 @@
 import { AlsLanguageClient } from "./als"
 import * as vscode from 'vscode';
-import { DidChangeConfigurationNotificationParams } from "../types";
+import { DidChangeConfigurationNotificationParams, GetWorkspaceConfigurationResult } from "../types";
 import { awaitInputBox } from "../ui/ui";
 
 export const setMainFileHandler = (als: AlsLanguageClient) => {
@@ -8,12 +8,9 @@ export const setMainFileHandler = (als: AlsLanguageClient) => {
     const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri)
     console.log("New main file ", uri)
     als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
-      console.log(workspaceConfig)
       const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
-        mainUri: uri,
-        folder: uri,
-        dependencies: workspaceConfig.configuration.dependencies,
-        customValidationProfiles: workspaceConfig.configuration.customValidationProfiles
+        ... workspaceConfig.configuration,
+        mainUri: uri
       }
       als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
     })
@@ -24,16 +21,13 @@ export const registerProfileHandler = (als: AlsLanguageClient) => {
   return (fileUri: vscode.Uri) => {
     const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri)
     console.log("Registering profile ", uri)
-    als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
-      console.log(workspaceConfig)
+    als.getWorkspaceConfiguration(uri).then(workspaceConfig => { 
       const profiles = workspaceConfig.configuration.customValidationProfiles
       if (profiles.indexOf(uri) == -1) {
         profiles.push(uri);
       }
       const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
-        mainUri: workspaceConfig.configuration.mainUri,
-        folder: uri,
-        dependencies: workspaceConfig.configuration.dependencies,
+        ... workspaceConfig.configuration,
         customValidationProfiles: profiles
       }
       als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
@@ -46,15 +40,11 @@ export const unregisterProfileHandler = (als: AlsLanguageClient) => {
     const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri)
     console.log("Unregistering profile ", uri)
     als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
-      console.log(workspaceConfig)
       const profiles = workspaceConfig.configuration.customValidationProfiles.filter(v => {
         return (v.toLowerCase() != uri.toLowerCase())
       })
-      console.log(profiles)
       const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
-        mainUri: workspaceConfig.configuration.mainUri,
-        folder: uri,
-        dependencies: workspaceConfig.configuration.dependencies,
+        ... workspaceConfig.configuration,
         customValidationProfiles: profiles
       }
       als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
