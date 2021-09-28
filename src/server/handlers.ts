@@ -1,6 +1,6 @@
 import { AlsLanguageClient } from "./als"
 import * as vscode from 'vscode';
-import { DidChangeConfigurationNotificationParams } from "../types";
+import { DidChangeConfigurationNotificationParams, DependencyConfiguration, isDependencyConfiguration } from "../types";
 import { awaitInputBox } from "../ui/ui";
 
 export const registerProfileHandler = (als: AlsLanguageClient) => {
@@ -8,15 +8,17 @@ export const registerProfileHandler = (als: AlsLanguageClient) => {
     console.log("Registering profile ", fileUri)
     const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri)
     als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
-      const profiles = workspaceConfig.configuration.customValidationProfiles.filter(v => {
-        v.toLowerCase != uri.toLowerCase
-      })
-      profiles.push(uri);
+      // const profiles: DependencyConfiguration[] = workspaceConfig.configuration
+      //   .dependencies
+      //   .filter(isDependencyConfiguration)
+      //   .filter(v => {
+      //     v.scope == "custom-validation" && v.file.toLowerCase != uri.toLowerCase
+      //   })
+      // profiles.push({file: uri, scope: "custom-validation"});
       const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
         mainUri: workspaceConfig.configuration.mainUri,
         folder: uri,
-        dependencies: workspaceConfig.configuration.dependencies,
-        customValidationProfiles: profiles
+        dependencies: [...workspaceConfig.configuration.dependencies, {file: uri, scope: "custom-validation"}]
       }
       als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
     })
@@ -28,14 +30,12 @@ export const unregisterProfileHandler = (als: AlsLanguageClient) => {
     console.log("Unregistering profile ", fileUri)
     const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri)
     als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
-      const profiles = workspaceConfig.configuration.customValidationProfiles.filter(v => {
-        v.toLowerCase != uri.toLowerCase
-      })
       const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
         mainUri: workspaceConfig.configuration.mainUri,
         folder: uri,
-        dependencies: workspaceConfig.configuration.dependencies,
-        customValidationProfiles: profiles
+        dependencies: workspaceConfig.configuration.dependencies.filter(v => {
+          !isDependencyConfiguration(v) || !(v.scope == "custom-validation" && v.file.toLowerCase != uri.toLowerCase)
+        })
       }
       als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
     })

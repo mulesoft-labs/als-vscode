@@ -76,9 +76,17 @@ export type AlsInitializeParams = InitializeParams & {
 export type DidChangeConfigurationNotificationParams = {
     mainUri: string,
     folder?: string,
-    dependencies: string[],
-    customValidationProfiles: string[]
+    dependencies: (string | DependencyConfiguration)[]
 }
+
+export type DependencyConfiguration = {
+    file: string,
+    scope: string
+}
+
+export function isDependencyConfiguration(t: string | DependencyConfiguration): t is DependencyConfiguration {
+    return (<DependencyConfiguration>t).scope !== undefined;
+ }
 
 export type GetWorkspaceConfigurationParams = {
     textDocument: TextDocumentIdentifier
