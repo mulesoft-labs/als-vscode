@@ -113,9 +113,7 @@ export class AlsLanguageClient {
                 {
                     mainUri: params.mainUri,
                     folder: params.folder,
-                    dependencies: params.dependencies,
-                    customValidationProfiles: params.customValidationProfiles
-                },
+                    dependencies: params.dependencies                },
             ],
         })
             .then(() => console.log(`Notified new configuration: `, params), error => console.error(`Error while notifying new config to ALS`, error))

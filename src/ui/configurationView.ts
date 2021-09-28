@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { AlsLanguageClient } from '../server/als';
-import { GetWorkspaceConfigurationResult } from '../types';
+import { GetWorkspaceConfigurationResult, isDependencyConfiguration } from '../types';
 
 export class ConfigurationViewProvider implements vscode.TreeDataProvider<WorkspaceConfigurationEntry> {
   constructor(private workspaces: ReadonlyArray<vscode.WorkspaceFolder>, private als: AlsLanguageClient) {}
@@ -27,14 +27,14 @@ export class ConfigurationViewProvider implements vscode.TreeDataProvider<Worksp
         if(element.configuration.configuration.mainUri != "") {
           return resolve([new MainFileEntry(element.configuration.configuration.mainUri)])
         }
-        if(element.configuration.configuration.customValidationProfiles.length > 0) {
+        if(element.configuration.configuration.dependencies.filter(isDependencyConfiguration).filter(v => v.scope == "custom-validation").length > 0) {
           result.push(new ProfileHolderEntry("Profiles", vscode.TreeItemCollapsibleState.Collapsed, element.configuration))
         }
         return resolve(result);
       } else if(element && element instanceof ProfileHolderEntry){
-        return resolve(element.configuration.configuration.customValidationProfiles.map(profile => {
+        return resolve(element.configuration.configuration.dependencies.filter(isDependencyConfiguration).filter(v => v.scope == "custom-validation").map(profile => {
           console.log(element.iconPath);
-          return new ProfileEntry(profile, vscode.TreeItemCollapsibleState.None, element.configuration)
+          return new ProfileEntry(profile.file, vscode.TreeItemCollapsibleState.None, element.configuration)
         }))
       } else {
         return resolve(Promise.all(this.workspaces.map<Promise<WorkspaceConfigurationEntry>>(async ws => {
