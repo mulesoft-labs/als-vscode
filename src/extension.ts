@@ -19,6 +19,7 @@ import { AlsLanguageClient } from './server/als'
 import { SettingsManager } from './settings'
 
 var jsAls = require.resolve("@mulesoft/als-node-client")
+export let alsLog = vscode.window.createOutputChannel("alsLog");
 
 export class AlsResolver {
 	als: AlsLanguageClient;
@@ -29,7 +30,7 @@ export class AlsResolver {
 export async function activate(context: ExtensionContext): Promise<AlsResolver> {
 	const resolver = new AlsResolver();
 	//Create output channel
-	let alsLog = vscode.window.createOutputChannel("alsLog");
+	// let alsLog = vscode.window.createOutputChannel("alsLog");
 
 	//Write to output.
 	alsLog.appendLine("Hi! I am alsLog, and I will be your troubleshooting companion for the day. I hope you won't need me!");
