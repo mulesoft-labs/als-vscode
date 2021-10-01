@@ -6,37 +6,31 @@ import {alsLog} from "../extension"
 
 export const registerProfileHandler = (als: AlsLanguageClient) => {
   return (fileUri: vscode.Uri) => {
-    alsLog.appendLine("Registering profile " + fileUri)
-    const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri)
-    als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
-      const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
-        mainUri: workspaceConfig.configuration.mainUri,
-        folder: uri,
-        dependencies: [...workspaceConfig.configuration.dependencies, {file: uri, scope: "custom-validation"}]
-      }
-      als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
-    })
+    const scopeName = "custom-validation"
+    registerDependency(als, fileUri, scopeName);
+  }
+}
+
+export const registerSemanticHandler = (als: AlsLanguageClient) => {
+  return (fileUri: vscode.Uri) => {
+    const scopeName = "semantic-extension"
+    registerDependency(als, fileUri, scopeName);
   }
 }
 
 export const unregisterProfileHandler = (als: AlsLanguageClient) => {
   return (fileUri: vscode.Uri) => {
-    alsLog.appendLine("Unregistering profile " + fileUri)
-    const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri)
-    als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
-      const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
-        mainUri: workspaceConfig.configuration.mainUri,
-        folder: uri,
-        dependencies: workspaceConfig.configuration.dependencies
-        .filter(v => {
-          !isDependencyConfiguration(v) || !(v.scope == "custom-validation" && v.file.toLowerCase() == uri.toLowerCase())
-        })
-      }
-      als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
-    })
+    const scopeName = "custom-validation"
+    unregisterDependency(scopeName, fileUri, als);
   }
 }
 
+export const unregisterSemanticHandler = (als: AlsLanguageClient) => {
+  return (fileUri: vscode.Uri) => {
+    const scopeName = "semantic-extension"
+    unregisterDependency(scopeName, fileUri, als);
+  }
+}
 
 export const serializationHandler = (als: AlsLanguageClient) => {
   return (fileUri: vscode.Uri) => {
@@ -98,4 +92,36 @@ export const conversionHandler = (als: AlsLanguageClient) => {
         }
       })
   }
+}
+
+function unregisterDependency(scopeName: string, fileUri: vscode.Uri, als: AlsLanguageClient) {
+  alsLog.appendLine("Unregistering " + scopeName + " " + fileUri);
+  const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri);
+  als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
+    const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
+      mainUri: workspaceConfig.configuration.mainUri,
+      folder: uri,
+      dependencies: workspaceConfig.configuration.dependencies
+        .filter(v => {
+          // alsLog.appendLine("isDependencyConfiguration " + isDependencyConfiguration(v))
+          // alsLog.appendLine("scope and uri " + (!isDependencyConfiguration(v) || !(v.scope == scopeName && v.file.toLowerCase() == uri.toLowerCase())))
+          return !isDependencyConfiguration(v) || !(v.scope == scopeName && v.file.toLowerCase() == uri.toLowerCase());
+        })
+    };
+    
+    als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
+  });
+}
+
+function registerDependency(als: AlsLanguageClient, fileUri: vscode.Uri, scopeName: string) {
+  alsLog.appendLine("Registering " + scopeName + " " + fileUri)
+  const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri);
+  als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
+    const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
+      mainUri: workspaceConfig.configuration.mainUri,
+      folder: uri,
+      dependencies: [...workspaceConfig.configuration.dependencies, { file: uri, scope: scopeName }]
+    };
+    als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
+  });
 }

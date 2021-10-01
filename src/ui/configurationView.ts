@@ -28,13 +28,21 @@ export class ConfigurationViewProvider implements vscode.TreeDataProvider<Worksp
           return resolve([new MainFileEntry(element.configuration.configuration.mainUri)])
         }
         if(element.configuration.configuration.dependencies.filter(isDependencyConfiguration).filter(v => v.scope == "custom-validation").length > 0) {
-          result.push(new ProfileHolderEntry("Profiles", vscode.TreeItemCollapsibleState.Collapsed, element.configuration))
+          result.push(new DependencyHolderEntry("Profiles", vscode.TreeItemCollapsibleState.Collapsed, element.configuration))
+        }
+        if(element.configuration.configuration.dependencies.filter(isDependencyConfiguration).filter(v => v.scope == "semantic-extension").length > 0) {
+          result.push(new DependencyHolderEntry("Extensions", vscode.TreeItemCollapsibleState.Collapsed, element.configuration))
         }
         return resolve(result);
-      } else if(element && element instanceof ProfileHolderEntry){
+      } else if(element && element instanceof DependencyHolderEntry && element.label  == "Profiles"){
         return resolve(element.configuration.configuration.dependencies.filter(isDependencyConfiguration).filter(v => v.scope == "custom-validation").map(profile => {
           console.log(element.iconPath);
-          return new ProfileEntry(profile.file, vscode.TreeItemCollapsibleState.None, element.configuration)
+          return new DependencyEntry(profile.file, vscode.TreeItemCollapsibleState.None, element.configuration)
+        }))
+      } else if(element && element instanceof DependencyHolderEntry && element.label  == "Extensions"){
+        return resolve(element.configuration.configuration.dependencies.filter(isDependencyConfiguration).filter(v => v.scope == "semantic-extension").map(profile => {
+          console.log(element.iconPath);
+          return new DependencyEntry(profile.file, vscode.TreeItemCollapsibleState.None, element.configuration)
         }))
       } else {
         return resolve(Promise.all(this.workspaces.map<Promise<WorkspaceConfigurationEntry>>(async ws => {
@@ -81,7 +89,7 @@ class WorkspaceConfigurationParent extends WorkspaceConfigurationEntry {
   }
 }
 
-class ProfileHolderEntry extends WorkspaceConfigurationEntry {
+class DependencyHolderEntry extends WorkspaceConfigurationEntry {
   constructor(
     public readonly label: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
@@ -98,7 +106,7 @@ class ProfileHolderEntry extends WorkspaceConfigurationEntry {
   };
 }
 
-class ProfileEntry extends WorkspaceConfigurationEntry {
+class DependencyEntry extends WorkspaceConfigurationEntry {
   constructor(
     public readonly label: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
