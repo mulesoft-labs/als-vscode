@@ -18,8 +18,6 @@ import { AlsInitializeParamsFeature, ConversionFeature } from './features'
 import { AlsLanguageClient } from './server/als'
 import { SettingsManager } from './settings'
 
-var jsAls = require.resolve("@mulesoft/als-node-client")
-
 export class AlsResolver {
 	als: AlsLanguageClient;
 	getCurrent = () => {
@@ -123,8 +121,7 @@ function createServer(alsLog: vscode.OutputChannel, context: ExtensionContext): 
 				const storagePath = context.storagePath || context.globalStoragePath
 
 				const jarPath = isLocal ? customPath : `${extensionPath}/lib/als-server.jar`
-				const jsPath = isLocal ? customPath : jsAls
-				// const jsPath = require.resolve(`${extensionPath}/lib/node-package/dist/als-node-client.min.js`)
+				const jsPath = isLocal ? customPath : require.resolve("@mulesoft/als-node-client")
 
 				const logFile = logPath !== null ? logPath : `${storagePath}/vscode-aml-language-server.log`
 
@@ -177,6 +174,16 @@ function createServer(alsLog: vscode.OutputChannel, context: ExtensionContext): 
 
 				process.stdout.pipe(logStream)
 				process.stderr.pipe(logStream)
+				process.stdout.addListener("data", (c) => {
+					if(c.toString().trim().startsWith("[WASM]")) {
+						console.log(c.toString().trim())
+					}
+				})
+				process.stderr.addListener("data", (c) => {
+					if(c.toString().trim().startsWith("[WASM]")) {
+						console.log(c.toString().trim())
+					}
+				})
 			});
 		});
 	}

@@ -31,6 +31,11 @@ export class AlsLanguageClient {
         this.disposable(vscode.workspace.onDidChangeWorkspaceFolders(e => {
             this.wsConfigTreeViewProvider.refresh(vscode.workspace.workspaceFolders);
         }))
+        this.disposable(languageClient.onTelemetry(t => {
+            if(t.event === "End report" && t.messageType === "END_CUSTOM_DIAGNOSTIC"){
+                // console.log(t)
+            }
+        }))
         vscode.window.registerTreeDataProvider(
             'aml-configuration',
             this.wsConfigTreeViewProvider

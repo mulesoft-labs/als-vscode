@@ -10,7 +10,8 @@ export const setMainFileHandler = (als: AlsLanguageClient) => {
     als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
       const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
         ... workspaceConfig.configuration,
-        mainUri: uri
+        mainUri: uri,
+        folder: workspaceConfig.workspace
       }
       als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
     })
@@ -28,7 +29,8 @@ export const registerProfileHandler = (als: AlsLanguageClient) => {
       }
       const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
         ... workspaceConfig.configuration,
-        customValidationProfiles: profiles
+        customValidationProfiles: profiles,
+        folder: workspaceConfig.workspace
       }
       als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
     })
@@ -45,7 +47,8 @@ export const unregisterProfileHandler = (als: AlsLanguageClient) => {
       })
       const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
         ... workspaceConfig.configuration,
-        customValidationProfiles: profiles
+        customValidationProfiles: profiles,
+        folder: workspaceConfig.workspace
       }
       als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
     })
