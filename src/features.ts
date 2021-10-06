@@ -1,6 +1,6 @@
 import { DocumentSelector } from 'vscode';
 import { ClientCapabilities, InitializeParams, ServerCapabilities, StaticFeature } from 'vscode-languageclient';
-import { AlsInitializeParams, ProjectConfigurationStyles } from './types';
+import { AlsClientCapabilities, AlsInitializeParams, ProjectConfigurationStyles } from './types';
 export class ConversionFeature implements StaticFeature {
     fillInitializeParams?: (params: InitializeParams) => void;
     dispose(): void {
@@ -40,7 +40,6 @@ export class AlsInitializeParamsFeature implements StaticFeature {
 				this.configurationStyle = ProjectConfigurationStyles.Command;
 				break;
 		}
-		console.log("ProjectConfigurationStyle: " + this.configurationStyle)
 	}
 	fillInitializeParams?: (params: InitializeParams) => void = (params: InitializeParams) => {
 			var castedParams = params as AlsInitializeParams
@@ -48,7 +47,12 @@ export class AlsInitializeParamsFeature implements StaticFeature {
 				style: this.configurationStyle.toString()
 			}
 	}
-	fillClientCapabilities(capabilities: ClientCapabilities): void {}
+	fillClientCapabilities(capabilities: ClientCapabilities): void {
+		var castedCapabilities = capabilities as AlsClientCapabilities;
+		castedCapabilities.customValidations = {
+			enabled: false
+		}
+	}
 	initialize(capabilities: ServerCapabilities<any>, documentSelector: DocumentSelector): void {}
 	dispose(): void {}
 	

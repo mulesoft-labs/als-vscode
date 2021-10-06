@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import * as assert from 'assert';
 import { getDocUri, activate, testFilesDirectory, activateExtension } from '../helper';
 import { messages, RenameFileActionParams, RenameFileActionResult } from '../../types';
+import { AlsRenameFileRequestType } from '@aml-org/als-node-client';
 
 suite('Should rename file', async function () {
 	test('Rename file DataType.raml', async () => {
@@ -38,7 +39,7 @@ async function testRename(
 	};
 	activate(docUri).then(async () => {
 		const languageClient = await activateExtension();
-		await (languageClient.sendRequest(messages.AlsRenameFileRequest.type, params).then(result => {
+		await (languageClient.sendRequest(new AlsRenameFileRequestType.type("asd"), params).then(result => {
 			assert.deepStrictEqual(result, expected)
 		}))
 	});
