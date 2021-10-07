@@ -1,6 +1,7 @@
-import { AlsConfiguration, messages } from "../types";
+import { messages } from "../types";
 import { LanguageClient } from "vscode-languageclient/node";
 import { workspace } from "vscode";
+import { AlsConfiguration } from "@aml-org/als-node-client";
 
 
 export const initialConfiguration: AlsConfiguration = {

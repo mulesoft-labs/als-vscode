@@ -10,3 +10,4 @@ als.log
 .gradle/**
 .idea/**
 *.code-workspace
+testFixture/.vscode/

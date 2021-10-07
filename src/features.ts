@@ -1,6 +1,7 @@
+import { AlsClientCapabilities, AlsInitializeParams } from '@aml-org/als-node-client';
 import { DocumentSelector } from 'vscode';
 import { ClientCapabilities, InitializeParams, ServerCapabilities, StaticFeature } from 'vscode-languageclient';
-import { AlsInitializeParams, ProjectConfigurationStyles } from './types';
+import { ProjectConfigurationStyles } from './types';
 export class ConversionFeature implements StaticFeature {
     fillInitializeParams?: (params: InitializeParams) => void;
     dispose(): void {
@@ -27,9 +28,9 @@ export class SerializationNotificationFeature implements StaticFeature {
 }
 
 export class AlsInitializeParamsFeature implements StaticFeature {
-	private configurationStyle: ProjectConfigurationStyles = ProjectConfigurationStyles.Command;
-	constructor(configurationStyle: String) {
-		switch(configurationStyle) {
+	private configurationStyle: string = ProjectConfigurationStyles.Command;
+	constructor(configStyle: String, readonly isJvm: boolean) {
+		switch(configStyle) {
 			case ProjectConfigurationStyles.Command:
 				this.configurationStyle = ProjectConfigurationStyles.Command;
 				break;
@@ -40,15 +41,19 @@ export class AlsInitializeParamsFeature implements StaticFeature {
 				this.configurationStyle = ProjectConfigurationStyles.Command;
 				break;
 		}
-		console.log("ProjectConfigurationStyle: " + this.configurationStyle)
 	}
 	fillInitializeParams?: (params: InitializeParams) => void = (params: InitializeParams) => {
 			var castedParams = params as AlsInitializeParams
 			castedParams.projectConfigurationStyle = { 
-				style: this.configurationStyle.toString()
+				style: this.configurationStyle
 			}
 	}
-	fillClientCapabilities(capabilities: ClientCapabilities): void {}
+	fillClientCapabilities(capabilities: ClientCapabilities): void {
+		var castedCapabilities = capabilities as AlsClientCapabilities;
+		castedCapabilities.customValidations = {
+			enabled: !this.isJvm // Custom validations are not supported in JVM
+		}
+	}
 	initialize(capabilities: ServerCapabilities<any>, documentSelector: DocumentSelector): void {}
 	dispose(): void {}
 	

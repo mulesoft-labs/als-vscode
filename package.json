@@ -124,7 +124,7 @@
                         "command",
                         "file"
                     ],
-                    "description": "Select how should ALS determine a project configuration, either by `didChangeConfiguration` command or by reading an exchange.json file. For more informaiton please read the [documentation](https://github.com/aml-org/als/blob/7397005c8a17a580c8a102a2537f1a50ca66c965/documentation/features/features.md#als-initialize-params) (Reload required)",
+                    "description": "Select how should ALS determine a project configuration, either by `didChangeConfiguration` command or by reading an exchange.json file. (Reload required)",
                     "enumDescription": [
                         "ALS projects can only be configured by using the `didChangeConfiguration`",
                         "ALS will try to find and read an exchange.json file at the root of the workspace to configure the project."
@@ -207,6 +207,15 @@
                 }
             },
             {
+                "command": "als.setMainFile",
+                "title": "Set as Main File",
+                "category": "Modifications",
+                "icon": {
+                    "light": "path/to/light/icon.svg",
+                    "dark": "path/to/dark/icon.svg"
+                }
+            },
+            {
                 "command": "als.registerProfile",
                 "title": "Register profile",
                 "category": "Modifications",
@@ -223,7 +232,8 @@
                     "light": "path/to/light/icon.svg",
                     "dark": "path/to/dark/icon.svg"
                 }
-            },{
+            },
+            {
                 "command": "als.registerSemantic",
                 "title": "Register Semantic",
                 "category": "Modifications",
@@ -271,6 +281,11 @@
                 },
                 {
                     "when": "resourceLangId == aml",
+                    "command": "als.setMainFile",
+                    "group": "7_modification"
+                },
+                {
+                    "when": "resourceLangId == aml",
                     "command": "als.unregisterProfile",
                     "group": "7_modification"
                 },
@@ -305,7 +320,7 @@
         }
     },
     "dependencies": {
-        "@mulesoft/als-node-client": "4.2.0-SNAPSHOT.340",
+        "@aml-org/als-node-client": "4.2.0-SNAPSHOT.357",
         "@types/mocha": "^8.2.1",
         "@types/node": "^11.15.20",
         "@types/vscode": "1.52.0",
@@ -327,5 +342,8 @@
         "test-compile": "tsc -p ./",
         "pretest": "npm run test-compile",
         "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@aml-org/amf-custom-validator": "0.1.0-SNAPSHOT.16"
     }
 }
