@@ -243,15 +243,6 @@
                 }
             },
             {
-                "command": "als.unregisterSemantic",
-                "title": "Unregister Semantic",
-                "category": "Modifications",
-                "icon": {
-                    "light": "path/to/light/icon.svg",
-                    "dark": "path/to/dark/icon.svg"
-                }
-            },
-            {
                 "command": "als.restart",
                 "title": "Restart ALS Client",
                 "category": "Modifications"
@@ -292,11 +283,6 @@
                 {
                     "when": "resourceLangId == aml",
                     "command": "als.registerSemantic",
-                    "group": "7_modification"
-                },
-                {
-                    "when": "resourceLangId == aml",
-                    "command": "als.unregisterSemantic",
                     "group": "7_modification"
                 }
             ]
