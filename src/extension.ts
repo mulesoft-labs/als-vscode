@@ -18,7 +18,7 @@ import { AlsInitializeParamsFeature, ConversionFeature } from './features'
 import { AlsLanguageClient } from './server/als'
 import { SettingsManager } from './settings'
 
-var jsAls = require.resolve("@mulesoft/als-node-client")
+var jsAls = require.resolve("@aml-org/als-node-client")
 export let alsLog = vscode.window.createOutputChannel("alsLog");
 
 export class AlsResolver {
@@ -29,9 +29,6 @@ export class AlsResolver {
 }
 export async function activate(context: ExtensionContext): Promise<AlsResolver> {
 	const resolver = new AlsResolver();
-	//Create output channel
-	// let alsLog = vscode.window.createOutputChannel("alsLog");
-
 	//Write to output.
 	alsLog.appendLine("Hi! I am alsLog, and I will be your troubleshooting companion for the day. I hope you won't need me!");
 	await createLanguageClient(alsLog, context).then(alsClient => {
@@ -81,8 +78,10 @@ async function createLanguageClient(alsLog: vscode.OutputChannel, context: Exten
 	const settingsManager = new SettingsManager(["amlLanguageServer.run"])
 	const als = new AlsLanguageClient(languageClient, settingsManager)
 
+	
+	const isJVM = runParams.get("platform") === "jvm";
 	languageClient.registerFeatures([
-		new AlsInitializeParamsFeature(runParams.get("configurationStyle")),
+		new AlsInitializeParamsFeature(runParams.get("configurationStyle"), isJVM),
 		new ConversionFeature()
 	])
 
@@ -125,7 +124,6 @@ function createServer(alsLog: vscode.OutputChannel, context: ExtensionContext): 
 
 				const jarPath = isLocal ? customPath : `${extensionPath}/lib/als-server.jar`
 				const jsPath = isLocal ? customPath : jsAls
-				// const jsPath = require.resolve(`${extensionPath}/lib/node-package/dist/als-node-client.min.js`)
 
 				const logFile = logPath !== null ? logPath : `${storagePath}/vscode-aml-language-server.log`
 

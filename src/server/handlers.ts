@@ -1,8 +1,23 @@
 import { AlsLanguageClient } from "./als"
 import * as vscode from 'vscode';
-import { DidChangeConfigurationNotificationParams, DependencyConfiguration, isDependencyConfiguration } from "../types";
 import { awaitInputBox } from "../ui/ui";
 import {alsLog} from "../extension"
+import { DidChangeConfigurationNotificationParams } from "@aml-org/als-node-client";
+import { isDependencyConfiguration } from "../types";
+
+export const setMainFileHandler = (als: AlsLanguageClient) => {
+  return (fileUri: vscode.Uri) => {
+      alsLog.appendLine("Setting main file: " + fileUri.toString())
+      const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri);
+      als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
+        const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
+          ...workspaceConfig.configuration,
+          mainUri: uri
+        };
+        als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
+      });
+  }
+}
 
 export const registerProfileHandler = (als: AlsLanguageClient) => {
   return (fileUri: vscode.Uri) => {
@@ -103,8 +118,6 @@ function unregisterDependency(scopeName: string, fileUri: vscode.Uri, als: AlsLa
       folder: uri,
       dependencies: workspaceConfig.configuration.dependencies
         .filter(v => {
-          // alsLog.appendLine("isDependencyConfiguration " + isDependencyConfiguration(v))
-          // alsLog.appendLine("scope and uri " + (!isDependencyConfiguration(v) || !(v.scope == scopeName && v.file.toLowerCase() == uri.toLowerCase())))
           return !isDependencyConfiguration(v) || !(v.scope == scopeName && v.file.toLowerCase() == uri.toLowerCase());
         })
     };

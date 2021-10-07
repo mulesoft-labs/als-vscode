@@ -1,10 +1,11 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { AlsLanguageClient } from '../server/als';
-import { GetWorkspaceConfigurationResult, isDependencyConfiguration } from '../types';
+import { isDependencyConfiguration } from '../types';
+import { AlsDependency, Dependency, GetWorkspaceConfigurationResult } from '@aml-org/als-node-client';
 
 export class ConfigurationViewProvider implements vscode.TreeDataProvider<WorkspaceConfigurationEntry> {
-  constructor(private workspaces: ReadonlyArray<vscode.WorkspaceFolder>, private als: AlsLanguageClient) {}
+  constructor(private workspaces: ReadonlyArray<vscode.WorkspaceFolder>, private als: AlsLanguageClient) { }
 
   getTreeItem(element: WorkspaceConfigurationEntry): vscode.TreeItem {
     return element;
@@ -17,32 +18,30 @@ export class ConfigurationViewProvider implements vscode.TreeDataProvider<Worksp
         return resolve([]);
       }
 
-      if(!this.als.ready()) {
+      if (!this.als.ready()) {
         vscode.window.showInformationMessage('ALS not ready yet');
         return resolve([]);
       }
-  
+
       if (element && element instanceof WorkspaceConfigurationParent) {
         const result = new Array<WorkspaceConfigurationEntry>()
-        if(element.configuration.configuration.mainUri != "") {
-          return resolve([new MainFileEntry(element.configuration.configuration.mainUri)])
+        if (element.configuration.configuration.mainUri != "") {
+          result.push(new MainFileEntry(element.configuration.configuration.mainUri))
         }
-        if(element.configuration.configuration.dependencies.filter(isDependencyConfiguration).filter(v => v.scope == "custom-validation").length > 0) {
+        if (element.configuration.configuration.dependencies.filter(isDependencyConfiguration).filter(v => v.scope == "custom-validation").length > 0) {
           result.push(new DependencyHolderEntry("Profiles", vscode.TreeItemCollapsibleState.Collapsed, element.configuration))
         }
-        if(element.configuration.configuration.dependencies.filter(isDependencyConfiguration).filter(v => v.scope == "semantic-extension").length > 0) {
+        if (element.configuration.configuration.dependencies.filter(isDependencyConfiguration).filter(v => v.scope == "semantic-extension").length > 0) {
           result.push(new DependencyHolderEntry("Extensions", vscode.TreeItemCollapsibleState.Collapsed, element.configuration))
         }
         return resolve(result);
-      } else if(element && element instanceof DependencyHolderEntry && element.label  == "Profiles"){
+      } else if (element && element instanceof DependencyHolderEntry && element.label == "Profiles") {
         return resolve(element.configuration.configuration.dependencies.filter(isDependencyConfiguration).filter(v => v.scope == "custom-validation").map(profile => {
-          console.log(element.iconPath);
-          return new DependencyEntry(profile.file, vscode.TreeItemCollapsibleState.None, element.configuration)
+          return new DependencyEntryBuilder(profile, vscode.TreeItemCollapsibleState.Expanded, element.configuration).build();
         }))
-      } else if(element && element instanceof DependencyHolderEntry && element.label  == "Extensions"){
+      } else if (element && element instanceof DependencyHolderEntry && element.label == "Extensions") {
         return resolve(element.configuration.configuration.dependencies.filter(isDependencyConfiguration).filter(v => v.scope == "semantic-extension").map(profile => {
-          console.log(element.iconPath);
-          return new DependencyEntry(profile.file, vscode.TreeItemCollapsibleState.None, element.configuration)
+          return new DependencyEntryBuilder(profile, vscode.TreeItemCollapsibleState.Expanded, element.configuration).build();
         }))
       } else {
         return resolve(Promise.all(this.workspaces.map<Promise<WorkspaceConfigurationEntry>>(async ws => {
@@ -67,7 +66,7 @@ export class ConfigurationViewProvider implements vscode.TreeDataProvider<Worksp
     this.workspaces = workspaces;
     this._onDidChangeTreeData.fire(undefined);
   }
- 
+
 }
 
 class WorkspaceConfigurationEntry extends vscode.TreeItem {
@@ -106,15 +105,31 @@ class DependencyHolderEntry extends WorkspaceConfigurationEntry {
   };
 }
 
+class DependencyEntryBuilder {
+  constructor(
+    public readonly dependency: AlsDependency,
+    public readonly collapsibleState: vscode.TreeItemCollapsibleState,
+    public readonly configuration: GetWorkspaceConfigurationResult
+  ) { }
+
+  build = () => {
+    const fullPath = (isDependencyConfiguration(this.dependency)) ? this.dependency.file : this.dependency;
+    const shortPath = fullPath.replace(this.configuration.workspace + path.sep, "")
+    return new DependencyEntry(fullPath, shortPath, vscode.TreeItemCollapsibleState.None, this.configuration)
+  }
+
+}
+
 class DependencyEntry extends WorkspaceConfigurationEntry {
   constructor(
-    public readonly label: string,
+    readonly fullPath: string,
+    public readonly shortPath: string,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState,
     public readonly configuration: GetWorkspaceConfigurationResult
   ) {
-    super(label, collapsibleState);
-    this.tooltip = `${this.label}`;
-    this.description = "";
+    super(shortPath, collapsibleState);
+    this.tooltip = fullPath;
+    this.description = fullPath;
   }
 
   iconPath = {
@@ -126,11 +141,11 @@ class DependencyEntry extends WorkspaceConfigurationEntry {
 
 class MainFileEntry extends WorkspaceConfigurationEntry {
   constructor(
-    public readonly label: string
+    public readonly uri: string
   ) {
-    super(label, vscode.TreeItemCollapsibleState.None);
-    this.tooltip = `${this.label}`;
-    this.description = this.label;
+    super("Main file: " + uri, vscode.TreeItemCollapsibleState.None);
+    this.tooltip = `${this.uri}`;
+    this.description = this.uri;
   }
 
   iconPath = {

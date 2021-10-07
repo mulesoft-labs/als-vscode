@@ -1,103 +1,30 @@
-import { TextDocumentIdentifier, InitializeParams, NotificationType, RequestType, WorkspaceEdit } from "vscode-languageclient"
-
-interface IMap<V> { [key: string]: V }
-
+import { AlsConfiguration, ConfigurationNotification, GetWorkspaceConfigurationRequestType, AlsRenameFileRequestType, RenameFileActionParams, RenameFileActionResult, SerializationRequestType, SerializationParams, SerializationResult, ConversionParams, SerializedDocument, ConversionRequestType, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, AlsDependency, Dependency } from "@aml-org/als-node-client"
+import {  NotificationType, RequestType } from "vscode-languageclient"
 
 export namespace messages {
-    export const AlsConfigurationNotification = {
+    export const AlsConfigurationNotification: ConfigurationNotification = {
         type: new NotificationType<AlsConfiguration>("updateConfiguration")
     }
-    export const AlsRenameFileRequest = {
+    export const AlsRenameFileRequest: AlsRenameFileRequestType = {
         type: new RequestType<RenameFileActionParams, RenameFileActionResult, void>("renameFile")
     }
-    export const AlsSerializationRequest = {
+    export const AlsSerializationRequest: SerializationRequestType = {
         type: new RequestType<SerializationParams, SerializationResult, void>("serialization")
     }
-    export const AlsConversionRequest = {
+    export const AlsConversionRequest: ConversionRequestType = {
         type: new RequestType<ConversionParams, SerializedDocument, void>("conversion")
     }
 
-    export const AlsGetWorkspaceConfiguration = {
+    export const AlsGetWorkspaceConfiguration: GetWorkspaceConfigurationRequestType = {
         type: new RequestType<GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, void>("getWorkspaceConfiguration")
     }
 }
 
-export type SerializationParams = {
-    documentIdentifier: TextDocumentIdentifier
+export function isDependencyConfiguration(t: AlsDependency): t is Dependency {
+    return (<Dependency>t).scope !== undefined;
  }
 
- export type SerializationResult = {
-     uri: string,
-     model: any
-  }
-
-  export type ConversionParams = {
-    uri: string,
-    target: string,
-    syntax?: string
- }
-
- export type SerializedDocument = {
-     uri: string,
-     document: string
-  }
-
-
-export type RenameFileActionParams = {
-    oldDocument: TextDocumentIdentifier,
-    newDocument: TextDocumentIdentifier
- }
-
- export type RenameFileActionResult = {
-     edits: WorkspaceEdit
- }
-
-
-export type AlsConfiguration = {
-    formattingOptions: IMap<AlsFormattingOptions>
-    templateType: String
-    prettyPrintSerialization: boolean
+export const ProjectConfigurationStyles = {
+    Command: "command",
+    File: "file"
 }
-
-export type AlsFormattingOptions = {
-    tabSize: number,
-    preferSpaces: Boolean,
-}
-
-export type ProjectConfigurationStyle = {
-    style: String
-}
-
-export type AlsInitializeParams = InitializeParams & {
-    configuration: AlsConfiguration,
-    projectConfigurationStyle: ProjectConfigurationStyle
-}
-
-export type DidChangeConfigurationNotificationParams = {
-    mainUri: string,
-    folder?: string,
-    dependencies: (string | DependencyConfiguration)[]
-}
-
-export type DependencyConfiguration = {
-    file: string,
-    scope: string
-}
-
-export function isDependencyConfiguration(t: string | DependencyConfiguration): t is DependencyConfiguration {
-    return (<DependencyConfiguration>t).scope !== undefined;
- }
-
-export type GetWorkspaceConfigurationParams = {
-    textDocument: TextDocumentIdentifier
-}
-
-export type GetWorkspaceConfigurationResult = {
-    workspace: string,
-    configuration: DidChangeConfigurationNotificationParams
-}
-
-export enum ProjectConfigurationStyles {
-    Command = "command",
-    File = "file"
-  }

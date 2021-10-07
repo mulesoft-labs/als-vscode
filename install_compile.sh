@@ -21,8 +21,8 @@ if [ $retVal -ne 0 ]; then
 fi
 
 
-echo "npm i @mulesoft/als-node-client@$ALS_VERSION"
-npm i @mulesoft/als-node-client@$ALS_VERSION
+echo "npm i @aml-org/als-node-client@$ALS_VERSION"
+npm i @aml-org/als-node-client@$ALS_VERSION
 
 retVal=$?
 if [ $retVal -ne 0 ]; then
