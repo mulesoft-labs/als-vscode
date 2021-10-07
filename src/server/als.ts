@@ -30,7 +30,6 @@ export class AlsLanguageClient {
             this.disposable(vscode.commands.registerCommand("als.registerProfile", registerProfileHandler(this)))
             this.disposable(vscode.commands.registerCommand("als.unregisterProfile", unregisterProfileHandler(this)))
             this.disposable(vscode.commands.registerCommand("als.registerSemantic", registerSemanticHandler(this)))
-        this.disposable(vscode.commands.registerCommand("als.unregisterSemantic", unregisterSemanticHandler(this)))
         }
         this.disposable(this.languageClient.onDidChangeState(this.languageClientStateListener))
         this.disposable(vscode.languages.registerDocumentFormattingEditProvider(LANGUAGE_ID, new FormattingProvider(languageClient)))
