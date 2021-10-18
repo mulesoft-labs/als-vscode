@@ -30,10 +30,20 @@
                     ".raml",
                     ".aml",
                     ".yaml",
-                    ".yml",
-                    ".json"
+                    ".yml"
                 ],
                 "configuration": "./aml-configuration.json"
+            },
+            {
+                "id": "aml-json",
+                "aliases": [
+                    "ALS",
+                    "als"
+                ],
+                "extensions": [
+                    ".json"
+                ],
+                "configuration": "./aml-json-configuration.json"
             },
             {
                 "id": "oas",
@@ -75,6 +85,11 @@
                 "language": "aml",
                 "scopeName": "source.aml",
                 "path": "./syntaxes/aml.tmLanguage.json"
+            },
+            {
+                "language": "aml-json",
+                "scopeName": "source.json",
+                "path": "./syntaxes/json.tmLanguage.json"
             }
         ],
         "keywords": [
