@@ -34,39 +34,6 @@
 				}
 			]
 		},
-		"comments": {
-			"patterns": [
-				{
-					"begin": "/\\*\\*(?!/)",
-					"captures": {
-						"0": {
-							"name": "punctuation.definition.comment.json"
-						}
-					},
-					"end": "\\*/",
-					"name": "comment.block.documentation.json"
-				},
-				{
-					"begin": "/\\*",
-					"captures": {
-						"0": {
-							"name": "punctuation.definition.comment.json"
-						}
-					},
-					"end": "\\*/",
-					"name": "comment.block.json"
-				},
-				{
-					"captures": {
-						"1": {
-							"name": "punctuation.definition.comment.json"
-						}
-					},
-					"match": "(//).*$\\n?",
-					"name": "comment.line.double-slash.js"
-				}
-			]
-		},
 		"constant": {
 			"match": "\\b(?:true|false|null)\\b",
 			"name": "constant.language.json"
