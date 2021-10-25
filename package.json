@@ -3,7 +3,7 @@
     "displayName": "AML support",
     "description": "",
     "publisher": "MuleSoftInc",
-    "version": "0.3.193",
+    "version": "0.4.0-SNAPSHOT",
     "engines": {
         "vscode": "^1.52.0"
     },
@@ -279,10 +279,25 @@
                     "when": "resourceLangId == aml",
                     "command": "als.conversion",
                     "group": "7_modification"
-                },
+                },                
                 {
                     "when": "resourceLangId == aml",
                     "command": "als.setMainFile",
+                    "group": "7_modification"
+                },
+                {
+                    "when": "resourceLangId == aml",
+                    "command": "als.registerProfile",
+                    "group": "7_modification"
+                },
+                {
+                    "when": "resourceLangId == aml",
+                    "command": "als.unregisterProfile",
+                    "group": "7_modification"
+                },
+                {
+                    "when": "resourceLangId == aml",
+                    "command": "als.registerSemantic",
                     "group": "7_modification"
                 }
             ]
