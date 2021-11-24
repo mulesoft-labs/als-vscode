@@ -29,7 +29,8 @@ export class SerializationNotificationFeature implements StaticFeature {
 
 export class AlsInitializeParamsFeature implements StaticFeature {
 	private configurationStyle: string = ProjectConfigurationStyles.Command;
-	constructor(configStyle: String, readonly isJvm: boolean) {
+	private hotReload: boolean = false
+	constructor(configStyle: String, hotReload: boolean,  readonly isJvm: boolean) {
 		switch(configStyle) {
 			case ProjectConfigurationStyles.Command:
 				this.configurationStyle = ProjectConfigurationStyles.Command;
@@ -41,13 +42,16 @@ export class AlsInitializeParamsFeature implements StaticFeature {
 				this.configurationStyle = ProjectConfigurationStyles.Command;
 				break;
 		}
+		this.hotReload = hotReload
 	}
 	fillInitializeParams?: (params: InitializeParams) => void = (params: InitializeParams) => {
 			var castedParams = params as AlsInitializeParams
 			castedParams.projectConfigurationStyle = { 
 				style: this.configurationStyle
 			}
+			castedParams.hotReload = this.hotReload
 	}
+	
 	fillClientCapabilities(capabilities: ClientCapabilities): void {
 		var castedCapabilities = capabilities as AlsClientCapabilities;
 		castedCapabilities.customValidations = {

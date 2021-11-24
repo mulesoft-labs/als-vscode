@@ -81,7 +81,7 @@ async function createLanguageClient(alsLog: vscode.OutputChannel, context: Exten
 	
 	const isJVM = runParams.get("platform") === "jvm";
 	languageClient.registerFeatures([
-		new AlsInitializeParamsFeature(runParams.get("configurationStyle"), isJVM),
+		new AlsInitializeParamsFeature(runParams.get("configurationStyle"), runParams.get("hotReload"), isJVM),
 		new ConversionFeature()
 	])
 

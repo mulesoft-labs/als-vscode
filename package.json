@@ -3,7 +3,7 @@
     "displayName": "AML support",
     "description": "",
     "publisher": "MuleSoftInc",
-    "version": "0.4.0-SNAPSHOT",
+    "version": "0.4.5-SNAPSHOT",
     "engines": {
         "vscode": "^1.52.0"
     },
@@ -145,6 +145,11 @@
                         "ALS will try to find and read an exchange.json file at the root of the workspace to configure the project."
                     ]
                 },
+                "amlLanguageServer.run.hotReload": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable dialects hot reload. (Reload required)"
+                },
                 "amlLanguageServer.trace.server": {
                     "scope": "window",
                     "type": "string",
@@ -279,7 +284,7 @@
                     "when": "resourceLangId == aml",
                     "command": "als.conversion",
                     "group": "7_modification"
-                },                
+                },
                 {
                     "when": "resourceLangId == aml",
                     "command": "als.setMainFile",
