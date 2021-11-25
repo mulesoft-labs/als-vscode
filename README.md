@@ -26,7 +26,17 @@ Experimental project.
 
 ## Requirements
 
-NodeJS installed (14.16.1 LTS or later recommended)
+NodeJS installed (14.16.1 LTS recommended)
+
+Install VSCE package
+
+## Building commands
+
+```shell
+npm install
+npm run compile
+vsce package
+```
 
 -----------------------------------------------------------------------------------------------------------
 
