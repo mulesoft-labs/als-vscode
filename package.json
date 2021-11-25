@@ -3,7 +3,7 @@
     "displayName": "AML support",
     "description": "",
     "publisher": "MuleSoftInc",
-    "version": "0.4.5-SNAPSHOT",
+    "version": "0.3.195",
     "engines": {
         "vscode": "^1.52.0"
     },
@@ -326,7 +326,7 @@
         }
     },
     "dependencies": {
-        "@aml-org/als-node-client": "4.3.0-SNAPSHOT.367",
+        "@aml-org/als-node-client": "^4.2.1",
         "@types/mocha": "^8.2.1",
         "@types/node": "^11.15.20",
         "@types/vscode": "1.52.0",
