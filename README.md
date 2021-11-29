@@ -1,14 +1,13 @@
-# aml-vscode README
+# aml-vscode (EXPERIMENTAL)
 
-Custom ALS LSP client, implements LSP and other custom features.
-Experimental project.
+This is a custom extension for [VS Code](https://github.com/microsoft/vscode) based on the Language Server Protocol (LSP). It provides support for the features listed below as well as other AML-based custom features.
 
 ## Supported Web Apis:
-* Raml 1.0
-* Raml 0.8
-* OpenApi 2.0
-* OpenApi 3.0.0
-* AsyncApi 2.0
+* RAML 1.0
+* RAML 0.8
+* OpenAPI 2.0
+* OpenAPI 3.0.0
+* AsyncAPI 2.0
 * AML documents: beta
 
 ## Features
