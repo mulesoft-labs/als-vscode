@@ -50,6 +50,7 @@ async function createLanguageClient(alsLog: vscode.OutputChannel, context: Exten
 
 	const documentSelector = [
 		{ language: 'aml' },
+		{ language: 'aml-json' },
 		{ language: 'raml' },
 		{ language: 'oas-yaml' },
 		{ language: 'oas-json' },

@@ -37,8 +37,8 @@
             {
                 "id": "aml-json",
                 "aliases": [
-                    "ALS",
-                    "als"
+                    "ALS-JSON",
+                    "als-json"
                 ],
                 "extensions": [
                     ".json"
