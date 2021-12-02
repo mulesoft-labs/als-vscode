@@ -148,7 +148,7 @@
                 "amlLanguageServer.run.hotReload": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Enable dialects hot reload. (Reload required)"
+                    "description": "Enable dialects hot reload. (Requires restart)"
                 },
                 "amlLanguageServer.trace.server": {
                     "scope": "window",

@@ -23,6 +23,11 @@ This is a custom extension for [VS Code](https://github.com/microsoft/vscode) ba
 * CodeActions
 * Serialize/Conversion (beta)
 
+## AML Custom Features
+* Semantic Extensions
+* Custom Validations
+* Dialects Hot Reload (Needs to be enabled from extension settings)
+
 ## Requirements
 
 NodeJS installed (14.16.1 LTS recommended)
