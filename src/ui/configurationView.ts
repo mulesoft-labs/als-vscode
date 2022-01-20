@@ -25,8 +25,8 @@ export class ConfigurationViewProvider implements vscode.TreeDataProvider<Worksp
 
       if (element && element instanceof WorkspaceConfigurationParent) {
         const result = new Array<WorkspaceConfigurationEntry>()
-        if (element.configuration.configuration.mainUri != "") {
-          result.push(new MainFileEntry(element.configuration.configuration.mainUri))
+        if (element.configuration.configuration.mainPath != "") {
+          result.push(new MainFileEntry(element.configuration.configuration.mainPath))
         }
         if (element.configuration.configuration.dependencies.filter(isDependencyConfiguration).filter(v => v.scope == "custom-validation").length > 0) {
           result.push(new DependencyHolderEntry("Profiles", vscode.TreeItemCollapsibleState.Collapsed, element.configuration))

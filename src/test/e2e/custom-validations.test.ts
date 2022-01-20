@@ -8,12 +8,10 @@ import { ExecuteCommandRequest } from 'vscode-languageclient';
 suite('Custom Validations', async function () {
 	this.beforeAll(async () => {
 		const config = vscode.workspace.getConfiguration(`amlLanguageServer.run`)
-		await config.update("configurationStyle", "command");
 		await restartAls();
 	})
 	this.afterAll(async () => {
 		const config = vscode.workspace.getConfiguration(`amlLanguageServer.run`)
-		await config.update("configurationStyle", "file");
 		await restartAls();
 	})
 	test('Custom validation on RAML file', async () => {
@@ -56,7 +54,7 @@ async function testDiagnostics(docUri: vscode.Uri, profile: vscode.Uri, expected
 		await (languageClient.sendRequest(ExecuteCommandRequest.type, {
 			command: 'didChangeConfiguration',
 			arguments: [
-				{ mainUri: "", folder: docUri.toString(true), dependencies: [], customValidationProfiles: [profile.toString(true)] },
+				{ mainPath: "", folder: docUri.toString(true), dependencies: [], customValidationProfiles: [profile.toString(true)] },
 			],
 		}))
 	})
@@ -76,7 +74,7 @@ async function testDiagnostics(docUri: vscode.Uri, profile: vscode.Uri, expected
 	await (languageClient.sendRequest(ExecuteCommandRequest.type, {
 		command: 'didChangeConfiguration',
 		arguments: [
-			{ mainUri: "", folder: docUri.toString(true), dependencies: [], customValidationProfiles: [] },
+			{ mainPath: "", folder: docUri.toString(true), dependencies: [], customValidationProfiles: [] },
 		],
 	}))
 

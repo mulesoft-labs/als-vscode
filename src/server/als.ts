@@ -9,7 +9,7 @@ import { ConfigurationViewProvider } from '../ui/configurationView';
 import { SettingsManager } from '../settings';
 import { Disposable } from 'vscode';
 import { ConversionParams, DidChangeConfigurationNotificationParams, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, RenameFileActionParams, RenameFileActionResult, SerializationParams, SerializationResult, SerializedDocument } from '@aml-org/als-node-client';
-import { messages, ProjectConfigurationStyles } from '../types';
+import { messages } from '../types';
 
 
 // todo: cleanup all URIs using languageClient.code2ProtocolConverter.asUri(fileUri)
@@ -17,20 +17,15 @@ import { messages, ProjectConfigurationStyles } from '../types';
 export class AlsLanguageClient {
     disposables: Disposable[] = []
 
-    configurationStyle: string = vscode.workspace.getConfiguration(`amlLanguageServer.run`).get("configurationStyle")
-    configurationByCommand: Boolean = this.configurationStyle == ProjectConfigurationStyles.Command
-
     readonly wsConfigTreeViewProvider = new ConfigurationViewProvider(vscode.workspace.workspaceFolders, this)
     constructor(readonly languageClient: LanguageClient, private readonly extensionConfigurationManager: SettingsManager) {
         this.disposable(vscode.commands.registerCommand("als.renameFile", renameFileHandler(this)))
         this.disposable(vscode.commands.registerCommand("als.conversion", conversionHandler(this)))
         this.disposable(vscode.commands.registerCommand("als.serialization", serializationHandler(this)))
-        if(this.configurationByCommand){
-            this.disposable(vscode.commands.registerCommand("als.setMainFile", setMainFileHandler(this)))
-            this.disposable(vscode.commands.registerCommand("als.registerProfile", registerProfileHandler(this)))
-            this.disposable(vscode.commands.registerCommand("als.unregisterProfile", unregisterProfileHandler(this)))
-            this.disposable(vscode.commands.registerCommand("als.registerSemantic", registerSemanticHandler(this)))
-        }
+        this.disposable(vscode.commands.registerCommand("als.setMainFile", setMainFileHandler(this)))
+        this.disposable(vscode.commands.registerCommand("als.registerProfile", registerProfileHandler(this)))
+        this.disposable(vscode.commands.registerCommand("als.unregisterProfile", unregisterProfileHandler(this)))
+        this.disposable(vscode.commands.registerCommand("als.registerSemantic", registerSemanticHandler(this)))
         this.disposable(this.languageClient.onDidChangeState(this.languageClientStateListener))
         this.disposable(vscode.languages.registerDocumentFormattingEditProvider(LANGUAGE_ID, new FormattingProvider(languageClient)))
         this.disposable(vscode.languages.registerDocumentRangeFormattingEditProvider(LANGUAGE_ID, new FormattingProvider(languageClient)))
@@ -120,7 +115,7 @@ export class AlsLanguageClient {
             command: 'didChangeConfiguration',
             arguments: [
                 {
-                    mainUri: params.mainUri,
+                    mainPath: params.mainPath,
                     folder: params.folder,
                     dependencies: params.dependencies                },
             ],

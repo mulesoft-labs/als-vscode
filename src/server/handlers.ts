@@ -12,7 +12,7 @@ export const setMainFileHandler = (als: AlsLanguageClient) => {
       als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
         const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
           ...workspaceConfig.configuration,
-          mainUri: uri
+          mainPath: uri
         };
         als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
       });
@@ -114,8 +114,8 @@ function unregisterDependency(scopeName: string, fileUri: vscode.Uri, als: AlsLa
   const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri);
   als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
     const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
-      mainUri: workspaceConfig.configuration.mainUri,
-      folder: uri,
+      mainPath: workspaceConfig.configuration.mainPath,
+      folder: workspaceConfig.configuration.folder,
       dependencies: workspaceConfig.configuration.dependencies
         .filter(v => {
           return !isDependencyConfiguration(v) || !(v.scope == scopeName && v.file.toLowerCase() == uri.toLowerCase());
@@ -131,8 +131,8 @@ function registerDependency(als: AlsLanguageClient, fileUri: vscode.Uri, scopeNa
   const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri);
   als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
     const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
-      mainUri: workspaceConfig.configuration.mainUri,
-      folder: uri,
+      mainPath: workspaceConfig.configuration.mainPath,
+      folder: workspaceConfig.configuration.folder,
       dependencies: [...workspaceConfig.configuration.dependencies, { file: uri, scope: scopeName }]
     };
     als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);

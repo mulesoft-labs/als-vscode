@@ -3,7 +3,7 @@
     "displayName": "AML support",
     "description": "",
     "publisher": "MuleSoftInc",
-    "version": "0.3.196",
+    "version": "0.4.0",
     "engines": {
         "vscode": "^1.52.0"
     },
@@ -131,19 +131,6 @@
                     "type": "string",
                     "default": null,
                     "description": "Select a specific path to dump logs to. (Requires restart)"
-                },
-                "amlLanguageServer.run.configurationStyle": {
-                    "type": "string",
-                    "default": "file",
-                    "enum": [
-                        "command",
-                        "file"
-                    ],
-                    "description": "Select how should ALS determine a project configuration, either by `didChangeConfiguration` command or by reading an exchange.json file. (Reload required)",
-                    "enumDescription": [
-                        "ALS projects can only be configured by using the `didChangeConfiguration`",
-                        "ALS will try to find and read an exchange.json file at the root of the workspace to configure the project."
-                    ]
                 },
                 "amlLanguageServer.run.hotReload": {
                     "type": "boolean",
@@ -326,7 +313,7 @@
         }
     },
     "dependencies": {
-        "@aml-org/als-node-client": "4.2.2",
+        "@aml-org/als-node-client": "5.0.0-1",
         "@types/mocha": "^8.2.1",
         "@types/node": "^11.15.20",
         "@types/vscode": "1.52.0",
