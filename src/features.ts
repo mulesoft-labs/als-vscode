@@ -1,7 +1,6 @@
 import { AlsClientCapabilities, AlsInitializeParams } from '@aml-org/als-node-client';
 import { DocumentSelector } from 'vscode';
 import { ClientCapabilities, InitializeParams, ServerCapabilities, StaticFeature } from 'vscode-languageclient';
-import { ProjectConfigurationStyles } from './types';
 export class ConversionFeature implements StaticFeature {
     fillInitializeParams?: (params: InitializeParams) => void;
     dispose(): void {
@@ -28,27 +27,12 @@ export class SerializationNotificationFeature implements StaticFeature {
 }
 
 export class AlsInitializeParamsFeature implements StaticFeature {
-	private configurationStyle: string = ProjectConfigurationStyles.Command;
 	private hotReload: boolean = false
-	constructor(configStyle: String, hotReload: boolean,  readonly isJvm: boolean) {
-		switch(configStyle) {
-			case ProjectConfigurationStyles.Command:
-				this.configurationStyle = ProjectConfigurationStyles.Command;
-				break;
-			case ProjectConfigurationStyles.File:
-				this.configurationStyle = ProjectConfigurationStyles.File;
-				break;
-			default:
-				this.configurationStyle = ProjectConfigurationStyles.Command;
-				break;
-		}
+	constructor(hotReload: boolean,  readonly isJvm: boolean) {
 		this.hotReload = hotReload
 	}
 	fillInitializeParams?: (params: InitializeParams) => void = (params: InitializeParams) => {
 			var castedParams = params as AlsInitializeParams
-			castedParams.projectConfigurationStyle = { 
-				style: this.configurationStyle
-			}
 			castedParams.hotReload = this.hotReload
 	}
 	

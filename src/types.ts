@@ -23,8 +23,3 @@ export namespace messages {
 export function isDependencyConfiguration(t: AlsDependency): t is Dependency {
     return (<Dependency>t).scope !== undefined;
  }
-
-export const ProjectConfigurationStyles = {
-    Command: "command",
-    File: "file"
-}
