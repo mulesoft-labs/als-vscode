@@ -4,15 +4,17 @@ import { awaitInputBox } from "../ui/ui";
 import {alsLog} from "../extension"
 import { DidChangeConfigurationNotificationParams } from "@aml-org/als-node-client";
 import { isDependencyConfiguration } from "../types";
-
+var path = require("path")
 export const setMainFileHandler = (als: AlsLanguageClient) => {
   return (fileUri: vscode.Uri) => {
       alsLog.appendLine("Setting main file: " + fileUri.toString())
       const uri = als.languageClient.code2ProtocolConverter.asUri(fileUri);
       als.getWorkspaceConfiguration(uri).then(workspaceConfig => {
+        var relativePath = decodeURI(uri.replace(workspaceConfig.configuration.folder, ""))
+        if(relativePath.startsWith("/")) relativePath = relativePath.substring(1)
         const newWorkspaceConfig: DidChangeConfigurationNotificationParams = {
           ...workspaceConfig.configuration,
-          mainPath: uri
+          mainPath: relativePath
         };
         als.changeWorkspaceConfigurationCommand(newWorkspaceConfig);
       });
