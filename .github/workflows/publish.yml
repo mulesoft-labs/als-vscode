@@ -18,8 +18,6 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - run: export NODE_OPTIONS=--max_old_space_size=4096
-    - run: export VSCE_PAT=${{ secrets.VSCE_PAT }}
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
