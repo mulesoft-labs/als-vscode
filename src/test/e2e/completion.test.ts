@@ -21,9 +21,13 @@ suite('Should do completion', async function () {
 			items: [
 				{ label: '#%Dialect 1.0', kind: vscode.CompletionItemKind.Property },
 				{ label: '#%Library / Dialect 1.0', kind: vscode.CompletionItemKind.Property },
+				{ label: '#%Library / Validation Profile 1.0', kind: vscode.CompletionItemKind.Property },
 				{ label: '#%Library / Vocabulary 1.0', kind: vscode.CompletionItemKind.Property },
 				{ label: '#%Patch / Dialect 1.0', kind: vscode.CompletionItemKind.Property },
+				{ label: '#%Patch / Validation Profile 1.0', kind: vscode.CompletionItemKind.Property },
 				{ label: '#%Patch / Vocabulary 1.0', kind: vscode.CompletionItemKind.Property },
+				{ label: '#%RegoValidation / Validation Profile 1.0', kind: vscode.CompletionItemKind.Property },
+				{ label: '#%Validation Profile 1.0', kind: vscode.CompletionItemKind.Property },
 				{ label: '#%Vocabulary 1.0', kind: vscode.CompletionItemKind.Property },
 				{ label: 'asyncapi: "2.0.0"', kind: vscode.CompletionItemKind.Property },
 				{ label: 'openapi: "3.0.0"', kind: vscode.CompletionItemKind.Property },

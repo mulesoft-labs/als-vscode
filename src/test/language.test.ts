@@ -3,16 +3,16 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as assert from 'assert';
-import { activate, forEachTestFile, getDocUri, RAML_LANGUAGE_ID } from './helper';
-suite('RAML Language tests', function () {
+import { activate, forEachTestFile, getDocUri, AML_LANGUAGE_ID, AML_JSON_LANGUAGE_ID } from './helper';
+suite('AML Language tests', function () {
     test('Should be registered', () => {
         vscode.languages.getLanguages().then(langs => {
-            assert.notStrictEqual(langs.indexOf(RAML_LANGUAGE_ID), -1)
+            assert.notStrictEqual(langs.indexOf(AML_LANGUAGE_ID), -1)
         })
     })
 
     forEachTestFile((file) => {
-        test("RAML is selected language for " + file, async function () {
+        test("AML is selected language for " + file, async function () {
             await languageIsRaml(getDocUri(file))
         });
     });
@@ -21,5 +21,8 @@ suite('RAML Language tests', function () {
 
 async function languageIsRaml(docUri: vscode.Uri) {
     await activate(docUri);
-    assert.strictEqual(vscode.window.activeTextEditor.document.languageId, RAML_LANGUAGE_ID);
+    if(docUri.path.endsWith(".json"))
+        assert.strictEqual(vscode.window.activeTextEditor.document.languageId, AML_JSON_LANGUAGE_ID);
+    else
+        assert.strictEqual(vscode.window.activeTextEditor.document.languageId, AML_LANGUAGE_ID);
 }

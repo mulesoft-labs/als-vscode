@@ -70,4 +70,6 @@ export const getDocUri = (p: string) => {
     return vscode.Uri.file(getDocPath(p));
 };
 
-export const RAML_LANGUAGE_ID: string = "aml"
+export const AML_LANGUAGE_ID: string = "aml"
+
+export const AML_JSON_LANGUAGE_ID: string = "aml-json"
