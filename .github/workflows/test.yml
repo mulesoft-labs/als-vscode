@@ -5,8 +5,9 @@ name: Test CI
 
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, reopened, edited, synchronize]
     branches: [ master ]
+  workflow_dispatch:
 env:
   NODE_OPTIONS: --max_old_space_size=4096
 jobs:
