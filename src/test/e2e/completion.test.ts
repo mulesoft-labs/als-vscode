@@ -47,6 +47,15 @@ suite('Should do completion', async function () {
 		});
 	});
 
+
+	test('Complete encoded RAML file inclusion', async () => {
+		const docUri = getDocUri('with space api.raml');
+		await testCompletion(docUri, new vscode.Position(3, 11), {
+			items: [
+				{ label: 'with space library.raml', kind: vscode.CompletionItemKind.Property }
+			]
+		});
+	});
 });
 
 async function testCompletion(
