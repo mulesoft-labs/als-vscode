@@ -7,7 +7,6 @@ on:
   pull_request:
     types: [opened, reopened, edited, synchronize]
     branches: [ master ]
-  workflow_dispatch:
 env:
   NODE_OPTIONS: --max_old_space_size=4096
 jobs:
@@ -26,4 +25,19 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build --if-present
-    - run: npm run test
+    - id: test
+      run: npm run test
+      continue-on-error: true
+    - name: Notify slack
+      id: slack
+      uses: slackapi/slack-github-action@v1.18.0
+      with:
+        # This data can be any valid JSON from a previous step in the GitHub Action
+        payload: |
+            {
+              "project": "als-vscode :vscode:",
+              "result": "test outcome: ${{ steps.test.outcome}}",
+              "version": " - "
+            }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -1,22 +1,26 @@
 # This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Publish CI
+name: Manual Test CI
 
 on:
-  push:
-    branches: [ master ]
+  workflow_dispatch:
+    inputs:
+      als-version:
+        description: 'ALS node client version to install (f.e.: 1.2.3-SNAPSHOT.45)'
+        required: true
+        default: 'latest' 
+        type: string
+        
 env:
   NODE_OPTIONS: --max_old_space_size=4096
-  VSCE_PAT: ${{ secrets.VSCE_PAT }}
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: windows-latest
     strategy:
       matrix:
         node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -24,14 +28,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm install -g vsce
     - run: npm ci
-    - name: Set package version to latest
-      run: bash extension-version.sh
+    - name: Install ALS node client ${{ github.event.inputs.als-version }}
+      run: npm install @aml-org/als-node-client@${{ github.event.inputs.als-version }}
     - run: npm run build --if-present
-    - run: npm run test
-    - run: vsce publish --no-git-tag-version patch
-
+    - id: test
+      run: npm run test
+      continue-on-error: true
     - name: Notify slack
       id: slack
       uses: slackapi/slack-github-action@v1.18.0
@@ -40,7 +43,7 @@ jobs:
         payload: |
             {
               "project": "als-vscode :vscode:",
-              "result": "Pubklication finished successfully: https://marketplace.visualstudio.com/items?itemName=MuleSoftInc.aml-vscode",
+              "result": "manual test outcome: ${{ steps.test.outcome }}",
               "version": "${{ github.event.inputs.als-version }}"
             }
       env:
