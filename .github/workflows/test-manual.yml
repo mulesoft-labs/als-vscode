@@ -43,7 +43,7 @@ jobs:
         payload: |
             {
               "project": "als-vscode :vscode:",
-              "result": "manual test outcome: ${{ steps.test.outcome }}",
+              "result": "manual test outcome: `${{ steps.test.outcome }}`",
               "version": "${{ github.event.inputs.als-version }}"
             }
       env:

@@ -6,6 +6,7 @@ name: Publish CI
 on:
   push:
     branches: [ master ]
+    
 env:
   NODE_OPTIONS: --max_old_space_size=4096
   VSCE_PAT: ${{ secrets.VSCE_PAT }}
@@ -40,8 +41,8 @@ jobs:
         payload: |
             {
               "project": "als-vscode :vscode:",
-              "result": "Pubklication finished successfully: https://marketplace.visualstudio.com/items?itemName=MuleSoftInc.aml-vscode",
-              "version": "${{ github.event.inputs.als-version }}"
+              "result": "Publication finished successfully: https://marketplace.visualstudio.com/items?itemName=MuleSoftInc.aml-vscode",
+              "version": " - "
             }
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
