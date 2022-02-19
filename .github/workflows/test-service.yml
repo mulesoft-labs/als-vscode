@@ -1,0 +1,45 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Service Test CI
+
+on:
+  repository_dispatch:
+    types: run-deploy
+        
+env:
+  NODE_OPTIONS: --max_old_space_size=4096
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - name: Install ALS node client ${{ github.event.client_payload.version }}
+      run: npm install @aml-org/als-node-client@${{ github.event.client_payload.version }}
+    - run: npm run build --if-present
+    - id: test
+      run: npm run test
+      continue-on-error: true
+    - name: Notify slack
+      id: slack
+      uses: slackapi/slack-github-action@v1.18.0
+      with:
+        # This data can be any valid JSON from a previous step in the GitHub Action
+        payload: |
+            {
+              "project": "als-vscode :vscode:",
+              "result": "service test outcome: `${{ steps.test.outcome }}`",
+              "version": "${{ github.event.client_payload.version }}"
+            }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
