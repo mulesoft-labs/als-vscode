@@ -5,7 +5,7 @@ name: Service Test CI
 
 on:
   repository_dispatch:
-    types: run-deploy
+    types: run-windows
         
 env:
   NODE_OPTIONS: --max_old_space_size=4096
