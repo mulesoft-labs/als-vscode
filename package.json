@@ -173,10 +173,11 @@
                     "enum": [
                         "NONE",
                         "SIMPLE",
-                        "FULL"
+                        "FULL",
+                        "BOTH"
                     ],
                     "default": "FULL",
-                    "description": "Preferences for suggested tempaltes"
+                    "description": "Preferences for suggested templates"
                 },
                 "amlLanguageServer.shouldPrettyPrintSerialization": {
                     "type": "boolean",
