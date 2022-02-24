@@ -18,7 +18,7 @@ import { AlsInitializeParamsFeature, ConversionFeature } from './features'
 import { AlsLanguageClient } from './server/als'
 import { SettingsManager } from './settings'
 
-var jsAls = require.resolve("@aml-org/als-node-client")
+var jsAls = require.resolve("@mulesoft/anypoint-node-client")
 export let alsLog = vscode.window.createOutputChannel("alsLog");
 
 export class AlsResolver {

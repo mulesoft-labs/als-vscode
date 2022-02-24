@@ -8,7 +8,7 @@ import { conversionHandler, registerProfileHandler, registerSemanticHandler, ren
 import { ConfigurationViewProvider } from '../ui/configurationView';
 import { SettingsManager } from '../settings';
 import { Disposable } from 'vscode';
-import { ConversionParams, DidChangeConfigurationNotificationParams, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, RenameFileActionParams, RenameFileActionResult, SerializationParams, SerializationResult, SerializedDocument } from '@aml-org/als-node-client';
+import { ConversionParams, DidChangeConfigurationNotificationParams, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, RenameFileActionParams, RenameFileActionResult, SerializationParams, SerializationResult, SerializedDocument } from '@mulesoft/anypoint-node-client';
 import { messages } from '../types';
 
 

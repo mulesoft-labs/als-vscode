@@ -1,7 +1,7 @@
 import { messages } from "../types";
 import { LanguageClient } from "vscode-languageclient/node";
 import { workspace } from "vscode";
-import { AlsConfiguration } from "@aml-org/als-node-client";
+import { AlsConfiguration } from "@mulesoft/anypoint-node-client";
 
 
 export const initialConfiguration: AlsConfiguration = {
@@ -9,7 +9,8 @@ export const initialConfiguration: AlsConfiguration = {
         "application/raml+yaml": { tabSize: 2, preferSpaces: true }
     },
     templateType: "FULL",
-    prettyPrintSerialization: true
+    prettyPrintSerialization: true,
+    
 }
 
 export var currentConfiguration: AlsConfiguration = initialConfiguration

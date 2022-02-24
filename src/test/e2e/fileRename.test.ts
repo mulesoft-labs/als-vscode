@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import * as assert from 'assert';
 import { getDocUri, activate, testFilesDirectory, activateExtension } from '../helper';
 import { messages } from '../../types';
-import { RenameFileActionParams, RenameFileActionResult } from '@aml-org/als-node-client';
+import { RenameFileActionParams, RenameFileActionResult } from '@mulesoft/anypoint-node-client';
 
 suite('Should rename file', async function () {
 	test('Rename file DataType.raml', async () => {
