@@ -1,4 +1,4 @@
-import { AlsClientCapabilities, AlsInitializeParams } from '@aml-org/als-node-client';
+import { AlsClientCapabilities, AlsInitializeParams } from '@mulesoft/anypoint-node-client';
 import { DocumentSelector } from 'vscode';
 import { ClientCapabilities, InitializeParams, ServerCapabilities, StaticFeature } from 'vscode-languageclient';
 export class ConversionFeature implements StaticFeature {
@@ -33,7 +33,7 @@ export class AlsInitializeParamsFeature implements StaticFeature {
 	}
 	fillInitializeParams?: (params: InitializeParams) => void = (params: InitializeParams) => {
 			var castedParams = params as AlsInitializeParams
-			castedParams.hotReload = this.hotReload
+			// castedParams.hotReload = this.hotReload
 	}
 	
 	fillClientCapabilities(capabilities: ClientCapabilities): void {

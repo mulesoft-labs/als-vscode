@@ -1,4 +1,4 @@
-import { AlsConfiguration, ConfigurationNotification, GetWorkspaceConfigurationRequestType, AlsRenameFileRequestType, RenameFileActionParams, RenameFileActionResult, SerializationRequestType, SerializationParams, SerializationResult, ConversionParams, SerializedDocument, ConversionRequestType, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, AlsDependency, Dependency } from "@aml-org/als-node-client"
+import { AlsConfiguration, ConfigurationNotification, GetWorkspaceConfigurationRequestType, AlsRenameFileRequestType, RenameFileActionParams, RenameFileActionResult, SerializationRequestType, SerializationParams, SerializationResult, ConversionParams, SerializedDocument, ConversionRequestType, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, AlsDependency, Dependency } from "@mulesoft/anypoint-node-client"
 import {  NotificationType, RequestType } from "vscode-languageclient"
 
 export namespace messages {

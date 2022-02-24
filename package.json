@@ -3,7 +3,7 @@
     "displayName": "AML support",
     "description": "",
     "publisher": "MuleSoftInc",
-    "version": "0.5.0",
+    "version": "0.6.0-TopoEdition",
     "engines": {
         "vscode": "^1.52.0"
     },
@@ -271,26 +271,6 @@
                     "when": "resourceLangId == aml || resourceLangId == aml-json",
                     "command": "als.conversion",
                     "group": "7_modification"
-                },
-                {
-                    "when": "resourceLangId == aml || resourceLangId == aml-json",
-                    "command": "als.setMainFile",
-                    "group": "7_modification"
-                },
-                {
-                    "when": "resourceLangId == aml || resourceLangId == aml-json",
-                    "command": "als.registerProfile",
-                    "group": "7_modification"
-                },
-                {
-                    "when": "resourceLangId == aml || resourceLangId == aml-json",
-                    "command": "als.unregisterProfile",
-                    "group": "7_modification"
-                },
-                {
-                    "when": "resourceLangId == aml || resourceLangId == aml-json",
-                    "command": "als.registerSemantic",
-                    "group": "7_modification"
                 }
             ]
         },
@@ -313,7 +293,7 @@
         }
     },
     "dependencies": {
-        "@aml-org/als-node-client": "5.0.1",
+        "@mulesoft/anypoint-node-client": "/Users/llibarona/mulesoft/anypoint-als/anypoint-node-client/node-package/mulesoft-anypoint-node-client-0.1.4-SNAPSHOT.tgz",
         "@types/mocha": "^8.2.1",
         "@types/node": "^11.15.20",
         "@types/vscode": "1.52.0",

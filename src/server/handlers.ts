@@ -2,7 +2,7 @@ import { AlsLanguageClient } from "./als"
 import * as vscode from 'vscode';
 import { awaitInputBox } from "../ui/ui";
 import {alsLog} from "../extension"
-import { DidChangeConfigurationNotificationParams } from "@aml-org/als-node-client";
+import { DidChangeConfigurationNotificationParams } from "@mulesoft/anypoint-node-client";
 import { isDependencyConfiguration } from "../types";
 var path = require("path")
 export const setMainFileHandler = (als: AlsLanguageClient) => {

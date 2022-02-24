@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { AlsLanguageClient } from '../server/als';
 import { isDependencyConfiguration } from '../types';
-import { AlsDependency, Dependency, GetWorkspaceConfigurationResult } from '@aml-org/als-node-client';
+import { AlsDependency, Dependency, GetWorkspaceConfigurationResult } from '@mulesoft/anypoint-node-client';
 
 export class ConfigurationViewProvider implements vscode.TreeDataProvider<WorkspaceConfigurationEntry> {
   constructor(private workspaces: ReadonlyArray<vscode.WorkspaceFolder>, private als: AlsLanguageClient) { }
