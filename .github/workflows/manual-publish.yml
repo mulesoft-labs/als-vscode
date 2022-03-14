@@ -1,0 +1,56 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Publish CI
+
+
+on:
+  workflow_dispatch:
+    inputs:
+      als-version:
+        description: 'ALS node client version to install (f.e.: 1.2.3-SNAPSHOT.45)'
+        required: true
+        default: 'latest' 
+        type: string
+    
+env:
+  NODE_OPTIONS: --max_old_space_size=4096
+  VSCE_PAT: ${{ secrets.VSCE_PAT }}
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm install -g vsce
+    - run: npm ci
+    - name: Install ALS node client ${{ github.event.inputs.als-version }}
+      run: npm install @aml-org/als-node-client@${{ github.event.inputs.als-version }}
+    - name: Set package version to latest
+      run: bash extension-version.sh
+    - run: npm run build --if-present
+    - run: npm run test
+    - run: vsce publish --no-git-tag-version patch
+
+    - name: Notify slack
+      id: slack
+      uses: slackapi/slack-github-action@v1.18.0
+      with:
+        # This data can be any valid JSON from a previous step in the GitHub Action
+        payload: |
+            {
+              "project": "als-vscode :vscode:",
+              "result": "Publication finished successfully: https://marketplace.visualstudio.com/items?itemName=MuleSoftInc.aml-vscode",
+              "version": " - "
+            }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
