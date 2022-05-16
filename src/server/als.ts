@@ -77,7 +77,7 @@ export class AlsLanguageClient {
         const newUri = vscode.Uri.parse(result.uri + ".json");
         const edits = new vscode.WorkspaceEdit();
         edits.createFile(newUri)
-        edits.insert(newUri, new vscode.Position(0, 0), result.model)
+        edits.insert(newUri, new vscode.Position(0, 0), JSON.stringify(result.model))
         vscode.workspace.applyEdit(edits).then(result =>
             console.log(JSON.stringify(result))
         )
@@ -117,7 +117,8 @@ export class AlsLanguageClient {
                 {
                     mainPath: params.mainPath,
                     folder: params.folder,
-                    dependencies: params.dependencies                },
+                    dependencies: params.dependencies
+                },
             ],
         })
             .then(() => console.log(`Notified new configuration: `, params), error => console.error(`Error while notifying new config to ALS`, error))
