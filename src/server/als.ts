@@ -65,7 +65,7 @@ export class AlsLanguageClient {
         console.log("applyConversionEdits");
         const edits = new vscode.WorkspaceEdit();
         edits.createFile(targetUri)
-        edits.insert(targetUri, new vscode.Position(0, 0), result.document)
+        edits.insert(targetUri, new vscode.Position(0, 0), result.model)
         vscode.workspace.applyEdit(edits).then(result =>
             console.log(JSON.stringify(result))
         )
