@@ -40,6 +40,9 @@ suite('Should do completion', async function () {
 		const docUri = getDocUri('empty.json');
 		await testCompletion(docUri, new vscode.Position(0, 1), {
 			items: [
+				{ label: '"$schema": "http://json-schema.org/draft-04/schema#"', kind: vscode.CompletionItemKind.Property },
+				{ label: '"$schema": "http://json-schema.org/draft-07/schema#"', kind: vscode.CompletionItemKind.Property },
+				{ label: '"$schema": "http://json-schema.org/draft/2019-09/schema#"', kind: vscode.CompletionItemKind.Property },
 				{ label: '"asyncapi": "2.0.0"', kind: vscode.CompletionItemKind.Property },
 				{ label: '"openapi": "3.0.0"', kind: vscode.CompletionItemKind.Property },
 				{ label: '"swagger": "2.0"', kind: vscode.CompletionItemKind.Property }
