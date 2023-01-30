@@ -27,11 +27,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
-      run: echo Node version v${{ env.NODE-VERSION }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    - run: echo Node version v${{ env.NODE-VERSION }}
     - run: npm install -g vsce
     - run: npm ci
     - name: Install ALS node client ${{ github.event.inputs.als-version }}
