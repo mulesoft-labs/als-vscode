@@ -1,0 +1,22 @@
+name: Create envfile
+
+on:
+  workflow_dispatch:
+    inputs:
+      NODE-VERSION:
+        description: 'Node Version v##.##.## (using default as v16.19.0)'
+        required: true
+        default: '16.19.0'
+        type: string
+
+jobs:
+
+  create-envfile:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Make envfile
+        uses: als-vscode/create-envfile@v1.3
+        with:
+          envkey_NODE-VERSION: ${{ github.event.inputs.NODE-VERSION }}
