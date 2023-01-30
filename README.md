@@ -30,7 +30,7 @@ This is a custom extension for [VS Code](https://github.com/microsoft/vscode) ba
 
 ## Requirements
 
-NodeJS installed (14.16.1 LTS recommended)
+NodeJS installed (v16.19.0 LTS recommended)
 
 Install VSCE package
 
