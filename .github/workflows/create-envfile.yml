@@ -17,6 +17,6 @@ jobs:
 
     steps:
       - name: Make envfile
-        uses: als-vscode/create-envfile@v1.3
+        uses: actions/checkout@v2
         with:
           envkey_NODE-VERSION: ${{ github.event.inputs.NODE-VERSION }}
