@@ -314,7 +314,7 @@
         }
     },
     "dependencies": {
-        "@aml-org/als-node-client": "latest",
+        "@aml-org/als-node-client": "^5.3.3",
         "@types/mocha": "^8.2.1",
         "@types/node": "^11.15.20",
         "@types/vscode": "1.52.0",
