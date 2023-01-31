@@ -1,5 +1,7 @@
 
 FROM ubuntu:16.04
+ENV NODE_VERSION=16
+ENV NPM_VERSION=8
 
 # Update the repository sources list and install dependencies
 RUN apt-get update
@@ -27,17 +29,19 @@ RUN add-apt-repository ppa:openjdk-r/ppa
 RUN apt-get update
 RUN apt-get install openjdk-8-jdk --assume-yes
 
-# Install NPM
-RUN apt-get install -y curl
+# Install NPM and NODE
+RUN apt-get install curl --assume-yes
+RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash -
+RUN export NODE_OPTIONS=--max_old_space_size=6000
+RUN npm i -g npm@${NPM_VERSION}
 RUN apt-get install -y nodejs
-RUN apt-get install -y npm
-RUN apt-get update
-RUN npm update npm -g
-RUN npm install -g n
-RUN n stable
 RUN npm install -g vsce
 
 # Final user and home config
 RUN useradd --create-home --shell /bin/bash jenkins
 USER jenkins
 WORKDIR /home/jenkins
+
+RUN echo "NODE Version:" && node --version
+RUN echo "NPM Version:" && npm --version
+RUN echo "VSCode Extension Version:" && vsce --version
