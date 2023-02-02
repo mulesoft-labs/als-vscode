@@ -14,27 +14,25 @@ on:
         type: string
     
 env:
-  NODE_OPTIONS: --max_old_space_size=4096
   VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
 jobs:
+  install_npm:
+    uses: ./.github/workflows/install_npm.yml
+
   build:
     runs-on: macos-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    needs: [ install_npm ]
 
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+
     - run: npm install -g vsce
     - run: npm ci
     - name: Install ALS node client ${{ github.event.inputs.als-version }}
       run: npm install @aml-org/als-node-client@${{ github.event.inputs.als-version }}
+    - name: Check custom dependencies installed
+      run: npm ls | grep @aml-org
     - name: Set package version to latest
       run: bash extension-version.sh
     - run: npm run build --if-present
