@@ -9,39 +9,30 @@ on:
     branches: [ master ]
     
 env:
-  NODE_OPTIONS: --max_old_space_size=4096
+  ALS_NODE_CLIENT_DEPENDENCY_NAME: "@aml-org/als-node-client"
+
 jobs:
+  install_npm:
+    uses: ./.github/workflows/install_npm.yml
+
   build:
     runs-on: windows-latest
-    strategy:
-      matrix:
-        node-version: [16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+    needs: [ install_npm ]
+
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+
     - name: Install ALS Node Client dependency
-      run: npm i @aml-org/als-node-client
+      run: npm i ${{ ALS_NODE_CLIENT_DEPENDENCY_NAME }}
     - run: npm ci
     - run: npm run build --if-present
-    - run: npm ls | grep @aml-org
+    - uses: Check custom dependencies installed
+      run: npm ls | grep @aml-org
     - id: test
       run: npm run test
       continue-on-error: true
-    - name: Notify slack
-      id: slack
-      uses: slackapi/slack-github-action@v1.18.0
-      with:
-        # This data can be any valid JSON from a previous step in the GitHub Action
-        payload: |
-            {
-              "project": "als-vscode :vscode:",
-              "result": "test outcome: `${{ steps.test.outcome}}`",
-              "version": " - "
-            }
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  notify_slack:
+    # Some condition may be added to not notify every test
+    uses: ./.github/workflows/notify_slack.yml
+    needs: [ build ]

@@ -11,9 +11,7 @@ on:
         required: true
         default: 'latest' 
         type: string
-        
-env:
-  NODE_OPTIONS: --max_old_space_size=4096
+
 jobs:
   install_npm:
     uses: ./.github/workflows/install_npm.yml
@@ -28,20 +26,14 @@ jobs:
     - run: npm ci
     - name: Install ALS node client ${{ github.event.inputs.als-version }}
       run: npm install @aml-org/als-node-client@${{ github.event.inputs.als-version }}
+    - uses: Check custom dependencies installed
+      run: npm ls | grep @aml-org
     - run: npm run build --if-present
     - id: test
       run: npm run test
       continue-on-error: true
-    - name: Notify slack
-      id: slack
-      uses: slackapi/slack-github-action@v1.18.0
-      with:
-        # This data can be any valid JSON from a previous step in the GitHub Action
-        payload: |
-            {
-              "project": "als-vscode :vscode:",
-              "result": "manual test outcome: `${{ steps.test.outcome }}`",
-              "version": "${{ github.event.inputs.als-version }}"
-            }
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  notify_slack:
+    # Some condition may be added to not notify every manual test
+      uses: ./.github/workflows/notify_slack.yml
+      needs: [ build ]
