@@ -4,7 +4,6 @@ on: [ workflow_call ]
 
 env:
   CHANNEL_NAME: "als-extension-bot"
-  REF_SLACK_VERSION: "v1.18.0"
 
 jobs:
   notify_slack_channel:
@@ -16,7 +15,7 @@ jobs:
 
       - name: "Notifying to Slack Channel: ${{ env.CHANNEL_NAME }}"
         id: slack
-        uses: slackapi/slack-github-action@$REF_SLACK_VERSION
+        uses: slackapi/slack-github-action@v1.18.0
         with:
           # This data can be any valid JSON from a previous step in the GitHub Action
           payload: |
