@@ -31,7 +31,7 @@ jobs:
     - run: npm ci
     - name: Install ALS node client ${{ github.event.inputs.als-version }}
       run: npm install @aml-org/als-node-client@${{ github.event.inputs.als-version }}
-    - uses: Check custom dependencies installed
+    - name: Check custom dependencies installed
       run: npm ls | grep @aml-org
     - name: Set package version to latest
       run: bash extension-version.sh

@@ -24,7 +24,7 @@ jobs:
     - run: npm ci
     - name: Install ALS node client ${{ github.event.client_payload.version }}
       run: npm install ${{ ALS_NODE_CLIENT_DEPENDENCY_NAME }}@${{ github.event.client_payload.version }}
-    - uses: Check custom dependencies installed
+    - name: Check custom dependencies installed
       run: npm ls | grep @aml-org
     - run: npm run build --if-present
     - id: test

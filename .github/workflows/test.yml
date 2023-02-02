@@ -26,7 +26,7 @@ jobs:
       run: npm i ${{ ALS_NODE_CLIENT_DEPENDENCY_NAME }}
     - run: npm ci
     - run: npm run build --if-present
-    - uses: Check custom dependencies installed
+    - name: Check custom dependencies installed
       run: npm ls | grep @aml-org
     - id: test
       run: npm run test
