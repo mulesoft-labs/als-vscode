@@ -22,7 +22,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-#
+
 #    - run: npm ci
 #    - name: Install ALS node client ${{ github.event.inputs.als-version }}
 #      run: npm install @aml-org/als-node-client@${{ github.event.inputs.als-version }}
@@ -33,7 +33,16 @@ jobs:
 #      run: npm run test
 #      continue-on-error: true
 
-  notify_slack:
-    # Some condition may be added to not notify every manual test
-      uses: ./.github/workflows/notify_slack.yml
-      needs: [ build ]
+    - name: Notify slack
+      id: slack
+      uses: slackapi/slack-github-action@v1.18.0
+      with:
+        # This data can be any valid JSON from a previous step in the GitHub Action
+        payload: |
+            {
+              "project": "als-vscode :vscode:",
+              "result": "manual test outcome: `${{ steps.test.outcome }}`",
+              "version": "${{ github.event.inputs.als-version }}"
+            }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

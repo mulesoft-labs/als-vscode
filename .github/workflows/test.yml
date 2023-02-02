@@ -7,9 +7,6 @@ on:
   pull_request:
     types: [opened, reopened, edited, synchronize]
     branches: [ master ]
-    
-env:
-  ALS_NODE_CLIENT_DEPENDENCY_NAME: "@aml-org/als-node-client"
 
 jobs:
   install_npm:
@@ -21,9 +18,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-
     - name: Install ALS Node Client dependency
-      run: npm i ${{ ALS_NODE_CLIENT_DEPENDENCY_NAME }}
+      run: npm i @aml-org/als-node-client
     - run: npm ci
     - run: npm run build --if-present
     - name: Check custom dependencies installed
@@ -32,7 +28,16 @@ jobs:
       run: npm run test
       continue-on-error: true
 
-  notify_slack:
-    # Some condition may be added to not notify every test
-    uses: ./.github/workflows/notify_slack.yml
-    needs: [ build ]
+    - name: Notify slack
+      id: slack
+      uses: slackapi/slack-github-action@v1.18.0
+      with:
+        # This data can be any valid JSON from a previous step in the GitHub Action
+        payload: |
+            {
+              "project": "als-vscode :vscode:",
+              "result": "test outcome: `${{ steps.test.outcome}}`",
+              "version": " - "
+            }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

@@ -6,9 +6,6 @@ name: Service Test CI
 on:
   repository_dispatch:
     types: run-windows
-        
-env:
-  ALS_NODE_CLIENT_DEPENDENCY_NAME: "@aml-org/als-node-client"
 
 jobs:
   install_npm:
@@ -23,15 +20,22 @@ jobs:
 
     - run: npm ci
     - name: Install ALS node client ${{ github.event.client_payload.version }}
-      run: npm install ${{ ALS_NODE_CLIENT_DEPENDENCY_NAME }}@${{ github.event.client_payload.version }}
-    - name: Check custom dependencies installed
-      run: npm ls | grep @aml-org
+      run: npm install @aml-org/als-node-client@${{ github.event.client_payload.version }}
     - run: npm run build --if-present
     - id: test
       run: npm run test
       continue-on-error: true
 
-  notify_slack:
-    # Some condition may be added to not notify every service test
-    uses: ./.github/workflows/notify_slack.yml
-    needs: [ build ]
+    - name: Notify slack
+      id: slack
+      uses: slackapi/slack-github-action@v1.18.0
+      with:
+        # This data can be any valid JSON from a previous step in the GitHub Action
+        payload: |
+            {
+              "project": "als-vscode :vscode:",
+              "result": "service test outcome: `${{ steps.test.outcome }}`",
+              "version": "${{ github.event.client_payload.version }}"
+            }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
