@@ -18,7 +18,8 @@ export class AlsLanguageClient {
     disposables: Disposable[] = []
 
     readonly wsConfigTreeViewProvider = new ConfigurationViewProvider(vscode.workspace.workspaceFolders, this)
-    constructor(readonly languageClient: LanguageClient, private readonly extensionConfigurationManager: SettingsManager) {
+    constructor(readonly languageClient: LanguageClient, private readonly extensionConfigurationManager: SettingsManager, alsLog: vscode.OutputChannel) {
+        alsLog.appendLine("registering commands")
         this.disposable(vscode.commands.registerCommand("als.renameFile", renameFileHandler(this)))
         this.disposable(vscode.commands.registerCommand("als.conversion", conversionHandler(this)))
         this.disposable(vscode.commands.registerCommand("als.serialization", serializationHandler(this)))
@@ -36,6 +37,7 @@ export class AlsLanguageClient {
             'aml-configuration',
             this.wsConfigTreeViewProvider
         );
+        alsLog.appendLine("registered commands")
     }
 
     sendSerializationRequest(fileUri: vscode.Uri) {

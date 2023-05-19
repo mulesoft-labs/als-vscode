@@ -14,7 +14,7 @@ import {
 	StreamInfo
 } from 'vscode-languageclient/node';
 import { notifyConfig } from './server/alsConfiguration'
-import { AlsInitializeParamsFeature, ConversionFeature } from './features'
+import { AlsInitializeParamsFeature, ConversionFeature, SerializationNotificationFeature } from './features'
 import { AlsLanguageClient } from './server/als'
 import { SettingsManager } from './settings'
 
@@ -77,13 +77,14 @@ async function createLanguageClient(alsLog: vscode.OutputChannel, context: Exten
 		clientOptions)
 
 	const settingsManager = new SettingsManager(["amlLanguageServer.run"])
-	const als = new AlsLanguageClient(languageClient, settingsManager)
+	const als = new AlsLanguageClient(languageClient, settingsManager, alsLog)
 
 	
 	const isJVM = runParams.get("platform") === "jvm";
 	languageClient.registerFeatures([
 		new AlsInitializeParamsFeature(runParams.get("hotReload"), isJVM),
-		new ConversionFeature()
+		new ConversionFeature(),
+		new SerializationNotificationFeature()
 	])
 
 	workspace.onDidChangeConfiguration(() => notifyConfig(languageClient))
@@ -92,8 +93,15 @@ async function createLanguageClient(alsLog: vscode.OutputChannel, context: Exten
 	als.disposables.push(disposable)
 
 	await languageClient.onReady();
+	
+	als.disposables.push(languageClient.onNotification("serializeJSONLD", (x => {
+		alsLog.appendLine("serializeJSONLD");
+		alsLog.appendLine(JSON.stringify(x));
+	})))
+
 	return als;
 }
+
 
 function createServer(alsLog: vscode.OutputChannel, context: ExtensionContext): () => Promise<StreamInfo> {
 	return () => {

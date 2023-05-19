@@ -1,6 +1,7 @@
 import { AlsClientCapabilities, AlsInitializeParams } from '@aml-org/als-node-client';
 import { DocumentSelector } from 'vscode';
 import { ClientCapabilities, InitializeParams, ServerCapabilities, StaticFeature } from 'vscode-languageclient';
+
 export class ConversionFeature implements StaticFeature {
     fillInitializeParams?: (params: InitializeParams) => void;
     dispose(): void {
@@ -12,6 +13,7 @@ export class ConversionFeature implements StaticFeature {
     initialize(): void {
     }
 }
+
 export class SerializationNotificationFeature implements StaticFeature {
     fillInitializeParams?: (params: InitializeParams) => void;
     dispose(): void {

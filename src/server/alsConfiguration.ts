@@ -1,6 +1,6 @@
 import { messages } from "../types";
 import { LanguageClient } from "vscode-languageclient/node";
-import { workspace } from "vscode";
+import { languages, workspace } from "vscode";
 import { AlsConfiguration } from "@aml-org/als-node-client";
 
 

@@ -1,4 +1,4 @@
-import { AlsConfiguration, ConfigurationNotification, GetWorkspaceConfigurationRequestType, AlsRenameFileRequestType, RenameFileActionParams, RenameFileActionResult, SerializationRequestType, SerializationParams, SerializationResult, ConversionParams, SerializedDocument, ConversionRequestType, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, AlsDependency, Dependency } from "@aml-org/als-node-client"
+import { SerializationEventNotification, AlsConfiguration, ConfigurationNotification, GetWorkspaceConfigurationRequestType, AlsRenameFileRequestType, RenameFileActionParams, RenameFileActionResult, SerializationRequestType, SerializationParams, SerializationResult, ConversionParams, SerializedDocument, ConversionRequestType, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, AlsDependency, Dependency } from "@aml-org/als-node-client"
 import {  NotificationType, RequestType } from "vscode-languageclient"
 
 export namespace messages {
@@ -10,6 +10,9 @@ export namespace messages {
     }
     export const AlsSerializationRequest: SerializationRequestType = {
         type: new RequestType<SerializationParams, SerializationResult, void>("serialization")
+    }
+    export const AlsSerializationNotification: SerializationEventNotification = {
+        type: new NotificationType<SerializationResult>("serializeJSONLD")
     }
     export const AlsConversionRequest: ConversionRequestType = {
         type: new RequestType<ConversionParams, SerializedDocument, void>("conversion")
