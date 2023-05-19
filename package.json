@@ -206,6 +206,15 @@
                 }
             },
             {
+                "command": "als.fileContents",
+                "title": "ALS File Contents",
+                "category": "Modifications",
+                "icon": {
+                    "light": "path/to/light/icon.svg",
+                    "dark": "path/to/dark/icon.svg"
+                }
+            },
+            {
                 "command": "als.conversion",
                 "title": "ALS Conversion",
                 "category": "Modifications",
@@ -270,6 +279,11 @@
                 },
                 {
                     "when": "resourceLangId == aml || resourceLangId == aml-json",
+                    "command": "als.fileContents",
+                    "group": "7_modification"
+                },
+                {
+                    "when": "resourceLangId == aml || resourceLangId == aml-json",
                     "command": "als.conversion",
                     "group": "7_modification"
                 },
@@ -314,7 +328,7 @@
         }
     },
     "dependencies": {
-        "@aml-org/als-node-client": "^5.3.3",
+        "@aml-org/als-node-client": "^5.4.0-SNAPSHOT.626",
         "@types/mocha": "^8.2.1",
         "@types/node": "^11.15.20",
         "@types/vscode": "1.52.0",

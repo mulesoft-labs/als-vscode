@@ -4,12 +4,13 @@ import { ExecuteCommandRequest, StateChangeEvent } from 'vscode-languageclient';
 import { notifyConfig } from './alsConfiguration';
 import { FormattingProvider, LANGUAGE_ID } from '../language';
 import { LanguageClient } from 'vscode-languageclient/node';
-import { conversionHandler, registerProfileHandler, registerSemanticHandler, renameFileHandler, serializationHandler, setMainFileHandler, unregisterProfileHandler, unregisterSemanticHandler } from './handlers';
+import { conversionHandler, registerProfileHandler, registerSemanticHandler, renameFileHandler, serializationHandler, fileContentsHandler, setMainFileHandler, unregisterProfileHandler, unregisterSemanticHandler } from './handlers';
 import { ConfigurationViewProvider } from '../ui/configurationView';
 import { SettingsManager } from '../settings';
 import { Disposable } from 'vscode';
-import { ConversionParams, DidChangeConfigurationNotificationParams, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, RenameFileActionParams, RenameFileActionResult, SerializationParams, SerializationResult, SerializedDocument } from '@aml-org/als-node-client';
+import { ConversionParams, DidChangeConfigurationNotificationParams, FileContentsResponse, GetWorkspaceConfigurationParams, GetWorkspaceConfigurationResult, RenameFileActionParams, RenameFileActionResult, SerializationParams, SerializationResult, SerializedDocument } from '@aml-org/als-node-client';
 import { messages } from '../types';
+import { alsLog } from '../extension';
 
 
 // todo: cleanup all URIs using languageClient.code2ProtocolConverter.asUri(fileUri)
@@ -23,6 +24,7 @@ export class AlsLanguageClient {
         this.disposable(vscode.commands.registerCommand("als.renameFile", renameFileHandler(this)))
         this.disposable(vscode.commands.registerCommand("als.conversion", conversionHandler(this)))
         this.disposable(vscode.commands.registerCommand("als.serialization", serializationHandler(this)))
+        this.disposable(vscode.commands.registerCommand("als.fileContents", fileContentsHandler(this)))
         this.disposable(vscode.commands.registerCommand("als.setMainFile", setMainFileHandler(this)))
         this.disposable(vscode.commands.registerCommand("als.registerProfile", registerProfileHandler(this)))
         this.disposable(vscode.commands.registerCommand("als.unregisterProfile", unregisterProfileHandler(this)))
@@ -47,6 +49,14 @@ export class AlsLanguageClient {
 
         this.languageClient.sendRequest(messages.AlsSerializationRequest.type, params).then(result => {
             this.applySerializationEdits(result);
+        });
+    }
+
+    sendFileContentsRequest(fileUri: vscode.Uri) {
+        const params = { uri: this.languageClient.code2ProtocolConverter.asUri(fileUri) }
+        alsLog.appendLine("sendFileContentsRequest sending")
+        this.languageClient.sendRequest(messages.AlsFileContentsRequestType.type, params).then(result => {
+            this.applyFileContents(result);
         });
     }
 
@@ -83,6 +93,11 @@ export class AlsLanguageClient {
         vscode.workspace.applyEdit(edits).then(result =>
             console.log(JSON.stringify(result))
         )
+    }
+
+    private applyFileContents(result: FileContentsResponse) {
+        console.log("applyFileContents");
+        console.log(JSON.stringify(result));
     }
 
     sendRenameRequest(fileUri: vscode.Uri, originalPath: string, newName: string) {
@@ -123,7 +138,7 @@ export class AlsLanguageClient {
                 },
             ],
         })
-            .then(() => console.log(`Notified new configuration: `, params), error => console.error(`Error while notifying new config to ALS`, error))
+            .then(() => alsLog.appendLine(`Notified new configuration: ` + JSON.stringify(params)), error => alsLog.appendLine(`Error while notifying new config to ALS ` + JSON.stringify(error)))
             .then(() => this.wsConfigTreeViewProvider.refresh(vscode.workspace.workspaceFolders));
     }
 

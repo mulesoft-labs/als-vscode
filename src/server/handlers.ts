@@ -56,6 +56,13 @@ export const serializationHandler = (als: AlsLanguageClient) => {
   }
 }
 
+export const fileContentsHandler = (als: AlsLanguageClient) => {
+  return (fileUri: vscode.Uri) => {
+    alsLog.appendLine("als.fileContents called")
+    als.sendFileContentsRequest(fileUri)
+  }
+}
+
 export const renameFileHandler = (als: AlsLanguageClient) => {
   return (fileUri: vscode.Uri) => {
     alsLog.appendLine("als.rename called")
