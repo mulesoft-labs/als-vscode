@@ -325,7 +325,7 @@
         "upath": "^1.2.0",
         "vsce": "^1.88.0",
         "vscode-languageclient": "^7.0.0",
-        "webpack": "^4.46.0",
+        "webpack": "^5.1.1",
         "webpack-cli": "^3.3.12"
     },
     "scripts": {
