@@ -27,10 +27,15 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - run: npm install -g vsce
-    - run: npm ci
+    - name: Clean node_modules && package-lock.json
+      run: sudo rm -Rf node_modules && sudo rm
+    - name: Set package version to latest
+      run: bash extension-version.sh
+    - run: npm i
+    - run: npm install -g @vscode/vsce
     - name: Install ALS node client ${{ github.event.inputs.als-version }}
       run: npm install @aml-org/als-node-client@${{ github.event.inputs.als-version }}
+
     - name: Check custom dependencies installed
       run: npm ls | grep @aml-org
     - name: Set package version to latest

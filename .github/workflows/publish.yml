@@ -21,10 +21,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - run: npm install -g vsce
-    - run: npm ci
+    - name: Clean node_modules && package-lock.json
+      run: sudo rm -Rf node_modules && sudo rm
     - name: Set package version to latest
       run: bash extension-version.sh
+    - run: npm i
+    - run: npm install -g @vscode/vsce
     - run: npm run build --if-present
     - run: npm run test
     - run: vsce publish --no-git-tag-version patch
