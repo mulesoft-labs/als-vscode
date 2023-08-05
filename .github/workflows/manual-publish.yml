@@ -27,8 +27,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Clean node_modules && package-lock.json
-      run: sudo rm -f node_modules && sudo rm
     - name: Set package version to latest
       run: bash extension-version.sh
     - run: npm i
