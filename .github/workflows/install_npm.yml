@@ -3,7 +3,7 @@ name: Set Node Version
 on: [ workflow_call ]
 
 env:
-  NODE_VERSION: 16
+  NODE_VERSION: 20
 
 jobs:
   installing_node:
