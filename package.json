@@ -3,7 +3,7 @@
     "displayName": "AML support",
     "description": "",
     "publisher": "MuleSoftInc",
-    "version": "0.5.27",
+    "version": "0.5.28",
     "engines": {
         "vscode": "^1.52.0"
     },
@@ -324,10 +324,9 @@
         "ts-loader": "^8.3.0",
         "typescript": "^3.9.9",
         "upath": "^1.2.0",
-        "vsce": "^1.88.0",
         "vscode-languageclient": "^7.0.0",
-        "webpack": "^4.46.0",
-        "webpack-cli": "^3.3.12"
+        "webpack": "^5.0.0",
+        "webpack-cli": "^5.1.4"
     },
     "scripts": {
         "compile": "tsc",
@@ -340,6 +339,6 @@
         "test": "node ./out/test/runTest.js"
     },
     "devDependencies": {
-        "@aml-org/amf-custom-validator": "^0.1.0-SNAPSHOT.16"
+        "@aml-org/amf-custom-validator": "^1.4.0"
     }
 }
