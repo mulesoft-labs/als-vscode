@@ -30,12 +30,16 @@ RUN apt-get update
 RUN apt-get install openjdk-8-jdk --assume-yes
 
 # Install NPM and NODE
-RUN apt-get install curl --assume-yes
-RUN curl -sL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash -
-RUN export NODE_OPTIONS=--max_old_space_size=6000
-RUN npm i -g npm@${NPM_VERSION}
-RUN apt-get install -y nodejs
-RUN npm install -g vsce
+RUN mkdir /usr/local/nvm
+ENV NVM_DIR /usr/local/nvm
+RUN curl https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash \
+    && . $NVM_DIR/nvm.sh \
+    && nvm install $NODE_VERSION \
+    && nvm alias default $NODE_VERSION \
+    && nvm use default
+
+ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
+ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 # Final user and home config
 RUN useradd --create-home --shell /bin/bash jenkins
@@ -44,4 +48,5 @@ WORKDIR /home/jenkins
 
 RUN echo "NODE Version:" && node --version
 RUN echo "NPM Version:" && npm --version
+RUN echo "NVM Version:" && nvm -v
 RUN echo "VSCode Extension Version:" && vsce --version
